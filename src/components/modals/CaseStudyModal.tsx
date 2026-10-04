@@ -66,31 +66,31 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5 md:p-6 overflow-hidden bg-black/85 backdrop-blur-xl animate-fadeIn"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5 md:p-6 overflow-hidden bg-slate-900/50 backdrop-blur-md animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div 
-        className="relative w-full max-w-4xl max-h-[90vh] rounded-3xl bg-[#0e121a] border border-white/20 shadow-2xl flex flex-col my-auto overflow-hidden text-neutral-100"
+        className="relative w-full max-w-4xl max-h-[90vh] rounded-3xl bg-white border border-slate-200 shadow-2xl flex flex-col my-auto overflow-hidden text-slate-900"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Project Image Hero Banner with Ambient Accents */}
         {project.imageUrl && (
-          <div className="relative h-44 sm:h-56 w-full overflow-hidden bg-neutral-900 shrink-0 border-b border-white/10 group">
+          <div className="relative h-44 sm:h-56 w-full overflow-hidden bg-slate-100 shrink-0 border-b border-slate-200 group">
             <img
               src={project.imageUrl}
               alt={project.title}
               referrerPolicy="no-referrer"
-              className="w-full h-full object-cover brightness-[0.75] contrast-[1.08] group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover brightness-[0.85] contrast-[1.05] group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0e121a] via-[#0e121a]/50 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0e121a]/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-transparent to-transparent" />
             
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2.5 rounded-full bg-black/75 backdrop-blur-md hover:bg-white hover:text-black text-white transition-all border border-white/20 z-10 cursor-pointer shadow-lg"
+              className="absolute top-4 right-4 p-2.5 rounded-full bg-white/90 hover:bg-white text-slate-900 transition-all border border-slate-200 z-10 cursor-pointer shadow-lg hover:scale-105"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
@@ -98,16 +98,16 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
 
             {/* Badges on Banner */}
             <div className="absolute bottom-4 left-5 sm:left-7 flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#1C6CD4]/30 backdrop-blur-md text-[#93c5fd] text-xs font-mono font-bold border border-[#1C6CD4]/50 flex items-center gap-1.5">
+              <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[#1C6CD4] text-xs font-mono font-bold border border-slate-200 flex items-center gap-1.5 shadow-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />
                 {project.category}
               </span>
-              <span className="text-xs font-mono text-neutral-200 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5 font-bold">
-                <Clock className="w-3.5 h-3.5 text-[#96E2A5]" />
+              <span className="text-xs font-mono text-slate-900 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-slate-200 flex items-center gap-1.5 font-bold shadow-sm">
+                <Clock className="w-3.5 h-3.5 text-emerald-600" />
                 {project.period}
               </span>
-              <span className="hidden sm:inline-flex text-xs font-mono text-[#96E2A5] bg-[#154E20]/40 backdrop-blur-md px-3 py-1 rounded-full border border-[#96E2A5]/40 items-center gap-1.5 font-bold">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#96E2A5]" />
+              <span className="hidden sm:inline-flex text-xs font-mono text-emerald-800 bg-emerald-50/95 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-200 items-center gap-1.5 font-bold shadow-sm">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                 {project.manHours}
               </span>
             </div>
@@ -115,19 +115,19 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
         )}
 
         {/* Modal Header */}
-        <div className="relative p-5 sm:p-7 border-b border-white/10 bg-[#121622] shrink-0">
+        <div className="relative p-5 sm:p-7 border-b border-slate-200 bg-slate-50 shrink-0">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-xs font-mono text-[#93c5fd] font-bold">
+              <div className="flex items-center gap-2 text-xs font-mono text-[#1C6CD4] font-bold">
                 <Building2 className="w-3.5 h-3.5 text-[#1C6CD4]" />
                 <span>{project.client}</span>
-                <span className="text-neutral-500">•</span>
-                <span className="flex items-center gap-1 text-neutral-300">
-                  <MapPin className="w-3 h-3 text-[#96E2A5]" />
+                <span className="text-slate-300">•</span>
+                <span className="flex items-center gap-1 text-slate-600">
+                  <MapPin className="w-3 h-3 text-emerald-600" />
                   {project.location}
                 </span>
               </div>
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-black text-white tracking-tight leading-snug sm:leading-tight">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-black text-slate-900 tracking-tight leading-snug sm:leading-tight">
                 {project.title}
               </h2>
             </div>
@@ -135,7 +135,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
             {!project.imageUrl && (
               <button
                 onClick={onClose}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                className="p-2 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-800 transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -144,7 +144,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           </div>
 
           {/* Interactive Case Study Section Tabs */}
-          <div className="flex items-center gap-2 pt-4 mt-2 overflow-x-auto border-t border-white/10">
+          <div className="flex items-center gap-2 pt-4 mt-2 overflow-x-auto border-t border-slate-200">
             {[
               { id: 'challenges', label: 'Safety Challenges', count: project.safetyChallenges?.length || 1, icon: AlertTriangle },
               { id: 'strategies', label: 'HSE Strategies', count: project.hseStrategies?.length || 1, icon: ShieldCheck },
@@ -159,13 +159,13 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                   onClick={() => setActiveTab(tab.id as typeof activeTab)}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                     isActive
-                      ? 'bg-[#1C6CD4] text-white shadow-md'
-                      : 'bg-white/[0.04] text-neutral-300 hover:text-white hover:bg-white/10'
+                      ? 'bg-[#1C6CD4] text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-700 hover:text-slate-900 hover:bg-slate-200'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
                   <span>{tab.label}</span>
-                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-white/10 text-neutral-400'}`}>
+                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'}`}>
                     {tab.count}
                   </span>
                 </button>
@@ -175,19 +175,19 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="p-5 sm:p-7 space-y-6 overflow-y-auto flex-1 text-neutral-200">
+        <div className="p-5 sm:p-7 space-y-6 overflow-y-auto flex-1 text-slate-700">
           
           {/* Key Metrics Quick Ribbon */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {project.metrics.map((m, idx) => (
               <div 
                 key={idx} 
-                className="p-3 sm:p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col justify-between space-y-1 hover:border-[#1C6CD4]/50 transition-colors"
+                className="p-3 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-1 hover:border-[#1C6CD4] transition-colors"
               >
-                <span className="text-[10px] font-mono uppercase text-neutral-400 font-bold block truncate">
+                <span className="text-[10px] font-mono uppercase text-slate-500 font-bold block truncate">
                   {m.label}
                 </span>
-                <span className="text-base sm:text-xl font-display font-black text-white tracking-tight">
+                <span className="text-base sm:text-xl font-display font-black text-slate-900 tracking-tight">
                   {m.value}
                 </span>
               </div>
@@ -198,11 +198,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           {activeTab === 'challenges' && (
             <div className="space-y-4 animate-fadeIn">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-red-400 font-bold">
-                  <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-red-600 font-bold">
+                  <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
                   <span>Specific Engineering &amp; Physical Safety Hazards</span>
                 </div>
-                <p className="text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 font-sans leading-relaxed">
                   High-consequence conditions identified during hazard identification and risk assessment (HIRA) that required bespoke engineering controls:
                 </p>
               </div>
@@ -212,35 +212,35 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                   {project.safetyChallenges.map((ch, ci) => (
                     <div 
                       key={ci} 
-                      className="p-5 rounded-2xl bg-red-950/10 border border-red-500/20 space-y-2 hover:border-red-500/40 transition-colors"
+                      className="p-5 rounded-2xl bg-red-50 border border-red-200 space-y-2 hover:border-red-300 transition-colors"
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-sm font-display font-bold text-white leading-snug">
+                        <h4 className="text-sm font-display font-bold text-slate-900 leading-snug">
                           {ch.title}
                         </h4>
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase border ${getRiskBadge(ch.riskLevel)}`}>
                           {ch.riskLevel} Risk
                         </span>
                       </div>
-                      <p className="text-xs text-neutral-300 leading-relaxed font-sans font-medium">
+                      <p className="text-xs text-slate-600 leading-relaxed font-sans font-medium">
                         {ch.hazard}
                       </p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
-                  <h4 className="text-sm font-display font-bold text-white">Critical Risk Challenge:</h4>
-                  <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans">{project.challenge}</p>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                  <h4 className="text-sm font-display font-bold text-slate-900">Critical Risk Challenge:</h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">{project.challenge}</p>
                 </div>
               )}
 
               {/* Operational Context Quote */}
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 space-y-1 text-xs">
-                <span className="font-mono text-[10px] uppercase text-[#93c5fd] font-bold block">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1 text-xs">
+                <span className="font-mono text-[10px] uppercase text-[#1C6CD4] font-bold block">
                   Operational Mandate Overview:
                 </span>
-                <p className="text-neutral-300 font-sans leading-relaxed font-normal">
+                <p className="text-slate-700 font-sans leading-relaxed font-normal">
                   {project.summary}
                 </p>
               </div>
@@ -251,11 +251,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           {activeTab === 'strategies' && (
             <div className="space-y-4 animate-fadeIn">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#96E2A5] font-bold">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#96E2A5]" />
+                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-emerald-700 font-bold">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Engineered Safety Controls &amp; Management Protocols</span>
                 </div>
-                <p className="text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 font-sans leading-relaxed">
                   Physical barriers, telemetry monitoring, and organizational systems deployed to eliminate risks at the source:
                 </p>
               </div>
@@ -264,22 +264,22 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                 <div className="space-y-3">
                   {project.hseStrategies.map((strat, si) => (
                     <div 
-                      key={si}
-                      className="p-5 rounded-2xl bg-emerald-950/10 border border-[#96E2A5]/25 space-y-2 hover:border-[#96E2A5]/50 transition-colors"
+                      key={si} 
+                      className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2 hover:border-emerald-300 transition-colors"
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-sm font-display font-bold text-white flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-[#96E2A5] shrink-0" />
+                        <h4 className="text-sm font-display font-bold text-slate-900 flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                           <span>{strat.title}</span>
                         </h4>
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono text-[#96E2A5] bg-[#154E20]/40 border border-[#96E2A5]/30 font-bold">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono text-emerald-700 bg-emerald-100 border border-emerald-200 font-bold">
                           Protocol 0{si + 1}
                         </span>
                       </div>
-                      <p className="text-xs text-neutral-200 leading-relaxed font-sans">
+                      <p className="text-xs text-slate-700 leading-relaxed font-sans">
                         {strat.protocol}
                       </p>
-                      <div className="pt-2 border-t border-white/5 flex items-start gap-2 text-[11px] font-mono text-[#93c5fd]">
+                      <div className="pt-2 border-t border-emerald-200/60 flex items-start gap-2 text-[11px] font-mono text-[#1C6CD4]">
                         <Zap className="w-3.5 h-3.5 text-[#1C6CD4] shrink-0 mt-0.5" />
                         <span><strong>Engineering Control:</strong> {strat.engineeringControl}</span>
                       </div>
@@ -287,9 +287,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                   ))}
                 </div>
               ) : (
-                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
-                  <h4 className="text-sm font-display font-bold text-white">Engineered HSE Solution:</h4>
-                  <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans">{project.hseSolution}</p>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                  <h4 className="text-sm font-display font-bold text-slate-900">Engineered HSE Solution:</h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">{project.hseSolution}</p>
                 </div>
               )}
             </div>
@@ -299,11 +299,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           {activeTab === 'results' && (
             <div className="space-y-4 animate-fadeIn">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#93c5fd] font-bold">
+                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#1C6CD4] font-bold">
                   <Award className="w-3.5 h-3.5 text-[#1C6CD4]" />
                   <span>Audited Safety Records &amp; Measurable Milestones</span>
                 </div>
-                <p className="text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 font-sans leading-relaxed">
                   Empirical outcomes verified by third-party statutory bodies, ISO auditors, and client oversight:
                 </p>
               </div>
@@ -312,40 +312,40 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {project.measurableResults.map((res, ri) => (
                     <div 
-                      key={ri}
-                      className="p-5 rounded-2xl bg-[#1C6CD4]/10 border border-[#1C6CD4]/30 space-y-2 hover:border-[#1C6CD4]/60 transition-colors"
+                      key={ri} 
+                      className="p-5 rounded-2xl bg-blue-50 border border-blue-200 space-y-2 hover:border-blue-300 transition-colors"
                     >
-                      <div className="text-base font-display font-black text-white">
+                      <div className="text-base font-display font-black text-slate-900">
                         {res.metric}
                       </div>
-                      <p className="text-xs text-neutral-200 leading-relaxed font-sans">
+                      <p className="text-xs text-slate-700 leading-relaxed font-sans">
                         {res.outcome}
                       </p>
-                      <div className="pt-2 border-t border-white/10 text-[11px] font-mono text-[#96E2A5]">
+                      <div className="pt-2 border-t border-blue-200 text-[11px] font-mono text-emerald-700">
                         <strong>Audit Benchmark:</strong> {res.benchmark}
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
-                  <h4 className="text-sm font-display font-bold text-white">Verified Safety Record:</h4>
-                  <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans">{project.safetyRecord}</p>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                  <h4 className="text-sm font-display font-bold text-slate-900">Verified Safety Record:</h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">{project.safetyRecord}</p>
                 </div>
               )}
 
               {/* Verified Safety Badge Banner */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-950/30 to-[#142C5C]/30 border border-[#96E2A5]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-1">
-                  <span className="text-[11px] font-mono uppercase text-[#96E2A5] font-bold flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-[#96E2A5]" />
+                  <span className="text-[11px] font-mono uppercase text-emerald-700 font-bold flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
                     Third-Party Compliance Standing
                   </span>
-                  <p className="text-sm font-display font-black text-white">
+                  <p className="text-sm font-display font-black text-slate-900">
                     {project.safetyRecord}
                   </p>
                 </div>
-                <div className="text-xs font-mono text-neutral-300 bg-black/40 px-3 py-1.5 rounded-full border border-white/10 self-start sm:self-auto">
+                <div className="text-xs font-mono text-slate-700 bg-white px-3 py-1.5 rounded-full border border-slate-200 self-start sm:self-auto font-bold">
                   ISO 45001 &amp; IOSH UK Code
                 </div>
               </div>
@@ -356,22 +356,22 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           {activeTab === 'specs' && (
             <div className="space-y-4 animate-fadeIn">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#93c5fd] font-bold">
+                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#1C6CD4] font-bold">
                   <Layers className="w-3.5 h-3.5 text-[#1C6CD4]" />
                   <span>Technical Project Parameters &amp; Executive Takeaway</span>
                 </div>
               </div>
 
               {project.engineeringSpecs && (
-                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
-                  <span className="text-xs font-mono uppercase text-neutral-400 font-bold block">
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <span className="text-xs font-mono uppercase text-slate-500 font-bold block">
                     Engineering Parameters:
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
                     {project.engineeringSpecs.map((spec, spi) => (
-                      <div key={spi} className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
-                        <span className="text-neutral-400 text-[10px] block">{spec.parameter}</span>
-                        <span className="text-white font-bold block">{spec.value}</span>
+                      <div key={spi} className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                        <span className="text-slate-500 text-[10px] block">{spec.parameter}</span>
+                        <span className="text-slate-900 font-bold block">{spec.value}</span>
                       </div>
                     ))}
                   </div>
@@ -379,15 +379,15 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
               )}
 
               {project.executiveTakeaway && (
-                <div className="p-5 rounded-2xl bg-[#142C5C]/30 border border-[#1C6CD4]/40 space-y-2">
-                  <span className="text-xs font-mono uppercase text-[#93c5fd] font-bold flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#96E2A5]" />
+                <div className="p-5 rounded-2xl bg-blue-50 border border-blue-200 space-y-2">
+                  <span className="text-xs font-mono uppercase text-[#1C6CD4] font-bold flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                     Executive Safety Directorship Principle:
                   </span>
-                  <blockquote className="text-xs sm:text-sm text-neutral-200 font-sans italic leading-relaxed">
+                  <blockquote className="text-xs sm:text-sm text-slate-700 font-sans italic leading-relaxed">
                     &ldquo;{project.executiveTakeaway}&rdquo;
                   </blockquote>
-                  <span className="text-[11px] font-mono text-neutral-400 block pt-1">
+                  <span className="text-[11px] font-mono text-slate-500 block pt-1">
                     — Engr. Iyenoma ThankGod Osazee (CMIOSH UK #100175)
                   </span>
                 </div>
@@ -396,11 +396,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           )}
 
           {/* Project Tags */}
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10">
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200">
             {project.tags.map((t, idx) => (
               <span 
-                key={idx}
-                className="text-xs font-mono px-3 py-1 rounded-full bg-white/5 border border-white/10 text-neutral-300 hover:border-[#1C6CD4]/50 transition-colors"
+                key={idx} 
+                className="text-xs font-mono px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 hover:border-[#1C6CD4] transition-colors"
               >
                 #{t}
               </span>
@@ -409,15 +409,15 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
         </div>
 
         {/* Modal Footer CTA */}
-        <div className="p-4 sm:p-5 bg-[#121622] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
-          <p className="text-xs text-neutral-400 font-mono text-center sm:text-left">
+        <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+          <p className="text-xs text-slate-600 font-mono text-center sm:text-left">
             Need an equivalent executive HSE framework deployed on your venture?
           </p>
 
           <div className="flex items-center space-x-2.5 w-full sm:w-auto">
             <button
               onClick={onClose}
-              className="w-1/2 sm:w-auto px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/15 text-white text-xs font-mono font-bold transition-colors cursor-pointer"
+              className="w-1/2 sm:w-auto px-4 py-2.5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-mono font-bold transition-colors cursor-pointer"
             >
               Close
             </button>

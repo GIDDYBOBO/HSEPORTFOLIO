@@ -66,7 +66,7 @@ export class AdminErrorBoundary extends Component<
                 <button
                   type="button"
                   onClick={this.props.onBackToPortfolio}
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-[#1E293B] hover:bg-[#0F172A] text-white font-mono font-bold text-xs transition-colors cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-mono font-bold text-xs transition-colors cursor-pointer shadow-md flex items-center justify-center gap-1.5"
                 >
                   <ArrowLeft className="w-4 h-4 text-emerald-400" />
                   <span>Public Portfolio</span>

@@ -11,26 +11,27 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<ThemeMode>('dark');
+  const [theme, setThemeState] = useState<ThemeMode>('light');
 
   useEffect(() => {
     try {
       const root = document.documentElement;
-      root.classList.add('dark', 'dark-theme');
-      root.classList.remove('light', 'light-theme');
-      root.setAttribute('data-theme', 'dark');
-      root.style.backgroundColor = '#0a0a0c';
+      root.classList.remove('dark', 'dark-theme');
+      root.classList.add('light', 'light-theme');
+      root.setAttribute('data-theme', 'light');
+      root.style.backgroundColor = '#ffffff';
       if (document.body) {
-        document.body.style.backgroundColor = '#0a0a0c';
+        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.color = '#0f172a';
       }
-      localStorage.setItem('portfolio-theme', 'dark');
+      localStorage.setItem('portfolio-theme', 'light');
     } catch {
       // Ignore error
     }
   }, []);
 
   const toggleTheme = () => {
-    setThemeState('dark');
+    setThemeState('light');
   };
 
   const setTheme = (mode: ThemeMode) => {

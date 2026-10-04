@@ -151,7 +151,7 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
   return (
     <div 
       id="client-admin-modal-backdrop"
-      className="fixed inset-0 z-[120] flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto bg-black/90 backdrop-blur-xl"
+      className="fixed inset-0 z-[120] flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto bg-slate-900/50 backdrop-blur-md"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -161,24 +161,24 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-6xl h-[92vh] rounded-3xl bg-[#1e1f20] border border-white/15 text-white shadow-2xl flex flex-col overflow-hidden"
+        className="relative w-full max-w-6xl h-[92vh] rounded-3xl bg-white border border-slate-200 text-slate-900 shadow-2xl flex flex-col overflow-hidden"
       >
         {/* Top App Bar */}
-        <div className="px-6 py-4 border-b border-white/10 bg-[#282a2c] flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-xl bg-white text-black flex items-center justify-center font-bold text-xs tracking-tight shadow-md">
+            <div className="w-8 h-8 rounded-xl bg-[#1C6CD4] text-white flex items-center justify-center font-bold text-xs tracking-tight shadow-md">
               CMS
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-display font-extrabold text-white text-base">
+                <span className="font-display font-extrabold text-slate-900 text-base">
                   Client Content Management Studio
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-mono border border-emerald-500/30">
+                <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-mono border border-emerald-200">
                   Live CMS v2.4
                 </span>
               </div>
-              <p className="text-[11px] text-neutral-400 font-mono">
+              <p className="text-[11px] text-slate-500 font-mono">
                 Direct administrative control for Engr. Iyenoma ThankGod Osazee Portfolio
               </p>
             </div>
@@ -187,13 +187,13 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={onClose}
-              className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/15 text-xs font-mono text-white transition-colors"
+              className="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-xs font-mono text-slate-700 transition-colors"
             >
               Exit Studio
             </button>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all border border-white/10"
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all border border-slate-200 cursor-pointer"
               aria-label="Close Admin Studio"
             >
               <X className="w-4 h-4" />
@@ -205,8 +205,8 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
           
           {/* Sidebar Navigation */}
-          <div className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/10 bg-[#0e0e11] p-3 sm:p-4 space-y-1.5 shrink-0 overflow-y-auto">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 px-3 py-1 block">
+          <div className="w-full md:w-64 border-b md:border-b-0 md:border-r border-slate-200 bg-slate-50 p-3 sm:p-4 space-y-1.5 shrink-0 overflow-y-auto">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 px-3 py-1 block">
               Management Modules
             </span>
 
@@ -223,10 +223,10 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between ${
+                  className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between cursor-pointer ${
                     isActive
-                      ? 'bg-white text-black font-semibold shadow-md'
-                      : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                      ? 'bg-white text-slate-900 font-semibold shadow-xs border border-slate-200'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <div className="flex items-center space-x-2.5">
@@ -236,8 +236,8 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                   {tab.count !== undefined && (
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
                       isActive 
-                        ? 'bg-black text-white font-bold' 
-                        : (tab.badgeColor ? `${tab.badgeColor} text-white font-bold` : 'bg-white/10 text-neutral-300')
+                        ? 'bg-slate-100 text-slate-900 font-bold border border-slate-300' 
+                        : (tab.badgeColor ? `${tab.badgeColor} text-white font-bold` : 'bg-slate-200 text-slate-700')
                     }`}>
                       {tab.count}
                     </span>
@@ -246,7 +246,7 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
               );
             })}
 
-            <div className="pt-6 border-t border-white/10 space-y-2 text-[11px] font-mono text-neutral-400 p-2">
+            <div className="pt-6 border-t border-slate-200 space-y-2 text-[11px] font-mono text-slate-500 p-2">
               <div className="flex items-center justify-between text-neutral-300">
                 <span>Domain Status</span>
                 <span className="text-emerald-400 font-bold">iyenomaosazee.com</span>
@@ -263,54 +263,54 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
           </div>
 
           {/* Main Content Pane */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#1e1f20]">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-white text-slate-900">
             
             {/* 1. OVERVIEW TAB */}
             {activeTab === 'overview' && (
               <div className="space-y-6 max-w-4xl">
                 <div className="space-y-1">
-                  <h2 className="text-2xl font-display font-bold text-white leading-snug sm:leading-tight">Executive Command Overview</h2>
-                  <p className="text-xs text-neutral-400 font-mono">
+                  <h2 className="text-2xl font-display font-bold text-slate-900 leading-snug sm:leading-tight">Executive Command Overview</h2>
+                  <p className="text-xs text-slate-500 font-mono">
                     Real-time digital portfolio status, engagement metrics, and pending client communications.
                   </p>
                 </div>
 
                 {/* 4 Quick Stat Metric Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase">Total Visitors (30d)</span>
-                    <div className="text-2xl font-display font-extrabold text-white">4,820</div>
-                    <span className="text-[10px] text-emerald-400 font-mono">+18% MoM (Global OSH)</span>
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase">Total Visitors (30d)</span>
+                    <div className="text-2xl font-display font-extrabold text-slate-900">4,820</div>
+                    <span className="text-[10px] text-emerald-600 font-mono font-bold">+18% MoM (Global OSH)</span>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase">Inbound Inquiries</span>
-                    <div className="text-2xl font-display font-extrabold text-white">{messages.length}</div>
-                    <span className="text-[10px] text-rose-400 font-mono">{messages.filter(m => m.status === 'new').length} requiring reply</span>
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase">Inbound Inquiries</span>
+                    <div className="text-2xl font-display font-extrabold text-slate-900">{messages.length}</div>
+                    <span className="text-[10px] text-rose-600 font-mono font-bold">{messages.filter(m => m.status === 'new').length} requiring reply</span>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase">Published Books & Papers</span>
-                    <div className="text-2xl font-display font-extrabold text-white">{booksList.length}</div>
-                    <span className="text-[10px] text-sky-400 font-mono">ResearchGate & World Congress</span>
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase">Published Books & Papers</span>
+                    <div className="text-2xl font-display font-extrabold text-slate-900">{booksList.length}</div>
+                    <span className="text-[10px] text-[#1C6CD4] font-mono font-bold">ResearchGate & World Congress</span>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase">Verified Credentials</span>
-                    <div className="text-2xl font-display font-extrabold text-white">{credentialsList.length}</div>
-                    <span className="text-[10px] text-emerald-400 font-mono">CMIOSH • ISO 45001 • Fellow</span>
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                    <span className="text-[10px] font-mono text-slate-500 uppercase">Verified Credentials</span>
+                    <div className="text-2xl font-display font-extrabold text-slate-900">{credentialsList.length}</div>
+                    <span className="text-[10px] text-emerald-600 font-mono font-bold">CMIOSH • ISO 45001 • Fellow</span>
                   </div>
                 </div>
 
                 {/* Recent Inquiries Quick Table */}
                 <div className="space-y-3 pt-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-display font-bold text-white uppercase tracking-wider leading-snug">
+                    <h3 className="text-sm font-display font-bold text-slate-900 uppercase tracking-wider leading-snug">
                       Recent Inbound Inquiries
                     </h3>
                     <button
                       onClick={() => setActiveTab('messages')}
-                      className="text-xs text-sky-400 hover:text-sky-300 font-mono"
+                      className="text-xs text-[#1C6CD4] hover:text-blue-700 font-mono font-bold cursor-pointer"
                     >
                       View All Messages &rarr;
                     </button>
@@ -320,31 +320,31 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                     {messages.slice(0, 3).map((m) => (
                       <div
                         key={m.id}
-                        className="p-4 rounded-2xl bg-[#282a2c] border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+                        className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
-                            <span className="text-xs font-bold text-white">{m.name}</span>
-                            <span className="text-[11px] text-neutral-400 font-mono">({m.organization})</span>
+                            <span className="text-xs font-bold text-slate-900">{m.name}</span>
+                            <span className="text-[11px] text-slate-500 font-mono">({m.organization})</span>
                             {m.status === 'new' && (
-                              <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-[9px] font-mono font-bold">
+                              <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200 text-[9px] font-mono font-bold">
                                 NEW
                               </span>
                             )}
                           </div>
-                          <p className="text-xs text-neutral-300 line-clamp-1">
+                          <p className="text-xs text-slate-600 line-clamp-1">
                             {m.message}
                           </p>
                         </div>
 
                         <div className="flex items-center space-x-2 shrink-0 text-xs font-mono">
-                          <span className="text-neutral-400 text-[11px]">{m.date}</span>
+                          <span className="text-slate-500 text-[11px]">{m.date}</span>
                           <button
                             onClick={() => {
                               setSelectedMessage(m);
                               setActiveTab('messages');
                             }}
-                            className="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors text-xs"
+                            className="px-3 py-1 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-colors text-xs cursor-pointer shadow-xs"
                           >
                             Review
                           </button>
@@ -517,11 +517,11 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-display font-bold text-white leading-snug sm:leading-tight">Books & Research Repository</h2>
-                    <p className="text-xs text-neutral-400 font-mono">
+                    <p className="text-xs text-slate-500 font-mono">
                       Curate published volumes, monographs, and international congress submissions.
                     </p>
                   </div>
-                  <span className="text-xs font-mono text-neutral-400">
+                  <span className="text-xs font-mono text-slate-500">
                     {booksList.length} Active Publications
                   </span>
                 </div>
@@ -530,29 +530,29 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                   {booksList.map((book) => (
                     <div
                       key={book.id}
-                      className="p-5 rounded-2xl bg-[#282a2c] border border-white/10 hover:border-white/20 transition-all space-y-2"
+                      className="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-[#1C6CD4]/30 transition-all space-y-2"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-sky-400 text-[10px] font-mono uppercase">
+                        <span className="px-2.5 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] text-[10px] font-mono uppercase font-bold border border-blue-200">
                           {book.format}
                         </span>
-                        <span className="text-xs text-neutral-400 font-mono">
+                        <span className="text-xs text-slate-500 font-mono">
                           {book.publishedYear} • {book.publisherOrJournal}
                         </span>
                       </div>
 
-                      <h3 className="text-base font-display font-bold text-white leading-snug">
+                      <h3 className="text-base font-display font-bold text-slate-900 leading-snug">
                         {book.title}
                       </h3>
 
-                      <p className="text-xs text-neutral-300 line-clamp-2">
+                      <p className="text-xs text-slate-600 line-clamp-2">
                         {book.abstract}
                       </p>
 
-                      <div className="pt-2 flex items-center justify-between text-xs font-mono text-neutral-400">
+                      <div className="pt-2 flex items-center justify-between text-xs font-mono text-slate-500">
                         <span>Ref: {book.doiOrRef || 'Standard Edition'}</span>
                         <div className="flex items-center space-x-2">
-                          <span className="text-emerald-400 flex items-center gap-1">
+                          <span className="text-emerald-700 flex items-center gap-1 font-bold">
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             Live on Site
                           </span>
@@ -569,12 +569,12 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
               <div className="space-y-6 max-w-4xl">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-2xl font-display font-bold text-white leading-snug sm:leading-tight">Professional Credentials Registry</h2>
-                    <p className="text-xs text-neutral-400 font-mono">
+                    <h2 className="text-2xl font-display font-bold text-slate-900 leading-snug sm:leading-tight">Professional Credentials Registry</h2>
+                    <p className="text-xs text-slate-500 font-mono">
                       Manage official chartered registrations, auditor IDs, and verification records.
                     </p>
                   </div>
-                  <span className="text-xs font-mono text-neutral-400">
+                  <span className="text-xs font-mono text-slate-500">
                     {credentialsList.length} Registered Credentials
                   </span>
                 </div>
@@ -583,28 +583,28 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                   {credentialsList.map((cred) => (
                     <div
                       key={cred.id}
-                      className="p-4 rounded-2xl bg-[#282a2c] border border-white/10 space-y-2"
+                      className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-sky-400 font-mono">
+                        <span className="text-xs font-bold text-[#1C6CD4] font-mono">
                           {cred.designation}
                         </span>
                         {cred.credentialId && (
-                          <span className="text-[10px] font-mono text-neutral-400 bg-white/5 px-2 py-0.5 rounded">
+                          <span className="text-[10px] font-mono text-slate-600 bg-slate-200/60 px-2 py-0.5 rounded border border-slate-200">
                             {cred.credentialId}
                           </span>
                         )}
                       </div>
 
-                      <h3 className="text-sm font-display font-bold text-white leading-snug">
+                      <h3 className="text-sm font-display font-bold text-slate-900 leading-snug">
                         {cred.title}
                       </h3>
 
-                      <p className="text-xs text-neutral-400">
+                      <p className="text-xs text-slate-500">
                         {cred.issuer}
                       </p>
 
-                      <p className="text-xs text-neutral-300 line-clamp-2">
+                      <p className="text-xs text-slate-600 line-clamp-2">
                         {cred.description}
                       </p>
                     </div>
@@ -618,8 +618,8 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
               <div className="space-y-6 max-w-4xl">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <h2 className="text-2xl font-display font-bold text-white leading-snug sm:leading-tight">Client Inbound Inquiries</h2>
-                    <p className="text-xs text-neutral-400 font-mono">
+                    <h2 className="text-2xl font-display font-bold text-slate-900 leading-snug sm:leading-tight">Client Inbound Inquiries</h2>
+                    <p className="text-xs text-slate-500 font-mono">
                       Structured audience-segmented leads and consultation requests.
                     </p>
                   </div>
@@ -627,7 +627,7 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={handleExportInquiries}
-                      className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-mono text-white transition-colors"
+                      className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-xs font-mono text-slate-700 transition-colors border border-slate-200 cursor-pointer"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Export (JSON)</span>
@@ -647,10 +647,10 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                     <button
                       key={f.id}
                       onClick={() => setMessageFilter(f.id)}
-                      className={`px-3 py-1 rounded-full transition-all ${
+                      className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
                         messageFilter === f.id
-                          ? 'bg-white text-black font-semibold'
-                          : 'bg-white/5 text-neutral-300 hover:bg-white/10 border border-white/5'
+                          ? 'bg-blue-600 text-white font-semibold'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
                       }`}
                     >
                       {f.label}
@@ -665,27 +665,27 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                       key={m.id}
                       className={`p-5 rounded-2xl border transition-all space-y-3 ${
                         m.status === 'new'
-                          ? 'bg-[#1e1f20] border-sky-400/30'
-                          : 'bg-[#040520] border-white/5 opacity-85'
+                          ? 'bg-blue-50/50 border-blue-200'
+                          : 'bg-slate-50 border-slate-200'
                       }`}
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
                         <div className="flex items-center space-x-2">
-                          <span className="font-bold text-white text-sm">{m.name}</span>
-                          <span className="text-xs text-neutral-400 font-mono">({m.organization})</span>
-                          <span className="px-2 py-0.5 rounded-full bg-white/10 text-neutral-300 text-[10px] font-mono">
+                          <span className="font-bold text-slate-900 text-sm">{m.name}</span>
+                          <span className="text-xs text-slate-500 font-mono">({m.organization})</span>
+                          <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-mono">
                             {m.segment.replace('_', ' ').toUpperCase()}
                           </span>
                         </div>
 
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs font-mono text-neutral-400">{m.date}</span>
+                          <span className="text-xs font-mono text-slate-500">{m.date}</span>
                           <button
                             onClick={() => toggleMessageStatus(m.id)}
-                            className={`px-3 py-1 rounded-full text-xs font-mono transition-colors ${
+                            className={`px-3 py-1 rounded-full text-xs font-mono transition-colors cursor-pointer ${
                               m.status === 'new'
-                                ? 'bg-sky-400/20 text-sky-300 border border-sky-400/30'
-                                : 'bg-white/5 text-neutral-400'
+                                ? 'bg-blue-100 text-blue-800 border border-blue-300 font-bold'
+                                : 'bg-slate-200 text-slate-700'
                             }`}
                           >
                             {m.status === 'new' ? 'Mark Reviewed' : 'Mark Unread'}
@@ -693,18 +693,18 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                         </div>
                       </div>
 
-                      <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
                         {m.message}
                       </p>
 
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs font-mono text-neutral-400">
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs font-mono text-slate-500">
                         <div className="flex items-center space-x-3">
-                          <a href={`mailto:${m.email}`} className="text-sky-300 hover:underline">
+                          <a href={`mailto:${m.email}`} className="text-[#1C6CD4] hover:underline font-bold">
                             {m.email}
                           </a>
                           {m.phone && <span>• {m.phone}</span>}
                         </div>
-                        <span className="text-neutral-500">Timeline: {m.timeframe}</span>
+                        <span className="text-slate-500">Timeline: {m.timeframe}</span>
                       </div>
                     </div>
                   ))}
@@ -716,47 +716,47 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
             {activeTab === 'settings' && (
               <div className="space-y-6 max-w-3xl">
                 <div className="space-y-1">
-                  <h2 className="text-2xl font-display font-bold text-white leading-snug sm:leading-tight">Production Settings & Domain Mapping</h2>
-                  <p className="text-xs text-neutral-400 font-mono">
+                  <h2 className="text-2xl font-display font-bold text-slate-900 leading-snug sm:leading-tight">Production Settings &amp; Domain Mapping</h2>
+                  <p className="text-xs text-slate-500 font-mono">
                     Professional DNS routing, Search Engine Optimization (SEO), and portfolio attribution.
                   </p>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-                  <h3 className="text-sm font-bold text-white leading-snug">Custom Domain Status (Review Item #12)</h3>
-                  <p className="text-xs text-neutral-300 leading-relaxed">
-                    Primary Production Route configured for <span className="text-sky-400 font-mono font-bold">iyenomaosazee.com</span> with automatic SSL TLS v1.3 encryption and Netlify edge reverse proxying.
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <h3 className="text-sm font-bold text-slate-900 leading-snug">Custom Domain Status (Review Item #12)</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Primary Production Route configured for <span className="text-[#1C6CD4] font-mono font-bold">iyenomaosazee.com</span> with automatic SSL TLS v1.3 encryption and Netlify edge reverse proxying.
                   </p>
-                  <div className="flex items-center space-x-2 text-xs font-mono text-emerald-400">
+                  <div className="flex items-center space-x-2 text-xs font-mono text-emerald-700 font-bold">
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>DNS A-Record & CNAME Healthy • Zero Latency</span>
+                    <span>DNS A-Record &amp; CNAME Healthy • Zero Latency</span>
                   </div>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-                  <h3 className="text-sm font-bold text-white leading-snug">Author & Developer Attribution (Review Item #10)</h3>
-                  <div className="p-3 rounded-xl bg-black/40 border border-white/5 font-mono text-xs text-neutral-300">
-                    Website designed & developed by <span className="text-white font-bold">Gideon Ogunyemi</span>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <h3 className="text-sm font-bold text-slate-900 leading-snug">Author &amp; Developer Attribution (Review Item #10)</h3>
+                  <div className="p-3 rounded-xl bg-slate-100 border border-slate-200 font-mono text-xs text-slate-700">
+                    Website designed &amp; developed by <span className="text-slate-900 font-bold">Gideon Ogunyemi</span>
                   </div>
-                  <p className="text-[11px] text-neutral-400 font-mono">
+                  <p className="text-[11px] text-slate-500 font-mono">
                     Official attribution rendered in the institutional footer, establishing full professional portfolio provenance.
                   </p>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-                  <h3 className="text-sm font-bold text-white leading-snug">Structured SEO & OpenGraph Payload</h3>
-                  <div className="space-y-1.5 text-xs font-mono text-neutral-300">
-                    <div className="flex items-center justify-between py-1 border-b border-white/5">
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <h3 className="text-sm font-bold text-slate-900 leading-snug">Structured SEO &amp; OpenGraph Payload</h3>
+                  <div className="space-y-1.5 text-xs font-mono text-slate-600">
+                    <div className="flex items-center justify-between py-1 border-b border-slate-200">
                       <span>Schema.org Type:</span>
-                      <span className="text-sky-400">Person & Book (JSON-LD)</span>
+                      <span className="text-[#1C6CD4] font-bold">Person &amp; Book (JSON-LD)</span>
                     </div>
-                    <div className="flex items-center justify-between py-1 border-b border-white/5">
+                    <div className="flex items-center justify-between py-1 border-b border-slate-200">
                       <span>Canonical URL:</span>
-                      <span className="text-sky-400">https://iyenomaosazee.com</span>
+                      <span className="text-[#1C6CD4] font-bold">https://iyenomaosazee.com</span>
                     </div>
-                    <div className="flex items-center justify-between py-1 border-b border-white/5">
+                    <div className="flex items-center justify-between py-1 border-b border-slate-200">
                       <span>Social Share Card:</span>
-                      <span className="text-emerald-400">summary_large_image</span>
+                      <span className="text-emerald-700 font-bold">summary_large_image</span>
                     </div>
                   </div>
                 </div>

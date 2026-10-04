@@ -140,7 +140,7 @@ function PortfolioApp() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-transparent text-neutral-100 dark:text-[#f1f5f9] selection:bg-[#1C6CD4]/30 selection:text-white transition-colors duration-200">
+    <div className="relative min-h-screen flex flex-col bg-white text-slate-900 selection:bg-[#1C6CD4]/20 selection:text-[#142C5C] transition-colors duration-200">
       {/* DialedWeb Signature Morphing Liquid Mesh & Ambient Glass Canvas */}
       <MorphBackground />
 

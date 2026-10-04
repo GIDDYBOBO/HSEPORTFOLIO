@@ -210,7 +210,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onBackToPortfolio }) => 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-xl bg-[#1E293B] hover:bg-[#0F172A] text-white font-mono font-bold text-xs tracking-wide transition-all duration-200 shadow-md shadow-slate-900/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-1"
+              className="w-full py-2.5 rounded-xl bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-mono font-bold text-xs tracking-wide transition-all duration-200 shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-1"
             >
               {loading ? (
                 <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

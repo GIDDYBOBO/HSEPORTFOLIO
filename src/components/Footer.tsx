@@ -76,20 +76,20 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="mt-20 border-t border-slate-200 dark:border-white/10 bg-slate-50/90 dark:bg-[#0c1017]/90 backdrop-blur-xl text-[#475569] dark:text-[#c4c7c5] transition-colors duration-200">
+    <footer className="mt-20 border-t border-slate-200 bg-white/95 backdrop-blur-xl text-slate-700 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
         
         {/* Credentials Ticker / Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pb-8 border-b border-slate-200 dark:border-white/10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pb-8 border-b border-slate-200">
           {CREDENTIAL_TILES.map((tile, idx) => (
             <div 
               key={idx}
-              className="p-3 rounded-2xl dialed-glass-card border border-slate-200/90 dark:border-white/5 flex flex-col justify-center text-center space-y-0.5"
+              className="p-3 rounded-2xl bg-slate-50 border border-slate-200/90 shadow-2xs flex flex-col justify-center text-center space-y-0.5"
             >
-              <span className="text-xs font-display font-bold text-[#0f172a] dark:text-white tracking-tight">
+              <span className="text-xs font-display font-bold text-slate-900 tracking-tight">
                 {tile.title}
               </span>
-              <span className="text-[10px] font-mono text-[#64748b] dark:text-[#8e918f]">
+              <span className="text-[10px] font-mono text-slate-500">
                 {tile.subtitle}
               </span>
             </div>
@@ -105,17 +105,17 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 select-none bg-gradient-to-br from-[#1C6CD4] to-[#142C5C] text-white">
                 TG
               </div>
-              <span className="text-lg font-display font-black tracking-tight text-black dark:text-white">
+              <span className="text-lg font-display font-black tracking-tight text-slate-900">
                 Engr. Iyenoma ThankGod Osazee
               </span>
             </div>
 
-            <p className="text-xs sm:text-[12.5px] leading-relaxed max-w-md text-black dark:text-[#c4c7c5] font-medium">
+            <p className="text-xs sm:text-[12.5px] leading-relaxed max-w-md text-slate-600 font-medium">
               Digital headquarters and technical repository. Blending two decades of frontline civil construction safety directorship at Julius Berger Nigeria PLC with peer-reviewed research in occupational hygiene, landfill sustainability, construction safety frameworks, and statutory safety reform.
             </p>
 
-            <div className="flex items-center space-x-2 pt-0.5 font-mono text-xs text-black dark:text-[#8e918f] font-bold">
-              <MapPin className="w-3.5 h-3.5 shrink-0 text-[#1C6CD4] dark:text-[#8e918f]" />
+            <div className="flex items-center space-x-2 pt-0.5 font-mono text-xs text-slate-700 font-bold">
+              <MapPin className="w-3.5 h-3.5 shrink-0 text-[#1C6CD4]" />
               <span>Abuja, Federal Capital Territory, Nigeria</span>
             </div>
 
@@ -128,7 +128,7 @@ export const Footer: React.FC<FooterProps> = ({
                 rel="noopener noreferrer"
                 aria-label="LinkedIn Professional Network"
                 title="LinkedIn Profile: Engr. Iyenoma Osazee"
-                className="w-9 h-9 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 hover:border-[#1C6CD4] text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white flex items-center justify-center transition-all shadow-xs"
+                className="w-9 h-9 rounded-xl border border-slate-300 bg-white hover:border-[#1C6CD4] text-slate-800 hover:text-[#1C6CD4] flex items-center justify-center transition-all shadow-xs"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
@@ -140,7 +140,7 @@ export const Footer: React.FC<FooterProps> = ({
                 rel="noopener noreferrer"
                 aria-label="ResearchGate Scientific Monograph"
                 title="ResearchGate Scientific Repository"
-                className="w-9 h-9 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 hover:border-[#1C6CD4] text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white flex items-center justify-center transition-all shadow-xs"
+                className="w-9 h-9 rounded-xl border border-slate-300 bg-white hover:border-[#1C6CD4] text-slate-800 hover:text-[#1C6CD4] flex items-center justify-center transition-all shadow-xs"
               >
                 <BookOpen className="w-4 h-4" />
               </a>
@@ -149,7 +149,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Column 2: Architectural Site Navigation (HSE-Port Signature Suite) */}
           <div className="md:col-span-3 space-y-4">
-            <h4 className="text-xs font-mono uppercase tracking-widest font-black text-black dark:text-white">
+            <h4 className="text-xs font-mono uppercase tracking-widest font-black text-slate-900">
               NAVIGATION
             </h4>
             <ul className="space-y-2 text-xs font-mono">
@@ -157,7 +157,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   id="footer-nav-home"
                   onClick={() => handleNav('home')}
-                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+                  className="transition-colors text-left cursor-pointer text-slate-700 hover:text-[#1C6CD4] font-semibold"
                 >
                   Home • Overview
                 </button>
@@ -166,7 +166,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   id="footer-nav-about"
                   onClick={() => handleNav('about')}
-                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+                  className="transition-colors text-left cursor-pointer text-slate-700 hover:text-[#1C6CD4] font-semibold"
                 >
                   About • Profile &amp; Values
                 </button>
@@ -175,7 +175,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   id="footer-nav-works"
                   onClick={() => handleNav('works')}
-                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+                  className="transition-colors text-left cursor-pointer text-slate-700 hover:text-[#1C6CD4] font-semibold"
                 >
                   Works • Megaprojects
                 </button>
@@ -184,7 +184,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   id="footer-nav-books"
                   onClick={() => handleNav('books')}
-                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+                  className="transition-colors text-left cursor-pointer text-slate-700 hover:text-[#1C6CD4] font-semibold"
                 >
                   Books &amp; Publications
                 </button>
@@ -193,7 +193,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   id="footer-nav-services"
                   onClick={() => handleNav('services')}
-                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+                  className="transition-colors text-left cursor-pointer text-slate-700 hover:text-[#1C6CD4] font-semibold"
                 >
                   Services • Advisory
                 </button>
@@ -202,7 +202,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   id="footer-nav-leadership"
                   onClick={() => handleNav('leadership')}
-                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+                  className="transition-colors text-left cursor-pointer text-slate-700 hover:text-[#1C6CD4] font-semibold"
                 >
                   Leadership &amp; Governance
                 </button>
@@ -212,10 +212,10 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Column 3: Executive Engagement */}
           <div className="md:col-span-4 space-y-4">
-            <h4 className="text-xs font-mono uppercase tracking-widest font-black text-black dark:text-white">
+            <h4 className="text-xs font-mono uppercase tracking-widest font-black text-slate-900">
               EXECUTIVE ENGAGEMENT
             </h4>
-            <p className="text-xs leading-relaxed text-black dark:text-[#c4c7c5] font-medium">
+            <p className="text-xs leading-relaxed text-slate-600 font-medium">
               Available for high-consequence project safety governance, ISO 45001 auditing diagnostics, and international keynote addresses.
             </p>
 
@@ -223,7 +223,7 @@ export const Footer: React.FC<FooterProps> = ({
               <button
                 id="footer-btn-book-consultation"
                 onClick={handleConsultationClick}
-                className="w-full py-3 px-5 rounded-full font-bold text-xs transition-all flex items-center justify-center space-x-1.5 shadow-md cursor-pointer min-h-[44px] bg-[#1C6CD4] text-white hover:bg-[#155ab3] shadow-[0_6px_20px_rgba(28,108,212,0.3)] hover:scale-[1.02]"
+                className="w-full py-3 px-5 rounded-full font-bold text-xs transition-all flex items-center justify-center space-x-1.5 shadow-md cursor-pointer min-h-[44px] bg-[#1C6CD4] text-white hover:bg-[#155ab3] shadow-[#1C6CD4]/25 hover:scale-[1.02]"
               >
                 <span>Book a Consultation Call</span>
                 <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
@@ -232,7 +232,7 @@ export const Footer: React.FC<FooterProps> = ({
               <button
                 id="footer-btn-written-inquiry"
                 onClick={handleFormalWrittenQueryClick}
-                className="w-full py-3 px-5 rounded-full font-bold text-xs bg-[#142C5C] hover:bg-[#1b3874] border border-[#1C6CD4]/30 text-white transition-all text-center cursor-pointer min-h-[44px] flex items-center justify-center shadow-xs hover:scale-[1.02]"
+                className="w-full py-3 px-5 rounded-full font-bold text-xs bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-900 transition-all text-center cursor-pointer min-h-[44px] flex items-center justify-center shadow-xs hover:scale-[1.02]"
               >
                 <span>Submit a Formal Written Query</span>
               </button>
@@ -241,7 +241,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Minimal Bottom Bar */}
-        <div className="pt-8 border-t border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-black dark:text-[#8e918f] font-bold">
+        <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-slate-600 font-semibold">
           <div className="flex items-center space-x-2">
             <p>© {new Date().getFullYear()} Engr. Iyenoma ThankGod Osazee. All rights reserved.</p>
             <button
@@ -250,17 +250,17 @@ export const Footer: React.FC<FooterProps> = ({
               onClick={handlePortalClick}
               title="Executive Admin Portal"
               aria-label="Executive Admin Portal"
-              className="p-1 rounded text-black dark:text-[#8e918f]/40 hover:text-[#1C6CD4] dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5 transition-all cursor-pointer font-bold"
+              className="p-1 rounded text-slate-500 hover:text-[#1C6CD4] hover:bg-slate-100 transition-all cursor-pointer font-bold"
             >
               <Lock className="w-3 h-3" />
             </button>
           </div>
-          <p className="text-black dark:text-[#a8abb0]">
-            Website designed &amp; developed by <span className="text-black dark:text-white font-black">Gideon Ogunyemi</span>
+          <p className="text-slate-500">
+            Website designed &amp; developed by <span className="text-slate-900 font-bold">Gideon Ogunyemi</span>
           </p>
           <button
             onClick={scrollToTop}
-            className="flex items-center space-x-1.5 transition-colors cursor-pointer text-black dark:text-[#8e918f] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+            className="flex items-center space-x-1.5 transition-colors cursor-pointer text-slate-600 hover:text-[#1C6CD4] font-bold"
           >
             <span>Back to top</span>
             <ArrowUp className="w-3.5 h-3.5" />

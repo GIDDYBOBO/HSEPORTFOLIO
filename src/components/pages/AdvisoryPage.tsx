@@ -80,7 +80,7 @@ export const AdvisoryPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-16 pt-24 sm:pt-28 pb-16">
+    <div className="space-y-16 pt-24 sm:pt-28 pb-16 text-slate-900">
       {/* Header Section */}
       <motion.section 
         initial={{ opacity: 0, y: 24 }}
@@ -88,14 +88,14 @@ export const AdvisoryPage: React.FC = () => {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="space-y-4 max-w-4xl"
       >
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-neutral-100 dark:bg-white/10 border border-neutral-200 dark:border-[#333538] text-neutral-800 dark:text-neutral-200 text-xs font-mono">
-          <Mail className="w-3.5 h-3.5 text-black dark:text-white" />
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#142C5C] text-xs font-mono">
+          <Mail className="w-3.5 h-3.5 text-[#1C6CD4]" />
           <span>Executive Consultation &amp; Direct Liaison</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
-          Advisory Services & Professional Inquiries
+        <h1 className="text-3xl sm:text-5xl font-display font-bold text-slate-900 tracking-tight leading-snug sm:leading-tight">
+          Advisory Services &amp; Professional Inquiries
         </h1>
-        <p className="text-neutral-600 dark:text-neutral-300 text-base sm:text-lg leading-relaxed">
+        <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
           Engr. Iyenoma ThankGod Osazee is available for select high-level advisory engagements, international keynote addresses, corporate ISO 45001 management systems diagnostics, and institutional safety policy reviews.
         </p>
       </motion.section>
@@ -108,11 +108,11 @@ export const AdvisoryPage: React.FC = () => {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="space-y-6"
       >
-        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-4">
-          <span className="text-xs font-mono uppercase tracking-wider text-neutral-700 dark:text-neutral-300 font-medium">
+        <div className="border-b border-slate-200 pb-4">
+          <span className="text-xs font-mono uppercase tracking-wider text-slate-500 font-medium">
             Core Advisory Capabilities
           </span>
-          <h2 className="text-2xl font-display font-bold text-black dark:text-white mt-1 leading-snug sm:leading-tight">
+          <h2 className="text-2xl font-display font-bold text-slate-900 mt-1 leading-snug sm:leading-tight">
             Areas of Strategic Consultation
           </h2>
         </div>
@@ -121,23 +121,23 @@ export const AdvisoryPage: React.FC = () => {
           {services.map((svc) => (
             <div
               key={svc.id}
-              className="p-6 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-700 transition-all space-y-3 flex flex-col justify-between shadow-sm hover:shadow-md"
+              className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#1C6CD4]/40 transition-all space-y-3 flex flex-col justify-between shadow-xs hover:shadow-md"
             >
               <div>
-                <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400 font-semibold block mb-2">
+                <span className="text-xs font-mono text-[#1C6CD4] font-semibold block mb-2">
                   Specialized Practice
                 </span>
-                <h3 className="text-base font-display font-bold text-black dark:text-white leading-snug">
+                <h3 className="text-base font-display font-bold text-slate-900 leading-snug">
                   {svc.title}
                 </h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed mt-2">
+                <p className="text-xs text-slate-600 leading-relaxed mt-2">
                   {svc.desc}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-500">
                 <span>Tailored Corporate Engagements</span>
-                <ShieldCheck className="w-3.5 h-3.5 text-black dark:text-white" />
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-700" />
               </div>
             </div>
           ))}
@@ -153,41 +153,41 @@ export const AdvisoryPage: React.FC = () => {
         className="grid grid-cols-1 lg:grid-cols-12 gap-8"
       >
         {/* Form Column */}
-        <div className="lg:col-span-7 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-          <div className="border-b border-neutral-200 dark:border-neutral-800 pb-4 mb-6">
-            <h3 className="text-xl font-display font-bold text-black dark:text-white leading-snug">
+        <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+          <div className="border-b border-slate-200 pb-4 mb-6">
+            <h3 className="text-xl font-display font-bold text-slate-900 leading-snug">
               Initiate Consultation or Speaking Inquiry
             </h3>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               Submit your project scope, conference dates, or institutional review parameters for direct consideration.
             </p>
           </div>
 
           {submitted ? (
-            <div className="p-8 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 text-center space-y-4 animate-fadeIn">
-              <div className="w-14 h-14 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center mx-auto">
+            <div className="p-8 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-4 animate-fadeIn">
+              <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-xl font-display font-bold text-black dark:text-white">
+                <h4 className="text-xl font-display font-bold text-slate-900">
                   Inquiry Successfully Transmitted
                 </h4>
-                <p className="text-xs text-neutral-600 dark:text-neutral-300">
-                  Thank you, <strong className="text-black dark:text-white">{formData.fullName}</strong>. Your consultation request has been logged.
+                <p className="text-xs text-slate-600">
+                  Thank you, <strong className="text-slate-900">{formData.fullName}</strong>. Your consultation request has been logged.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-lg bg-white dark:bg-black border border-neutral-200 dark:border-neutral-700 font-mono text-xs text-black dark:text-white max-w-sm mx-auto">
-                Reference ID: <span className="font-bold">{inquiryId}</span>
+              <div className="p-3.5 rounded-lg bg-white border border-slate-200 font-mono text-xs text-slate-900 max-w-sm mx-auto shadow-xs">
+                Reference ID: <span className="font-bold text-[#1C6CD4]">{inquiryId}</span>
               </div>
 
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-md mx-auto leading-relaxed">
+              <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
                 Engr. Osazee&apos;s executive liaison will review your dossier and respond with availability and scheduling coordinates.
               </p>
 
               <button
                 onClick={handleReset}
-                className="mt-4 px-5 py-2 rounded-lg bg-black hover:bg-neutral-800 text-white dark:bg-neutral-800 dark:hover:bg-neutral-700 text-xs font-medium transition-colors cursor-pointer"
+                className="mt-4 px-5 py-2 rounded-lg bg-[#1C6CD4] hover:bg-[#155ab3] text-white text-xs font-medium transition-colors cursor-pointer"
               >
                 Submit Another Inquiry
               </button>
@@ -196,8 +196,8 @@ export const AdvisoryPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label htmlFor="input-fullname" className="font-medium text-neutral-700 dark:text-neutral-300 block">
-                    Full Name & Salutation *
+                  <label htmlFor="input-fullname" className="font-medium text-slate-700 block">
+                    Full Name &amp; Salutation *
                   </label>
                   <input
                     id="input-fullname"
@@ -206,12 +206,12 @@ export const AdvisoryPage: React.FC = () => {
                     placeholder="e.g. Dr. Jane Smith / Engr. Mohammed Ali"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-100 dark:bg-black border border-neutral-200 dark:border-neutral-700 text-black dark:text-white placeholder-neutral-500 focus:outline-none focus:border-black dark:focus:border-white"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1C6CD4]"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="input-email" className="font-medium text-neutral-700 dark:text-neutral-300 block">
+                  <label htmlFor="input-email" className="font-medium text-slate-700 block">
                     Professional Email Address *
                   </label>
                   <input
@@ -221,14 +221,14 @@ export const AdvisoryPage: React.FC = () => {
                     placeholder="name@organization.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-100 dark:bg-black border border-neutral-200 dark:border-neutral-700 text-black dark:text-white placeholder-neutral-500 focus:outline-none focus:border-black dark:focus:border-white"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1C6CD4]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label htmlFor="input-org" className="font-medium text-neutral-700 dark:text-neutral-300 block">
+                  <label htmlFor="input-org" className="font-medium text-slate-700 block">
                     Organization or Institution
                   </label>
                   <input
@@ -237,19 +237,19 @@ export const AdvisoryPage: React.FC = () => {
                     placeholder="e.g. Civil Engineering Firm, Ministry, or University"
                     value={formData.organization}
                     onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-100 dark:bg-black border border-neutral-200 dark:border-neutral-700 text-black dark:text-white placeholder-neutral-500 focus:outline-none focus:border-black dark:focus:border-white"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1C6CD4]"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="select-service" className="font-medium text-neutral-700 dark:text-neutral-300 block">
+                  <label htmlFor="select-service" className="font-medium text-slate-700 block">
                     Primary Service Requirement *
                   </label>
                   <select
                     id="select-service"
                     value={formData.serviceType}
                     onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-100 dark:bg-black border border-neutral-200 dark:border-neutral-700 text-black dark:text-white focus:outline-none focus:border-black dark:focus:border-white"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-[#1C6CD4]"
                   >
                     <option value="iso45001_audit">ISO 45001 / 14001 Management Systems Audit</option>
                     <option value="mega_infrastructure">Mega-Infrastructure Civil Safety Review</option>
@@ -263,14 +263,14 @@ export const AdvisoryPage: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="select-timeframe" className="font-medium text-neutral-700 dark:text-neutral-300 block">
+                <label htmlFor="select-timeframe" className="font-medium text-slate-700 block">
                   Anticipated Timeframe / Event Date
                 </label>
                 <select
                   id="select-timeframe"
                   value={formData.timeframe}
                   onChange={(e) => setFormData({ ...formData, timeframe: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-100 dark:bg-black border border-neutral-200 dark:border-neutral-700 text-black dark:text-white focus:outline-none focus:border-black dark:focus:border-white"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-[#1C6CD4]"
                 >
                   <option value="immediate">Immediate / Urgent (Next 30 Days)</option>
                   <option value="q1_q2">Upcoming Quarter (1–3 Months)</option>
@@ -280,7 +280,7 @@ export const AdvisoryPage: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="input-message" className="font-medium text-neutral-700 dark:text-neutral-300 block">
+                <label htmlFor="input-message" className="font-medium text-slate-700 block">
                   Scope of Engagement, Agenda, or Project Details *
                 </label>
                 <textarea
@@ -290,14 +290,14 @@ export const AdvisoryPage: React.FC = () => {
                   placeholder="Outline the operational scale, site location, attendee profile, or specific regulatory objectives..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-neutral-100 dark:bg-black border border-neutral-200 dark:border-neutral-700 text-black dark:text-white placeholder-neutral-500 focus:outline-none focus:border-black dark:focus:border-white"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1C6CD4]"
                 />
               </div>
 
               <button
                 type="submit"
                 id="btn-submit-advisory-form"
-                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-black hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-black font-semibold text-xs tracking-wide shadow-md transition-all cursor-pointer"
+                className="w-full flex items-center justify-center space-x-2 py-3 rounded-xl bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-semibold text-xs tracking-wide shadow-md transition-all cursor-pointer"
               >
                 <span>Transmit Advisory Dossier</span>
                 <Send className="w-3.5 h-3.5" />
@@ -309,45 +309,45 @@ export const AdvisoryPage: React.FC = () => {
         {/* Contact Coordinates & Verification Column */}
         <div className="lg:col-span-5 space-y-6">
           {/* Institutional Contact Card */}
-          <div className="p-6 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 space-y-5 shadow-sm">
-            <h4 className="text-base font-display font-bold text-black dark:text-white border-b border-neutral-200 dark:border-neutral-800 pb-3">
-              Official Corporate & Institutional Liaison
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-5 shadow-sm">
+            <h4 className="text-base font-display font-bold text-slate-900 border-b border-slate-200 pb-3">
+              Official Corporate &amp; Institutional Liaison
             </h4>
 
             <div className="space-y-4 text-xs">
               <div className="flex items-start space-x-3">
-                <Building2 className="w-4 h-4 text-black dark:text-white mt-0.5 shrink-0" />
+                <Building2 className="w-4 h-4 text-[#1C6CD4] mt-0.5 shrink-0" />
                 <div>
-                  <strong className="text-black dark:text-white block">Corporate Base:</strong>
-                  <span className="text-neutral-700 dark:text-neutral-300">Julius Berger Nigeria PLC</span>
-                  <p className="text-neutral-500 dark:text-neutral-400 text-[11px]">Health, Safety & Environment Division</p>
+                  <strong className="text-slate-900 block">Corporate Base:</strong>
+                  <span className="text-slate-700">Julius Berger Nigeria PLC</span>
+                  <p className="text-slate-500 text-[11px]">Health, Safety &amp; Environment Division</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <MapPin className="w-4 h-4 text-black dark:text-white mt-0.5 shrink-0" />
+                <MapPin className="w-4 h-4 text-[#1C6CD4] mt-0.5 shrink-0" />
                 <div>
-                  <strong className="text-black dark:text-white block">Primary Location:</strong>
-                  <span className="text-neutral-700 dark:text-neutral-300">Abuja, Federal Capital Territory, Nigeria</span>
+                  <strong className="text-slate-900 block">Primary Location:</strong>
+                  <span className="text-slate-700">Abuja, Federal Capital Territory, Nigeria</span>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <Mail className="w-4 h-4 text-black dark:text-white mt-0.5 shrink-0" />
+                <Mail className="w-4 h-4 text-[#1C6CD4] mt-0.5 shrink-0" />
                 <div>
-                  <strong className="text-black dark:text-white block">Direct Correspondence:</strong>
-                  <span className="text-neutral-700 dark:text-neutral-300 font-mono">{PROFILE_SUMMARY.email}</span>
+                  <strong className="text-slate-900 block">Direct Correspondence:</strong>
+                  <span className="text-slate-700 font-mono">{PROFILE_SUMMARY.email}</span>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <UserCheck className="w-4 h-4 text-black dark:text-white mt-0.5 shrink-0" />
+                <UserCheck className="w-4 h-4 text-[#1C6CD4] mt-0.5 shrink-0" />
                 <div>
-                  <strong className="text-black dark:text-white block">Global Credentials Verification:</strong>
-                  <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-mono block">
+                  <strong className="text-slate-900 block">Global Credentials Verification:</strong>
+                  <span className="text-slate-500 text-[11px] font-mono block">
                     IOSH UK CMIOSH Credential ID: #100175
                   </span>
-                  <span className="text-neutral-500 dark:text-neutral-400 text-[11px] font-mono block">
+                  <span className="text-slate-500 text-[11px] font-mono block">
                     ISO 45001 Lead Auditor ID: #423290
                   </span>
                 </div>
@@ -356,12 +356,12 @@ export const AdvisoryPage: React.FC = () => {
           </div>
 
           {/* Standards & Ethics Commitment Note */}
-          <div className="p-6 rounded-2xl dialed-glass-card-elevated border border-white/20 text-white space-y-3">
-            <div className="flex items-center space-x-2 text-white font-semibold text-xs font-mono">
-              <ShieldCheck className="w-4 h-4 text-[#a8c7fa]" />
-              <span>Professional Conduct & Independence</span>
+          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 space-y-3 shadow-xs">
+            <div className="flex items-center space-x-2 text-slate-900 font-semibold text-xs font-mono">
+              <ShieldCheck className="w-4 h-4 text-[#1C6CD4]" />
+              <span>Professional Conduct &amp; Independence</span>
             </div>
-            <p className="text-xs text-[#c4c7c5] leading-relaxed">
+            <p className="text-xs text-slate-600 leading-relaxed">
               All advisory activities, academic peer reviews, and speaking appearances adhere strictly to the IOSH Code of Professional Conduct, the Nigerian Society of Engineers standards, and statutory conflict-of-interest regulations under Nigerian law.
             </p>
           </div>

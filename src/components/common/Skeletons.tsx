@@ -21,7 +21,7 @@ export const Skeleton: React.FC<{
 }> = ({ className = '', variant = 'shimmer' }) => {
   return (
     <div 
-      className={`rounded-md bg-white/[0.06] ${
+      className={`rounded-md bg-slate-200/80 ${
         variant === 'shimmer' ? 'skeleton-shimmer' : 'skeleton-pulse'
       } ${className}`}
       aria-hidden="true"

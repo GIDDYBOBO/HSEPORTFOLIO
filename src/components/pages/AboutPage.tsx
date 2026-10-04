@@ -60,29 +60,29 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   ];
 
   return (
-    <div className="space-y-16 sm:space-y-24 pt-24 sm:pt-32 pb-24 text-neutral-100 max-w-6xl mx-auto transition-colors duration-200">
+    <div className="space-y-16 sm:space-y-24 pt-24 sm:pt-32 pb-24 text-slate-900 max-w-6xl mx-auto transition-colors duration-200">
       
       {/* =========================================================================
           1. INTRODUCTION (Storytelling Dossier with Portrait)
-             Obsidian Black Canvas with Luminous Safety Accents
+             Clean White Canvas with Luminous Safety Accents
           ========================================================================= */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
         <div className="lg:col-span-7 space-y-6">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#1C6CD4]/15 border border-[#1C6CD4]/30 text-xs font-mono text-[#93c5fd] font-extrabold">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-xs font-mono text-[#1C6CD4] font-extrabold">
             <BadgeCheck className="w-3.5 h-3.5 text-[#1C6CD4]" />
             <span>Professional Dossier • Executive Profile</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black text-slate-900 tracking-tight leading-tight">
             A Career Built Around Safety, Responsibility and People.
           </h1>
 
-          <div className="space-y-4 text-sm sm:text-base text-neutral-300 leading-relaxed font-sans font-normal">
+          <div className="space-y-4 text-sm sm:text-base text-slate-700 leading-relaxed font-sans font-normal">
             <p>
               Engr. Iyenoma ThankGod Osazee is an acclaimed Nigerian health, safety, and environmental executive whose career spans over two decades at the forefront of the construction industry with Julius Berger Nigeria PLC.
             </p>
             <p>
-              Sitting at the rare nexus of <span className="text-white font-semibold underline decoration-[#1C6CD4] decoration-2 underline-offset-4">civil engineering and occupational hygiene</span>, he unites high-level academic research, international safety standards (ISO 45001 &amp; ISO 14001), and frontline mega-infrastructure execution across river marine bridges, highways, and high-consequence civil schemes.
+              Sitting at the rare nexus of <span className="text-slate-900 font-semibold underline decoration-[#1C6CD4] decoration-2 underline-offset-4">civil engineering and occupational hygiene</span>, he unites high-level academic research, international safety standards (ISO 45001 &amp; ISO 14001), and frontline mega-infrastructure execution across river marine bridges, highways, and high-consequence civil schemes.
             </p>
             <p>
               Unlike purely bureaucratic approaches, his practice translates statutory mandates into living site cultures where workers feel protected and empowered.
@@ -91,7 +91,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
           {/* On Smaller Screens: Portrait Image comes BEFORE Dual British Postgraduate Education */}
           <div className="block lg:hidden my-6">
-            <div className="relative rounded-3xl overflow-hidden border border-white/15 hover:border-[#1C6CD4]/60 bg-[#11141c] shadow-2xl group transition-all duration-500">
+            <div className="relative rounded-3xl overflow-hidden border border-slate-200 hover:border-[#1C6CD4] bg-white shadow-xl group transition-all duration-500">
               <div className="relative h-80 sm:h-96 w-full overflow-hidden">
                 <img
                   src="/assets/portrait.jpg"
@@ -120,17 +120,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </div>
 
           {/* Quick Academic Qualifications */}
-          <div className="pt-4 space-y-3 border-t border-white/10">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#93c5fd] font-bold">
+          <div className="pt-4 space-y-3 border-t border-slate-200">
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#1C6CD4] font-bold">
               <GraduationCap className="w-4 h-4 text-[#1C6CD4]" />
               <span>Dual British Postgraduate Education:</span>
             </div>
-            <ul className="space-y-2 text-xs text-neutral-200 font-mono">
+            <ul className="space-y-2 text-xs text-slate-700 font-mono">
               {ACADEMIC_QUALIFICATIONS.map((acad, idx) => (
                 <li key={idx} className="flex items-start gap-2.5">
-                  <span className="text-[#96E2A5] font-black text-sm leading-none">•</span>
+                  <span className="text-emerald-600 font-black text-sm leading-none">•</span>
                   <span>
-                    <strong className="text-white font-bold">{acad.degree}</strong> — <span className="text-neutral-400">{acad.institution}</span>
+                    <strong className="text-slate-900 font-bold">{acad.degree}</strong> — <span className="text-slate-600">{acad.institution}</span>
                   </span>
                 </li>
               ))}
@@ -140,7 +140,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
         {/* Executive Portrait Card with Glowing Accents (Desktop only) */}
         <div className="hidden lg:block lg:col-span-5 w-full">
-          <div className="relative rounded-3xl overflow-hidden border border-white/15 hover:border-[#1C6CD4]/60 bg-[#11141c] shadow-2xl group transition-all duration-500 hover:shadow-[0_20px_45px_rgba(28,108,212,0.2)]">
+          <div className="relative rounded-3xl overflow-hidden border border-slate-200 hover:border-[#1C6CD4] bg-white shadow-xl group transition-all duration-500 hover:shadow-[0_20px_45px_rgba(28,108,212,0.12)]">
             <div className="relative h-80 sm:h-96 lg:h-[430px] w-full overflow-hidden">
               <img
                 src="/assets/portrait.jpg"
@@ -178,17 +178,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
       {/* =========================================================================
           3. CORE VALUES (4 Principles, Anti-Slop Layout)
-             Obsidian Surface with Color Accent Accoutrements
+             White Surface with Color Accent Accoutrements
           ========================================================================= */}
       <section className="space-y-8 pt-4">
         <div className="space-y-2 max-w-2xl">
           <span className="text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
             Guiding Philosophy
           </span>
-          <h2 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
             Core Principles of Practice
           </h2>
-          <p className="text-sm text-neutral-300 font-sans leading-relaxed">
+          <p className="text-sm text-slate-700 font-sans leading-relaxed">
             Frontline ethics, systemic accountability, and non-negotiable worker dignity governing every civil scheme.
           </p>
         </div>
@@ -197,19 +197,19 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           {coreValues.map((val, idx) => (
             <div
               key={idx}
-              className="p-7 sm:p-8 rounded-3xl bg-[#11141c] hover:bg-[#141824] border border-white/10 hover:border-[#1C6CD4]/50 transition-all duration-300 shadow-xl space-y-3 group hover:-translate-y-1"
+              className="p-7 sm:p-8 rounded-3xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-[#1C6CD4] transition-all duration-300 shadow-sm hover:shadow-md space-y-3 group hover:-translate-y-1"
             >
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-white text-xs font-mono font-bold">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs font-mono font-bold">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />
                   Principle 0{idx + 1}
                 </span>
-                <ShieldCheck className="w-4 h-4 text-[#96E2A5]" />
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
               </div>
-              <h3 className="text-xl font-display font-black text-white group-hover:text-[#93c5fd] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
+              <h3 className="text-xl font-display font-black text-slate-900 group-hover:text-[#1C6CD4] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
                 {val.title}
               </h3>
-              <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans font-medium">
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans font-medium">
                 {val.desc}
               </p>
             </div>
@@ -219,18 +219,18 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
       {/* =========================================================================
           4. COMPLETE CERTIFICATIONS & ACCREDITATIONS (Live CMS Connected)
-             Obsidian Cards with Accent Badges
+             Clean White Cards with Accent Badges
           ========================================================================= */}
       <section className="space-y-8 pt-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
           <div className="space-y-1">
             <span className="text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
               Global Standing
             </span>
-            <h2 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
               Certifications &amp; Accreditations
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400 font-sans">
+            <p className="text-xs sm:text-sm text-slate-600 font-sans">
               Complete verified registry of chartered standing, ISO lead auditor certifications, and institutional fellowships.
             </p>
           </div>
@@ -239,7 +239,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             {onOpenCredentialsModal && (
               <button
                 onClick={onOpenCredentialsModal}
-                className="px-4 py-2 rounded-full border border-white/20 text-xs font-mono font-bold text-white hover:bg-white/10 transition-colors cursor-pointer self-start sm:self-auto"
+                className="px-4 py-2 rounded-full border border-slate-300 text-xs font-mono font-bold text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer self-start sm:self-auto"
               >
                 Inspect All
               </button>
@@ -252,33 +252,33 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <div
               key={cred.id}
               onClick={() => setSelectedCred(cred)}
-              className="p-6 rounded-3xl bg-[#11141c] hover:bg-[#151924] border border-white/10 hover:border-[#1C6CD4]/60 transition-all duration-300 shadow-xl space-y-3 cursor-pointer group hover:-translate-y-1"
+              className="p-6 rounded-3xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-[#1C6CD4] transition-all duration-300 shadow-sm hover:shadow-md space-y-3 cursor-pointer group hover:-translate-y-1"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-black text-[#93c5fd] bg-[#1C6CD4]/15 px-2.5 py-1 rounded-full border border-[#1C6CD4]/30">
+                <span className="text-xs font-mono font-black text-[#1C6CD4] bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
                   {cred.designation}
                 </span>
                 {cred.year && (
-                  <span className="text-[11px] font-mono text-neutral-400 font-bold">
+                  <span className="text-[11px] font-mono text-slate-500 font-bold">
                     {cred.year}
                   </span>
                 )}
               </div>
 
-              <h3 className="text-base sm:text-lg font-display font-black text-white group-hover:text-[#93c5fd] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
+              <h3 className="text-base sm:text-lg font-display font-black text-slate-900 group-hover:text-[#1C6CD4] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
                 {cred.title}
               </h3>
               
-              <p className="text-xs text-[#96E2A5] font-mono font-bold">
+              <p className="text-xs text-emerald-700 font-mono font-bold">
                 {cred.issuer}
               </p>
 
-              <p className="text-xs text-neutral-300 leading-relaxed font-sans font-medium line-clamp-3">
+              <p className="text-xs text-slate-600 leading-relaxed font-sans font-medium line-clamp-3">
                 {cred.description}
               </p>
 
               {cred.credentialId && (
-                <div className="text-[10px] font-mono text-neutral-400 pt-2 border-t border-white/5 font-semibold">
+                <div className="text-[10px] font-mono text-slate-500 pt-2 border-t border-slate-100 font-semibold">
                   Ref: {cred.credentialId}
                 </div>
               )}
@@ -290,7 +290,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           <div className="text-center pt-2">
             <button
               onClick={() => setShowAllCreds(!showAllCreds)}
-              className="px-6 py-2.5 rounded-full border border-white/20 hover:border-[#1C6CD4] text-xs font-mono font-bold text-white hover:text-[#93c5fd] transition-all cursor-pointer inline-flex items-center gap-2 bg-white/5 shadow-sm"
+              className="px-6 py-2.5 rounded-full border border-slate-300 hover:border-[#1C6CD4] text-xs font-mono font-bold text-slate-800 hover:text-[#1C6CD4] transition-all cursor-pointer inline-flex items-center gap-2 bg-white shadow-sm"
             >
               <span>{showAllCreds ? 'Show Fewer Credentials' : `View All ${liveCredentials.length} Credentials`}</span>
               {showAllCreds ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -306,42 +306,42 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md"
             onClick={() => setSelectedCred(null)}
           >
             <motion.div
               initial={{ scale: 0.95, y: 15 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}
-              className="w-full max-w-lg rounded-3xl p-8 space-y-5 bg-[#141824] border border-white/20 shadow-2xl text-white"
+              className="w-full max-w-lg rounded-3xl p-8 space-y-5 bg-white border border-slate-200 shadow-2xl text-slate-900"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-xs font-mono text-[#93c5fd] bg-[#1C6CD4]/20 px-2.5 py-0.5 rounded-full border border-[#1C6CD4]/40 font-bold">
+                  <span className="text-xs font-mono text-[#1C6CD4] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200 font-bold">
                     {selectedCred.designation}
                   </span>
-                  <h3 className="text-xl font-display font-black text-white mt-2 leading-snug">
+                  <h3 className="text-xl font-display font-black text-slate-900 mt-2 leading-snug">
                     {selectedCred.title}
                   </h3>
-                  <p className="text-xs font-mono text-[#96E2A5] mt-1 font-bold">
+                  <p className="text-xs font-mono text-emerald-700 mt-1 font-bold">
                     {selectedCred.issuer}
                   </p>
                 </div>
                 <button
                   onClick={() => setSelectedCred(null)}
-                  className="text-neutral-400 hover:text-white p-1 cursor-pointer font-bold text-lg"
+                  className="text-slate-500 hover:text-slate-900 p-1 cursor-pointer font-bold text-lg"
                 >
                   ✕
                 </button>
               </div>
 
-              <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans font-medium">
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans font-medium">
                 {selectedCred.description}
               </p>
 
               {selectedCred.credentialId && (
-                <div className="p-3 rounded-xl bg-black/40 border border-white/10 text-xs font-mono text-neutral-300 font-bold">
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-700 font-bold">
                   Credential ID: {selectedCred.credentialId}
                 </div>
               )}
@@ -361,15 +361,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
       {/* =========================================================================
           5. BOTTOM INVITATION CTA
-             Obsidian Surface with Blue & Green Gradient Accents
+             Clean Light Surface with Blue Accent Accoutrements
           ========================================================================= */}
-      <section className="p-8 sm:p-12 md:p-14 rounded-3xl bg-gradient-to-br from-[#11141c] to-[#161c28] border border-white/15 hover:border-[#1C6CD4]/50 transition-all text-white text-center shadow-2xl space-y-5 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#1C6CD4]/10 rounded-full blur-3xl pointer-events-none group-hover:bg-[#1C6CD4]/20 transition-all" />
+      <section className="p-8 sm:p-12 md:p-14 rounded-3xl bg-slate-50 border border-slate-200 hover:border-[#1C6CD4] transition-all text-slate-900 text-center shadow-lg space-y-5 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#1C6CD4]/05 rounded-full blur-3xl pointer-events-none group-hover:bg-[#1C6CD4]/10 transition-all" />
 
-        <h2 className="text-2xl sm:text-4xl font-display font-black text-white tracking-tight">
+        <h2 className="text-2xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
           Engage for Executive Safety Directorship
         </h2>
-        <p className="text-xs sm:text-base text-neutral-300 max-w-xl mx-auto font-sans leading-relaxed">
+        <p className="text-xs sm:text-base text-slate-700 max-w-xl mx-auto font-sans leading-relaxed">
           Available for corporate safety governance, high-consequence infrastructure bid advisory, and international keynote presentations.
         </p>
         <div className="pt-2 flex justify-center gap-3">

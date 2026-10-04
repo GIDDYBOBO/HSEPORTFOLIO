@@ -231,24 +231,24 @@ export const CareerTimeline: React.FC = () => {
   const getTagColorClasses = (color: TimelineMilestone['tagColor']) => {
     switch (color) {
       case 'mint':
-        return 'text-[#96E2A5] bg-[#154E20]/20 border-[#96E2A5]/30';
+        return 'text-emerald-700 bg-emerald-50 border-emerald-200';
       case 'amber':
-        return 'text-[#fbbf24] bg-[#fbbf24]/10 border-[#fbbf24]/30';
+        return 'text-amber-700 bg-amber-50 border-amber-200';
       case 'blue':
       default:
-        return 'text-[#93c5fd] bg-[#1C6CD4]/15 border-[#1C6CD4]/30';
+        return 'text-[#1C6CD4] bg-blue-50 border-blue-200';
     }
   };
 
   const getNodeColor = (color: TimelineMilestone['tagColor']) => {
     switch (color) {
       case 'mint':
-        return 'bg-[#96E2A5] text-[#0a0a0c] shadow-[0_0_15px_rgba(150,226,165,0.6)]';
+        return 'bg-emerald-600 text-white shadow-md';
       case 'amber':
-        return 'bg-[#fbbf24] text-[#0a0a0c] shadow-[0_0_15px_rgba(251,191,36,0.6)]';
+        return 'bg-amber-600 text-white shadow-md';
       case 'blue':
       default:
-        return 'bg-[#1C6CD4] text-white shadow-[0_0_15px_rgba(28,108,212,0.6)]';
+        return 'bg-[#1C6CD4] text-white shadow-md';
     }
   };
 
@@ -259,22 +259,22 @@ export const CareerTimeline: React.FC = () => {
       id="career-progression-timeline"
     >
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-6">
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold tracking-wider uppercase text-[#1C6CD4]">
             <Sparkles className="w-3.5 h-3.5 text-[#1C6CD4]" />
             <span>25+ Year Trajectory • Verified Career Progression</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-tight">
             Career Progression in HSE Command &amp; Technical Consultancy
           </h2>
-          <p className="text-sm sm:text-base text-neutral-300 font-sans leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-700 font-sans leading-relaxed">
             From frontline civil engineering foundations at Julius Berger to British postgraduate research distinctions, chartered international standing (CMIOSH), and federal statutory reform advisory.
           </p>
         </div>
 
         {/* Category Filters (Clean Segmented Tabs, Anti-Slop Compliant) */}
-        <div className="flex items-center p-1 rounded-xl bg-white/[0.04] border border-white/10 self-start md:self-end overflow-x-auto max-w-full">
+        <div className="flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 self-start md:self-end overflow-x-auto max-w-full">
           {[
             { id: 'all', label: 'All Milestones (6)' },
             { id: 'hse_management', label: 'HSE Command' },
@@ -288,8 +288,8 @@ export const CareerTimeline: React.FC = () => {
                 onClick={() => setFilter(tab.id as typeof filter)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-[#1C6CD4] text-white shadow-md'
-                    : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-[#1C6CD4] text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
                 }`}
               >
                 {tab.label}
@@ -305,7 +305,7 @@ export const CareerTimeline: React.FC = () => {
         {/* Mobile: Left-aligned at 20px; Desktop: Centered */}
         <div 
           aria-hidden="true"
-          className="absolute top-0 bottom-0 left-5 md:left-1/2 -translate-x-1/2 w-[3px] bg-gradient-to-b from-[#1C6CD4] via-[#96E2A5] via-70% to-[#142C5C] shadow-[0_0_12px_rgba(28,108,212,0.4)] rounded-full"
+          className="absolute top-0 bottom-0 left-5 md:left-1/2 -translate-x-1/2 w-[3px] bg-gradient-to-b from-[#1C6CD4] via-emerald-500 via-70% to-[#142C5C] shadow-sm rounded-full"
         />
 
         {/* Milestone Cards Container */}
@@ -329,23 +329,23 @@ export const CareerTimeline: React.FC = () => {
                 >
                   {/* Central Node / Pulsating Checkpoint Indicator */}
                   <div 
-                    className={`absolute left-5 md:left-1/2 -translate-x-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full border-2 border-[#0a0a0c] ${getNodeColor(
+                    className={`absolute left-5 md:left-1/2 -translate-x-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full border-2 border-white shadow-md ${getNodeColor(
                       milestone.tagColor
                     )} transition-transform hover:scale-125 cursor-pointer`}
                     onClick={() => toggleExpand(milestone.id)}
                     title="Click to toggle technical deep-dive"
                   >
                     <Briefcase className="w-4 h-4" />
-                    <span className="absolute -inset-1 rounded-full border border-white/30 animate-ping opacity-40 pointer-events-none" />
+                    <span className="absolute -inset-1 rounded-full border border-[#1C6CD4]/30 animate-ping opacity-30 pointer-events-none" />
                   </div>
 
                   {/* Date Pillar for Desktop (Opposite Side) */}
                   <div className={`hidden md:block w-1/2 px-8 pt-2 ${isEven ? 'text-right' : 'text-left'}`}>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 font-mono text-xs font-bold text-white shadow-sm">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 font-mono text-xs font-bold text-slate-800 shadow-sm">
                       <Calendar className="w-3.5 h-3.5 text-[#1C6CD4]" />
                       <span>{milestone.yearRange}</span>
                     </div>
-                    <div className="text-xs font-mono text-neutral-400 mt-1">
+                    <div className="text-xs font-mono text-slate-500 mt-1">
                       {milestone.categoryLabel}
                     </div>
                   </div>
@@ -354,20 +354,17 @@ export const CareerTimeline: React.FC = () => {
                   {/* On Mobile: indented by pl-14 to clear left spine; on Desktop: w-1/2 with px-8 */}
                   <div className={`w-full md:w-1/2 pl-14 md:pl-0 ${isEven ? 'md:pr-10' : 'md:pl-10'}`}>
                     <article 
-                      className={`group p-6 sm:p-8 rounded-3xl bg-[#11141c] hover:bg-[#151924] border border-white/10 hover:border-[#1C6CD4]/60 transition-all duration-300 shadow-xl hover:shadow-[0_20px_40px_rgba(28,108,212,0.18)] hover:-translate-y-1 relative overflow-hidden`}
+                      className={`group p-6 sm:p-8 rounded-3xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-[#1C6CD4] transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 relative overflow-hidden`}
                     >
-                      {/* Subtle Ambient Accent Glow on Hover */}
-                      <div className="absolute top-0 right-0 -mr-12 -mt-12 w-36 h-36 rounded-full bg-[#1C6CD4]/10 blur-2xl group-hover:bg-[#1C6CD4]/20 transition-all pointer-events-none" />
-
                       {/* Header Badge & Meta Row */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/10">
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
                         <div className="flex items-center gap-2">
                           <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase border ${getTagColorClasses(milestone.tagColor)}`}>
                             {milestone.highlightTag}
                           </span>
                         </div>
                         {/* Mobile Year Badge */}
-                        <div className="md:hidden inline-flex items-center gap-1.5 text-xs font-mono font-bold text-white bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10">
+                        <div className="md:hidden inline-flex items-center gap-1.5 text-xs font-mono font-bold text-slate-800 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
                           <Calendar className="w-3 h-3 text-[#1C6CD4]" />
                           <span>{milestone.yearRange}</span>
                         </div>
@@ -375,16 +372,16 @@ export const CareerTimeline: React.FC = () => {
 
                       {/* Role & Organization Title */}
                       <div className="space-y-1.5 pt-4">
-                        <h3 className="text-lg sm:text-xl font-display font-black text-white group-hover:text-[#93c5fd] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all leading-snug">
+                        <h3 className="text-lg sm:text-xl font-display font-black text-slate-900 group-hover:text-[#1C6CD4] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all leading-snug">
                           {milestone.role}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-neutral-300">
-                          <span className="flex items-center gap-1.5 font-bold text-white">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-slate-600">
+                          <span className="flex items-center gap-1.5 font-bold text-slate-900">
                             <Building2 className="w-3.5 h-3.5 text-[#1C6CD4]" />
                             {milestone.organization}
                           </span>
-                          <span className="text-neutral-500">•</span>
-                          <span className="flex items-center gap-1 text-neutral-400">
+                          <span className="text-slate-300">•</span>
+                          <span className="flex items-center gap-1 text-slate-500">
                             <MapPin className="w-3 h-3" />
                             {milestone.location}
                           </span>
@@ -392,19 +389,19 @@ export const CareerTimeline: React.FC = () => {
                       </div>
 
                       {/* Executive Scope Narrative */}
-                      <p className="text-xs sm:text-sm text-neutral-300 font-sans leading-relaxed pt-3">
+                      <p className="text-xs sm:text-sm text-slate-700 font-sans leading-relaxed pt-3">
                         {milestone.scope}
                       </p>
 
                       {/* Key Verified HSE Achievements */}
                       <div className="space-y-2 pt-4">
-                        <span className="text-[11px] font-mono uppercase tracking-wider text-[#93c5fd] font-bold block">
+                        <span className="text-[11px] font-mono uppercase tracking-wider text-[#1C6CD4] font-bold block">
                           Verified Technical Milestones:
                         </span>
-                        <ul className="space-y-2 text-xs text-neutral-200 font-sans font-medium">
+                        <ul className="space-y-2 text-xs text-slate-700 font-sans font-medium">
                           {milestone.achievements.map((item, i) => (
                             <li key={i} className="flex items-start gap-2.5">
-                              <CheckCircle2 className="w-4 h-4 text-[#96E2A5] shrink-0 mt-0.5" />
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                               <span className="leading-snug">{item}</span>
                             </li>
                           ))}
@@ -412,13 +409,13 @@ export const CareerTimeline: React.FC = () => {
                       </div>
 
                       {/* Metrics Pill Grid */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-4 mt-4 border-t border-white/10">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-4 mt-4 border-t border-slate-100">
                         {milestone.metrics.map((m, i) => (
-                          <div key={i} className="p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
-                            <span className="text-[10px] font-mono text-neutral-400 block truncate">
+                          <div key={i} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                            <span className="text-[10px] font-mono text-slate-500 block truncate">
                               {m.label}
                             </span>
-                            <span className="text-xs font-mono font-black text-white block mt-0.5 truncate">
+                            <span className="text-xs font-mono font-black text-slate-900 block mt-0.5 truncate">
                               {m.value}
                             </span>
                           </div>
@@ -431,7 +428,7 @@ export const CareerTimeline: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => toggleExpand(milestone.id)}
-                            className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#1C6CD4] hover:text-[#93c5fd] transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#1C6CD4] hover:underline transition-colors cursor-pointer"
                           >
                             <span>{isExpanded ? 'Hide Technical Context' : 'Inspect Field Standards & Protocol'}</span>
                             {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -444,31 +441,31 @@ export const CareerTimeline: React.FC = () => {
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="overflow-hidden mt-3 p-4 rounded-2xl bg-black/40 border border-white/10 space-y-3 text-xs"
+                                className="overflow-hidden mt-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 text-xs"
                               >
                                 <div>
-                                  <span className="font-mono text-[10px] uppercase text-[#96E2A5] font-bold block mb-1">
+                                  <span className="font-mono text-[10px] uppercase text-emerald-700 font-bold block mb-1">
                                     Engineering & Operational Reality:
                                   </span>
-                                  <p className="text-neutral-300 leading-relaxed font-sans">
+                                  <p className="text-slate-700 leading-relaxed font-sans">
                                     {milestone.deepDive.context}
                                   </p>
                                 </div>
 
                                 <div>
-                                  <span className="font-mono text-[10px] uppercase text-[#93c5fd] font-bold block mb-1">
+                                  <span className="font-mono text-[10px] uppercase text-[#1C6CD4] font-bold block mb-1">
                                     Governing Technical Standards:
                                   </span>
                                   <div className="flex flex-wrap gap-1.5">
                                     {milestone.deepDive.standards.map((std, si) => (
-                                      <span key={si} className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[10px] font-mono text-neutral-300 font-semibold">
+                                      <span key={si} className="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">
                                         {std}
                                       </span>
                                     ))}
                                   </div>
                                 </div>
 
-                                <div className="p-2.5 rounded-xl bg-[#1C6CD4]/10 border border-[#1C6CD4]/20 text-[#93c5fd] text-[11px] font-sans italic">
+                                <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-[#142C5C] text-[11px] font-sans italic">
                                   <strong>Core HSE Principle:</strong> {milestone.deepDive.technicalTakeaway}
                                 </div>
                               </motion.div>

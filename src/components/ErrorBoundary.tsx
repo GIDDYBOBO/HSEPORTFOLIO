@@ -68,7 +68,7 @@ export class ErrorBoundary extends Component<Props, State> {
               <button
                 type="button"
                 onClick={this.handleResetAndRecover}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-[#1E293B] hover:bg-[#0F172A] text-white font-mono font-bold text-xs transition-colors cursor-pointer shadow-md"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-mono font-bold text-xs transition-colors cursor-pointer shadow-md"
               >
                 Reset Cache &amp; Return Home
               </button>
