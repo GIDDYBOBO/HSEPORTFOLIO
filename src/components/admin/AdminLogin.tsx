@@ -1,205 +1,240 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { useTheme } from '../../context/ThemeContext';
-import { Shield, Lock, Mail, ArrowRight, AlertCircle, Sparkles, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowRight, AlertCircle, CheckCircle2, ArrowLeft, KeyRound } from 'lucide-react';
 
 interface AdminLoginProps {
   onBackToPortfolio?: () => void;
 }
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onBackToPortfolio }) => {
-  const { loginWithEmail, loginWithGoogle, demoLogin } = useAuth();
+  const { loginWithEmail, registerWithEmail } = useAuth();
+  
+  // Check if admin password has already been created
+  const [isConfigured, setIsConfigured] = useState<boolean>(() => {
+    return localStorage.getItem('hse_admin_configured') === 'true';
+  });
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isNewAccount, setIsNewAccount] = useState(false);
+
+  useEffect(() => {
+    const configured = localStorage.getItem('hse_admin_configured') === 'true';
+    setIsConfigured(configured);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
+    const cleanEmail = email.trim();
+    const cleanPass = password.trim();
+
+    if (!cleanEmail || !cleanPass) {
       setError('Please enter both email and password.');
       return;
+    }
+
+    // If password hasn't been configured yet, we are in initial one-time create password mode
+    if (!isConfigured) {
+      if (cleanPass.length < 6) {
+        setError('Password must be at least 6 characters long.');
+        return;
+      }
+      if (cleanPass !== confirmPassword.trim()) {
+        setError('Passwords do not match. Please re-check.');
+        return;
+      }
     }
 
     try {
       setLoading(true);
       setError(null);
-      await loginWithEmail(email, password);
+      setSuccessMsg(null);
+
+      if (!isConfigured) {
+        // One-time password creation
+        await registerWithEmail(cleanEmail, cleanPass, 'Engr. Iyenoma T. Osazee');
+        setIsConfigured(true);
+        localStorage.setItem('hse_admin_configured', 'true');
+        setSuccessMsg('Executive credentials configured successfully.');
+      } else {
+        // Standard authentication
+        await loginWithEmail(cleanEmail, cleanPass);
+      }
     } catch (err: any) {
-      console.error('Login failure:', err);
-      let msg = 'Authentication failed. Please check your credentials.';
-      if (err.code === 'auth/wrong-password') msg = 'Incorrect password entered.';
-      if (err.code === 'auth/invalid-email') msg = 'Invalid email address format.';
-      if (err.code === 'auth/weak-password') msg = 'Password should be at least 6 characters.';
+      console.error('Authentication attempt notice:', err);
+      let msg = err.message || 'Authentication could not be completed.';
+      if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        msg = 'Incorrect password entered.';
+      }
+      if (err.code === 'auth/user-not-found') {
+        msg = 'No executive account found with this email.';
+      }
+      if (err.code === 'auth/invalid-email') {
+        msg = 'Invalid email address format.';
+      }
+      if (err.code === 'auth/weak-password') {
+        msg = 'Password should be at least 6 characters.';
+      }
       setError(msg);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDemoAccess = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      await demoLogin();
-    } catch (err: any) {
-      setError('Failed to authenticate executive demo session.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      await loginWithGoogle();
-    } catch (err: any) {
-      if (err.code !== 'auth/popup-closed-by-user') {
-        setError('Google sign-in was interrupted or not configured.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#131314] via-[#1e1f20] to-[#131314] text-white">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-[#F8FAFC] text-slate-800 font-sans relative overflow-hidden">
       <div className="w-full max-w-md">
-        {/* Navigation / Theme Bar */}
-        <div className="flex items-center justify-between mb-6">
+        {/* Navigation / Return Link */}
+        <div className="flex items-center justify-between mb-5">
           {onBackToPortfolio ? (
             <button
               type="button"
               id="btn-login-back-to-portfolio"
               onClick={onBackToPortfolio}
-              className="inline-flex items-center gap-2 text-xs font-mono text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Return to Public Portfolio</span>
+              <ArrowLeft className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Return to Public Site</span>
             </button>
-          ) : null}
+          ) : <div />}
+
+          <span className="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider">HSE-Port Security</span>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-neutral-900/90 backdrop-blur-xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <div className="rounded-3xl border border-slate-200/90 bg-white/95 backdrop-blur-2xl p-6 sm:p-7 shadow-xl space-y-5">
+          
           {/* Header */}
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-400/20 text-sky-400 mx-auto flex items-center justify-center shadow-inner">
-              <Shield className="w-6 h-6" />
+            <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 mx-auto flex items-center justify-center shadow-2xs">
+              <Shield className="w-4 h-4 text-amber-600" />
             </div>
-            <div className="inline-block px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-neutral-300">
-              Executive Directorship CMS
+            
+            <div className="inline-block px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-mono font-bold text-slate-700">
+              Executive Directorship Studio
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white font-display leading-snug sm:leading-tight">
-              Admin Authentication
+
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 font-display leading-snug">
+              {isConfigured ? 'Executive Authentication' : 'Create Executive Password'}
             </h1>
-            <p className="text-xs text-neutral-400">
-              Sign in to manage Engr. Osazee&apos;s credentials, megaproject highlights, and client inquiries.
+
+            <p className="text-xs text-slate-500 font-sans leading-relaxed">
+              {isConfigured
+                ? 'Sign in to access portfolio content management and client inquiry records.'
+                : 'Initial Setup: Create your executive password to secure dashboard access.'}
             </p>
           </div>
 
+          {/* One-time setup notification banner (only if not configured yet) */}
+          {!isConfigured && (
+            <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs font-mono flex items-center gap-2">
+              <KeyRound className="w-4 h-4 text-amber-600 shrink-0" />
+              <span className="font-semibold text-[11px]">One-Time Password Setup: After this step, only login will be shown.</span>
+            </div>
+          )}
+
           {error && (
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{error}</span>
+            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5 text-rose-600" />
+              <span className="font-medium text-[11px]">{error}</span>
+            </div>
+          )}
+
+          {successMsg && (
+            <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-start gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5 text-emerald-600" />
+              <span className="font-medium text-[11px]">{successMsg}</span>
             </div>
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-mono text-neutral-300 mb-1.5">
+              <label className="block text-[11px] font-mono font-semibold text-slate-700 mb-1">
                 Executive Email
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-neutral-500 absolute left-3 top-3.5" />
+                <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@iyenomaosazee.com"
+                  placeholder="Enter executive email"
                   required
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all"
+                  autoComplete="username"
+                  className="w-full pl-8.5 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-2xs"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-neutral-300 mb-1.5">
-                Password
+              <label className="block text-[11px] font-mono font-semibold text-slate-700 mb-1">
+                {!isConfigured ? 'New Password (min 6 chars)' : 'Password'}
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-neutral-500 absolute left-3 top-3.5" />
+                <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder={!isConfigured ? 'Create a secure password' : 'Enter your password'}
                   required
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all"
+                  autoComplete={!isConfigured ? 'new-password' : 'current-password'}
+                  className="w-full pl-8.5 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-2xs"
                 />
               </div>
             </div>
 
+            {!isConfigured && (
+              <div>
+                <label className="block text-[11px] font-mono font-semibold text-slate-700 mb-1">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Repeat your password"
+                    required
+                    autoComplete="new-password"
+                    className="w-full pl-8.5 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-2xs"
+                  />
+                </div>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-medium text-sm transition-all duration-200 shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full py-2.5 rounded-xl bg-[#1E293B] hover:bg-[#0F172A] text-white font-mono font-bold text-xs tracking-wide transition-all duration-200 shadow-md shadow-slate-900/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-1"
             >
               {loading ? (
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>Sign In to Executive Dashboard</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>
+                    {!isConfigured
+                      ? 'Save Password & Enter Dashboard'
+                      : 'Sign In to Executive Studio'}
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
                 </>
               )}
             </button>
           </form>
 
-          <div className="relative flex py-1 items-center">
-            <div className="flex-grow border-t border-white/10"></div>
-            <span className="flex-shrink mx-3 text-[11px] font-mono text-neutral-500">OR QUICK ACCESS</span>
-            <div className="flex-grow border-t border-white/10"></div>
-          </div>
-
-          <div className="space-y-2.5">
-            {/* Quick Demo Login */}
-            <button
-              type="button"
-              onClick={handleDemoAccess}
-              disabled={loading}
-              className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-neutral-200 hover:text-white text-xs font-mono flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>One-Click Executive Admin Access</span>
-            </button>
-
-            {/* Google Sign In */}
-            <button
-              type="button"
-              onClick={handleGoogleSignIn}
-              disabled={loading}
-              className="w-full py-2.5 px-4 rounded-xl bg-black/40 hover:bg-black/60 border border-white/10 text-neutral-300 hover:text-white text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24">
-                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
-                <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
-                <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z"/>
-              </svg>
-              <span>Continue with Google Workspace</span>
-            </button>
-          </div>
-
-          <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-neutral-500 font-mono">
-            <span className="flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-              Firebase Auth Guarded
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+            <span className="flex items-center gap-1 text-emerald-700 font-bold">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+              Secure Verified Access
             </span>
-            <span>Zero-Trust RBAC</span>
+            <span className="text-slate-400">CMS Role: Owner</span>
           </div>
+
         </div>
       </div>
     </div>

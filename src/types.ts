@@ -1,4 +1,4 @@
-export type PageId = 'overview' | 'about' | 'books' | 'works' | 'services' | 'publications' | 'leadership' | 'advisory';
+export type PageId = 'home' | 'about' | 'books' | 'contact' | 'overview' | 'works' | 'services' | 'publications' | 'leadership' | 'advisory';
 
 export interface Credential {
   id: string;
@@ -43,7 +43,8 @@ export type InquirySegment =
   | 'book_enquiry' 
   | 'iso_audit' 
   | 'professional_opportunity' 
-  | 'general_enquiry';
+  | 'general_enquiry'
+  | string;
 
 export interface InquiryMessage {
   id: string;
@@ -56,6 +57,7 @@ export interface InquiryMessage {
   timeframe: string;
   message: string;
   status: 'new' | 'reviewed' | 'archived';
+  createdAt?: string;
 }
 
 export interface SiteProfileData {
@@ -118,11 +120,12 @@ export interface AwardItem {
   notes?: string;
 }
 
-export interface ThermalCalculationResult {
-  wbgt: number;
-  riskCategory: 'Low' | 'Moderate' | 'High' | 'Very High' | 'Extreme';
-  workRestCycle: string;
-  waterIntakeLitersPerHour: number;
-  recommendedControls: string[];
-  physiologicalAlert: string;
+export interface TestimonialItem {
+  id: string;
+  quote: string;
+  name: string;
+  role: string;
+  organization: string;
+  badge?: string;
+  verified?: boolean;
 }

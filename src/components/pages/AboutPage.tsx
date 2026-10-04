@@ -1,464 +1,388 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { PageId } from '../../types';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { PageId, Credential } from '../../types';
+import { useLivePortfolioData } from '../../hooks/useLivePortfolioData';
+import { ACADEMIC_QUALIFICATIONS } from '../../data/profileData';
+import { CareerTimeline } from '../about/CareerTimeline';
 import { 
-  CREDENTIALS, 
-  ACADEMIC_QUALIFICATIONS, 
-  CAREER_HISTORY,
-  PROFILE_SUMMARY,
-  LEADERSHIP_ROLES,
-  AWARDS_AND_HONORS
-} from '../../data/profileData';
-import { 
-  ShieldCheck, 
-  GraduationCap, 
-  Briefcase, 
-  Award, 
-  CheckCircle2, 
-  ExternalLink, 
-  ArrowUpRight, 
-  Building2, 
-  Calendar, 
-  MapPin, 
-  FileText,
-  BadgeCheck,
-  ChevronRight,
-  BookOpen
+  BadgeCheck, 
+  ArrowRight, 
+  ChevronDown, 
+  ChevronUp,
+  ShieldCheck,
+  CheckCircle2,
+  Award,
+  Sparkles,
+  Layers,
+  GraduationCap
 } from 'lucide-react';
 
 interface AboutPageProps {
   onSelectPage: (page: PageId) => void;
   onOpenBookingModal: () => void;
-  onOpenCredentialsModal: () => void;
+  onOpenCredentialsModal?: () => void;
 }
-
-const EXPERTISE_DOMAINS = [
-  {
-    title: "Civil Infrastructure & Marine Safety",
-    desc: "Rigorous safety cases for long-span bridges, marine cofferdams, deep pile driving, and expressway corridors over live traffic.",
-    tags: ["Bridge Erection", "Marine Works", "Deep Excavations", "Tandem Heavy Lifting"]
-  },
-  {
-    title: "ISO 45001 & ISO 14001 Auditing Systems",
-    desc: "Certified Lead Auditor (#423290) designing integrated HSEQ systems, gap diagnoses, and legal compliance architectures.",
-    tags: ["CQI/IRCA Certified", "Statutory Compliance", "Zero-Harm Culture", "Audit Defense"]
-  },
-  {
-    title: "Thermal Hazards & Bioclimatic WBGT",
-    desc: "Empirical heat stress assessment for tropical construction, deploying custom WBGT algorithms and metabolic work-rest regimens.",
-    tags: ["BOHS Bursary Winner", "Wet Bulb Globe Temp", "Hydration Ergonomics", "Heat Morbidity Cuts"]
-  },
-  {
-    title: "Statutory Reform & Dispute Arbitration",
-    desc: "Parliamentary advisory panelist under the ISPON Act 2014, resolving decade-long institutional factional crises through structured governance.",
-    tags: ["House of Representatives", "National Assembly", "Statutory Mediation", "ISPON Fellowship"]
-  },
-  {
-    title: "Construction SME Capacity Building",
-    desc: "World Congress selected non-punitive safety coaching methodology, closing the critical safety gap in sub-tier contractor supply chains.",
-    tags: ["23rd World Congress", "Just Culture", "Subcontractor Alignment", "Micro-Toolbox Training"]
-  },
-  {
-    title: "Chartered Assessment & Mentorship",
-    desc: "IOSH UK Chartered Peer Review Interview Panelist, evaluating and mentoring senior global practitioners toward chartered (CMIOSH) standing.",
-    tags: ["CMIOSH #100175", "IOSH Peer Panel", "Executive Coaching", "Ethics Governance"]
-  }
-];
 
 export const AboutPage: React.FC<AboutPageProps> = ({
   onSelectPage,
   onOpenBookingModal,
   onOpenCredentialsModal
 }) => {
+  const { credentials: liveCredentials } = useLivePortfolioData();
+  const [showAllCreds, setShowAllCreds] = useState(false);
+  const [selectedCred, setSelectedCred] = useState<Credential | null>(null);
+
+  const displayedCredentials = showAllCreds 
+    ? liveCredentials 
+    : liveCredentials.slice(0, 6);
+
+  const coreValues = [
+    {
+      title: 'Non-Punitive Just Culture',
+      desc: 'Safety thrives when workers are empowered to report hazards without fear of retribution. True prevention learns from frontline reality rather than assigning blame.',
+      accent: 'blue'
+    },
+    {
+      title: 'Engineering Superiority over Rules',
+      desc: 'Rules guide behavior, but physical design eliminates hazards. Eliminating danger through physical engineering barriers always supersedes administrative warnings.',
+      accent: 'mint'
+    },
+    {
+      title: 'Evidence-Led Hygiene & Ergonomics',
+      desc: 'Thermal heat stress, chemical exposures, and fatigue are measurable physical stressors. Governance requires biometric monitoring rather than guesswork.',
+      accent: 'amber'
+    },
+    {
+      title: 'Zero Compromise on Frontline Dignity',
+      desc: 'Every artisan, rigger, and driver must return home whole each night. Corporate directorship is judged by how the most vulnerable worker is safeguarded.',
+      accent: 'blue'
+    }
+  ];
+
   return (
-    <div className="space-y-16 sm:space-y-24 pt-20 sm:pt-28 pb-16 sm:pb-20">
+    <div className="space-y-16 sm:space-y-24 pt-24 sm:pt-32 pb-24 text-neutral-100 max-w-6xl mx-auto transition-colors duration-200">
       
-      {/* Header Banner with Executive Leadership Image */}
-      <motion.section
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
-      >
-        <div className="lg:col-span-7 space-y-5 sm:space-y-6">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-neutral-100 dark:bg-white/10 border border-neutral-200 dark:border-[#3c4043] text-neutral-800 dark:text-neutral-200 text-xs font-mono shadow-sm">
-            <BadgeCheck className="w-3.5 h-3.5 text-black dark:text-white" />
-            <span className="whitespace-nowrap">Evidence-Based Executive Profile • Scanning Dossier</span>
+      {/* =========================================================================
+          1. INTRODUCTION (Storytelling Dossier with Portrait)
+             Obsidian Black Canvas with Luminous Safety Accents
+          ========================================================================= */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="lg:col-span-7 space-y-6">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#1C6CD4]/15 border border-[#1C6CD4]/30 text-xs font-mono text-[#93c5fd] font-extrabold">
+            <BadgeCheck className="w-3.5 h-3.5 text-[#1C6CD4]" />
+            <span>Professional Dossier • Executive Profile</span>
           </div>
 
-          <div className="space-y-3">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
-              About Engr. Iyenoma ThankGod Osazee
-            </h1>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black text-white tracking-tight leading-tight">
+            A Career Built Around Safety, Responsibility and People.
+          </h1>
 
-            <p className="text-sm sm:text-base text-neutral-800 dark:text-neutral-200 font-medium leading-relaxed">
-              Advancing safer workplaces through professional HSE practice, engineering expertise, and scientific knowledge sharing.
+          <div className="space-y-4 text-sm sm:text-base text-neutral-300 leading-relaxed font-sans font-normal">
+            <p>
+              Engr. Iyenoma ThankGod Osazee is an acclaimed Nigerian health, safety, and environmental executive whose career spans over two decades at the forefront of the construction industry with Julius Berger Nigeria PLC.
+            </p>
+            <p>
+              Sitting at the rare nexus of <span className="text-white font-semibold underline decoration-[#1C6CD4] decoration-2 underline-offset-4">civil engineering and occupational hygiene</span>, he unites high-level academic research, international safety standards (ISO 45001 &amp; ISO 14001), and frontline mega-infrastructure execution across river marine bridges, highways, and high-consequence civil schemes.
+            </p>
+            <p>
+              Unlike purely bureaucratic approaches, his practice translates statutory mandates into living site cultures where workers feel protected and empowered.
             </p>
           </div>
 
-          <p className="text-xs sm:text-sm md:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
-            A distinguished Nigerian HSE executive with 22+ years at the forefront of civil engineering megaprojects with Julius Berger Nigeria PLC. Sitting at the rare intersection of civil engineering rigor and industrial hygiene, he translates statutory codes and international standards (ISO 45001 &amp; ISO 14001) into living, resilient worksite cultures.
-          </p>
+          {/* On Smaller Screens: Portrait Image comes BEFORE Dual British Postgraduate Education */}
+          <div className="block lg:hidden my-6">
+            <div className="relative rounded-3xl overflow-hidden border border-white/15 hover:border-[#1C6CD4]/60 bg-[#11141c] shadow-2xl group transition-all duration-500">
+              <div className="relative h-80 sm:h-96 w-full overflow-hidden">
+                <img
+                  src="/assets/portrait.jpg"
+                  alt="Engr. Iyenoma ThankGod Osazee"
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1C6CD4]/30 border border-[#1C6CD4]/40 text-[11px] font-mono text-[#93c5fd] font-bold mb-1.5">
+                    <ShieldCheck className="w-3 h-3 text-[#96E2A5]" />
+                    <span>CMIOSH UK #100175</span>
+                  </div>
+                  <div className="text-lg sm:text-xl font-display font-black group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
+                    Engr. Iyenoma T. Osazee
+                  </div>
+                  <div className="text-xs text-neutral-300 font-mono mt-0.5">
+                    Executive HSE Leader • Civil Engineer &amp; Author
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <div className="flex flex-wrap gap-2 pt-1 text-[11px] font-mono text-neutral-700 dark:text-neutral-300">
-            <span className="px-3 py-1 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-[#333538]">CMIOSH #100175</span>
-            <span className="px-3 py-1 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-[#333538]">Fellow ISPON (#004)</span>
-            <span className="px-3 py-1 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-[#333538]">COREN Reg. Civil Engr</span>
+          {/* Quick Academic Qualifications */}
+          <div className="pt-4 space-y-3 border-t border-white/10">
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#93c5fd] font-bold">
+              <GraduationCap className="w-4 h-4 text-[#1C6CD4]" />
+              <span>Dual British Postgraduate Education:</span>
+            </div>
+            <ul className="space-y-2 text-xs text-neutral-200 font-mono">
+              {ACADEMIC_QUALIFICATIONS.map((acad, idx) => (
+                <li key={idx} className="flex items-start gap-2.5">
+                  <span className="text-[#96E2A5] font-black text-sm leading-none">•</span>
+                  <span>
+                    <strong className="text-white font-bold">{acad.degree}</strong> — <span className="text-neutral-400">{acad.institution}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Executive Portrait / Field Leadership Showcase */}
-        <div className="lg:col-span-5 w-full">
-          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-neutral-200 dark:border-[#3c4043] bg-neutral-100 dark:bg-neutral-900 shadow-xl group">
-            <div className="relative h-64 sm:h-80 lg:h-[400px] w-full overflow-hidden">
+        {/* Executive Portrait Card with Glowing Accents (Desktop only) */}
+        <div className="hidden lg:block lg:col-span-5 w-full">
+          <div className="relative rounded-3xl overflow-hidden border border-white/15 hover:border-[#1C6CD4]/60 bg-[#11141c] shadow-2xl group transition-all duration-500 hover:shadow-[0_20px_45px_rgba(28,108,212,0.2)]">
+            <div className="relative h-80 sm:h-96 lg:h-[430px] w-full overflow-hidden">
               <img
-                src="https://images.pexels.com/photos/8961023/pexels-photo-8961023.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Executive HSE Engineering Field Directorship, Safety Harness Auditing and Civil Works Inspection"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-[0.88] contrast-[1.08]"
+                src="/assets/portrait.jpg"
+                alt="Engr. Iyenoma ThankGod Osazee"
+                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
-            </div>
-
-            <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between pointer-events-none">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white text-[11px] font-mono self-start">
-                <span className="w-2 h-2 rounded-full bg-white" />
-                <span>Julius Berger PLC Senior HSE Lead</span>
-              </div>
-
-              <div className="space-y-1 text-left">
-                <span className="text-[10px] sm:text-xs font-mono text-neutral-300 uppercase tracking-wider font-semibold">
-                  Field Directorship • 22+ Years
-                </span>
-                <h3 className="text-base sm:text-lg font-display font-bold text-white drop-shadow leading-snug">
-                  Civil Engineering Rigor &amp; Industrial Hygiene
-                </h3>
-                <p className="text-xs text-neutral-300 font-sans line-clamp-2 drop-shadow">
-                  Directing zero-harm safety regimes on bridge structures, deep marine pilings, and highway corridors.
-                </p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+              <div className="absolute bottom-5 left-5 right-5 text-white">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1C6CD4]/30 border border-[#1C6CD4]/40 text-[11px] font-mono text-[#93c5fd] font-bold mb-1.5">
+                  <ShieldCheck className="w-3 h-3 text-[#96E2A5]" />
+                  <span>CMIOSH UK #100175</span>
+                </div>
+                <div className="text-lg sm:text-xl font-display font-black group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
+                  Engr. Iyenoma T. Osazee
+                </div>
+                <div className="text-xs text-neutral-300 font-mono mt-0.5">
+                  Executive HSE Leader • Civil Engineer &amp; Author
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Visual Chunk 1: Areas of Expertise */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="space-y-6"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 dark:border-[#333538] pb-3 gap-2">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/10 text-black dark:text-white border border-neutral-200 dark:border-[#444746] flex items-center justify-center font-bold text-xs">
-              01
-            </div>
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
-              Areas of Core Expertise
-            </h2>
-          </div>
-          <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400">6 Core Disciplines</span>
+      {/* =========================================================================
+          2. VERTICAL ANIMATED CAREER TIMELINE COMPONENT
+             Features 'fade-up-section' class, interactive categories, 
+             deep-dive toggles, and rich HSE achievements
+          ========================================================================= */}
+      <CareerTimeline />
+
+      {/* =========================================================================
+          3. CORE VALUES (4 Principles, Anti-Slop Layout)
+             Obsidian Surface with Color Accent Accoutrements
+          ========================================================================= */}
+      <section className="space-y-8 pt-4">
+        <div className="space-y-2 max-w-2xl">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
+            Guiding Philosophy
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+            Core Principles of Practice
+          </h2>
+          <p className="text-sm text-neutral-300 font-sans leading-relaxed">
+            Frontline ethics, systemic accountability, and non-negotiable worker dignity governing every civil scheme.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {EXPERTISE_DOMAINS.map((domain, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {coreValues.map((val, idx) => (
             <div
               key={idx}
-              className="p-5 sm:p-6 rounded-2xl dialed-glass-card hover:border-[#a8c7fa]/40 transition-all flex flex-col justify-between space-y-3"
+              className="p-7 sm:p-8 rounded-3xl bg-[#11141c] hover:bg-[#141824] border border-white/10 hover:border-[#1C6CD4]/50 transition-all duration-300 shadow-xl space-y-3 group hover:-translate-y-1"
             >
-              <div className="space-y-2">
-                <h3 className="text-base font-display font-bold text-black dark:text-white leading-snug">
-                  {domain.title}
-                </h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
-                  {domain.desc}
-                </p>
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-white text-xs font-mono font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />
+                  Principle 0{idx + 1}
+                </span>
+                <ShieldCheck className="w-4 h-4 text-[#96E2A5]" />
               </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-neutral-100 dark:border-white/5">
-                {domain.tags.map((t, tidx) => (
-                  <span
-                    key={tidx}
-                    className="px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-white/5 text-[10px] font-mono text-neutral-700 dark:text-neutral-400 border border-neutral-200 dark:border-white/5"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
+              <h3 className="text-xl font-display font-black text-white group-hover:text-[#93c5fd] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
+                {val.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans font-medium">
+                {val.desc}
+              </p>
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      {/* Visual Chunk 2: Professional Credentials (Evidence System) */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="space-y-6"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 dark:border-[#333538] pb-3 gap-2">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/10 text-black dark:text-white border border-neutral-200 dark:border-[#444746] flex items-center justify-center font-bold text-xs">
-              02
-            </div>
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
-              Professional Credentials &amp; Certifications
+      {/* =========================================================================
+          4. COMPLETE CERTIFICATIONS & ACCREDITATIONS (Live CMS Connected)
+             Obsidian Cards with Accent Badges
+          ========================================================================= */}
+      <section className="space-y-8 pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="space-y-1">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
+              Global Standing
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+              Certifications &amp; Accreditations
             </h2>
+            <p className="text-xs sm:text-sm text-neutral-400 font-sans">
+              Complete verified registry of chartered standing, ISO lead auditor certifications, and institutional fellowships.
+            </p>
           </div>
-          
-          <button
-            onClick={onOpenCredentialsModal}
-            className="text-xs font-mono text-neutral-800 hover:text-black dark:text-neutral-200 dark:hover:text-white flex items-center gap-1 transition-colors min-h-[36px] font-semibold cursor-pointer"
-          >
-            <span>View All Registry (12+)</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </button>
+
+          <div className="flex items-center gap-2">
+            {onOpenCredentialsModal && (
+              <button
+                onClick={onOpenCredentialsModal}
+                className="px-4 py-2 rounded-full border border-white/20 text-xs font-mono font-bold text-white hover:bg-white/10 transition-colors cursor-pointer self-start sm:self-auto"
+              >
+                Inspect All
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-          {CREDENTIALS.slice(0, 3).map((cred) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {displayedCredentials.map((cred) => (
             <div
               key={cred.id}
-              className="p-5 sm:p-6 rounded-3xl dialed-glass-card hover:border-[#a8c7fa]/40 transition-all space-y-3 flex flex-col justify-between"
+              onClick={() => setSelectedCred(cred)}
+              className="p-6 rounded-3xl bg-[#11141c] hover:bg-[#151924] border border-white/10 hover:border-[#1C6CD4]/60 transition-all duration-300 shadow-xl space-y-3 cursor-pointer group hover:-translate-y-1"
             >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-white/10 text-black dark:text-white border border-neutral-200 dark:border-[#3c4043] text-xs font-mono font-bold">
-                    {cred.designation}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-black text-[#93c5fd] bg-[#1C6CD4]/15 px-2.5 py-1 rounded-full border border-[#1C6CD4]/30">
+                  {cred.designation}
+                </span>
+                {cred.year && (
+                  <span className="text-[11px] font-mono text-neutral-400 font-bold">
+                    {cred.year}
                   </span>
-                  {cred.credentialId && (
-                    <span className="text-[10px] font-mono text-neutral-500 dark:text-neutral-400">
-                      {cred.credentialId}
-                    </span>
-                  )}
-                </div>
-
-                <h3 className="text-lg font-display font-bold text-black dark:text-white leading-snug">
-                  {cred.title}
-                </h3>
-
-                <p className="text-xs text-neutral-600 dark:text-neutral-400 font-medium">
-                  {cred.issuer}
-                </p>
-
-                <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed pt-1">
-                  {cred.description}
-                </p>
+                )}
               </div>
 
-              <div className="pt-3 border-t border-neutral-100 dark:border-white/5 flex items-center justify-between text-xs font-mono text-black dark:text-white">
-                <span className="flex items-center gap-1 font-medium">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-black dark:text-white" />
-                  Active Standing
-                </span>
-                <span className="text-neutral-500">{cred.year || 'Corporate'}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* Visual Chunk 3: Professional Experience */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="space-y-6"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 dark:border-[#333538] pb-3 gap-2">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/10 text-black dark:text-white border border-neutral-200 dark:border-[#444746] flex items-center justify-center font-bold text-xs">
-              03
-            </div>
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
-              Professional Experience &amp; Directorship
-            </h2>
-          </div>
-          <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400">22+ Years Senior Tenure</span>
-        </div>
-
-        <div className="space-y-4">
-          {CAREER_HISTORY.map((item, idx) => (
-            <div
-              key={idx}
-              className="p-5 sm:p-7 md:p-8 rounded-3xl dialed-glass-card hover:border-[#a8c7fa]/40 space-y-3 transition-all"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-100 dark:border-[#333538] pb-3">
-                <div className="space-y-0.5">
-                  <h3 className="text-base sm:text-xl font-display font-bold text-black dark:text-white leading-snug">
-                    {item.role}
-                  </h3>
-                  <div className="text-xs font-mono text-neutral-700 dark:text-neutral-300 flex flex-wrap items-center gap-2">
-                    <Building2 className="w-3.5 h-3.5 text-black dark:text-white" />
-                    <span>{item.organization}</span>
-                    <span className="text-neutral-400">•</span>
-                    <MapPin className="w-3.5 h-3.5 text-black dark:text-white" />
-                    <span>{item.location}</span>
-                  </div>
-                </div>
-
-                <span className="self-start sm:self-auto px-3 py-1 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-[#333538] text-neutral-800 dark:text-neutral-300 font-mono text-xs">
-                  {item.period}
-                </span>
-              </div>
-
-              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
-                {item.scope}
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                {item.highlights.map((h, hidx) => (
-                  <div key={hidx} className="flex items-start space-x-2 text-xs text-neutral-700 dark:text-neutral-300">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-black dark:text-white shrink-0 mt-0.5" />
-                    <span>{h}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* Visual Chunk 4: Education & Academic Rigor */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="space-y-6"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 dark:border-[#333538] pb-3 gap-2">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/10 text-black dark:text-white border border-neutral-200 dark:border-[#444746] flex items-center justify-center font-bold text-xs">
-              04
-            </div>
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
-              Education &amp; Academic Rigor
-            </h2>
-          </div>
-          <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400">Dual Master of Science</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-          {ACADEMIC_QUALIFICATIONS.map((acad, idx) => (
-            <div
-              key={idx}
-              className="p-5 sm:p-6 rounded-3xl dialed-glass-card hover:border-[#a8c7fa]/40 space-y-3 flex flex-col justify-between transition-all"
-            >
-              <div className="space-y-2">
-                <span className="px-2.5 py-0.5 rounded-full dialed-glass-pill text-[10px] font-mono uppercase font-semibold text-[#a8c7fa]">
-                  {acad.badge}
-                </span>
-
-                <h3 className="text-base font-display font-bold text-white leading-snug">
-                  {acad.degree}
-                </h3>
-
-                <p className="text-xs text-[#c4c7c5] font-mono font-medium">
-                  {acad.institution}
-                </p>
-
-                <p className="text-xs text-[#8e918f] leading-relaxed pt-1">
-                  {acad.detail}
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-white/5 text-xs font-mono text-[#8e918f] flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[#a8c7fa]" />
-                <span>{acad.period}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* Visual Chunk 5: Professional Memberships & Institutional Governance */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="space-y-6"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 dark:border-[#333538] pb-3 gap-2">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl dialed-glass-pill text-white flex items-center justify-center font-bold text-xs">
-              05
-            </div>
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
-              Institutional Governance &amp; Fellowships
-            </h2>
-          </div>
-          <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400">Statutory &amp; International</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-          {LEADERSHIP_ROLES.slice(0, 4).map((role, idx) => (
-            <div
-              key={idx}
-              className="p-5 sm:p-6 rounded-2xl dialed-glass-card hover:border-[#a8c7fa]/40 space-y-2 transition-all"
-            >
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-white font-bold">{role.period}</span>
-                <span className="px-2 py-0.5 rounded dialed-glass-pill text-[#a8c7fa] uppercase text-[10px]">
-                  {role.category}
-                </span>
-              </div>
-
-              <h3 className="text-base font-display font-bold text-white leading-snug">
-                {role.role}
+              <h3 className="text-base sm:text-lg font-display font-black text-white group-hover:text-[#93c5fd] group-hover:underline decoration-[#1C6CD4] decoration-2 underline-offset-4 transition-all">
+                {cred.title}
               </h3>
-
-              <p className="text-xs text-[#a8c7fa] font-medium">
-                {role.organization}
+              
+              <p className="text-xs text-[#96E2A5] font-mono font-bold">
+                {cred.issuer}
               </p>
 
-              <p className="text-xs text-[#c4c7c5] leading-relaxed pt-1">
-                {role.impactSummary}
+              <p className="text-xs text-neutral-300 leading-relaxed font-sans font-medium line-clamp-3">
+                {cred.description}
               </p>
+
+              {cred.credentialId && (
+                <div className="text-[10px] font-mono text-neutral-400 pt-2 border-t border-white/5 font-semibold">
+                  Ref: {cred.credentialId}
+                </div>
+              )}
             </div>
           ))}
         </div>
-      </motion.section>
 
-      {/* Bottom Action Card */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="p-6 sm:p-10 rounded-3xl dialed-glass-card-elevated border border-white/20 flex flex-col md:flex-row items-center justify-between gap-6"
-      >
-        <div className="space-y-2 max-w-xl text-center md:text-left">
-          <h3 className="text-xl sm:text-2xl font-display font-bold text-white leading-snug">
-            Engage Engr. Osazee for Strategic Governance
-          </h3>
-          <p className="text-xs sm:text-sm text-[#c4c7c5] leading-relaxed">
-            Available for executive safety directorship, high-consequence project advisory, and international keynote presentations.
-          </p>
-        </div>
+        {liveCredentials.length > 6 && (
+          <div className="text-center pt-2">
+            <button
+              onClick={() => setShowAllCreds(!showAllCreds)}
+              className="px-6 py-2.5 rounded-full border border-white/20 hover:border-[#1C6CD4] text-xs font-mono font-bold text-white hover:text-[#93c5fd] transition-all cursor-pointer inline-flex items-center gap-2 bg-white/5 shadow-sm"
+            >
+              <span>{showAllCreds ? 'Show Fewer Credentials' : `View All ${liveCredentials.length} Credentials`}</span>
+              {showAllCreds ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+          </div>
+        )}
+      </section>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full md:w-auto">
-          <button
-            onClick={onOpenBookingModal}
-            className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white hover:bg-[#f0f4f9] text-[#131314] font-bold text-xs transition-all shadow-md min-h-[44px] flex items-center justify-center cursor-pointer"
+      {/* Credential Detail Modal */}
+      <AnimatePresence>
+        {selectedCred && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            onClick={() => setSelectedCred(null)}
           >
-            Book Strategic Consultation
-          </button>
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              className="w-full max-w-lg rounded-3xl p-8 space-y-5 bg-[#141824] border border-white/20 shadow-2xl text-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-xs font-mono text-[#93c5fd] bg-[#1C6CD4]/20 px-2.5 py-0.5 rounded-full border border-[#1C6CD4]/40 font-bold">
+                    {selectedCred.designation}
+                  </span>
+                  <h3 className="text-xl font-display font-black text-white mt-2 leading-snug">
+                    {selectedCred.title}
+                  </h3>
+                  <p className="text-xs font-mono text-[#96E2A5] mt-1 font-bold">
+                    {selectedCred.issuer}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedCred(null)}
+                  className="text-neutral-400 hover:text-white p-1 cursor-pointer font-bold text-lg"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-sans font-medium">
+                {selectedCred.description}
+              </p>
+
+              {selectedCred.credentialId && (
+                <div className="p-3 rounded-xl bg-black/40 border border-white/10 text-xs font-mono text-neutral-300 font-bold">
+                  Credential ID: {selectedCred.credentialId}
+                </div>
+              )}
+
+              <div className="pt-2 flex justify-end">
+                <button
+                  onClick={() => setSelectedCred(null)}
+                  className="px-5 py-2 rounded-full bg-[#1C6CD4] text-white text-xs font-bold hover:bg-[#155ab3] cursor-pointer shadow-md"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* =========================================================================
+          5. BOTTOM INVITATION CTA
+             Obsidian Surface with Blue & Green Gradient Accents
+          ========================================================================= */}
+      <section className="p-8 sm:p-12 md:p-14 rounded-3xl bg-gradient-to-br from-[#11141c] to-[#161c28] border border-white/15 hover:border-[#1C6CD4]/50 transition-all text-white text-center shadow-2xl space-y-5 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#1C6CD4]/10 rounded-full blur-3xl pointer-events-none group-hover:bg-[#1C6CD4]/20 transition-all" />
+
+        <h2 className="text-2xl sm:text-4xl font-display font-black text-white tracking-tight">
+          Engage for Executive Safety Directorship
+        </h2>
+        <p className="text-xs sm:text-base text-neutral-300 max-w-xl mx-auto font-sans leading-relaxed">
+          Available for corporate safety governance, high-consequence infrastructure bid advisory, and international keynote presentations.
+        </p>
+        <div className="pt-2 flex justify-center gap-3">
           <button
-            onClick={() => onSelectPage('books')}
-            className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#282a2c] hover:bg-[#333538] text-white font-medium text-xs transition-colors border border-[#3c4043] min-h-[44px] flex items-center justify-center cursor-pointer"
+            onClick={() => onSelectPage('contact')}
+            className="px-8 py-3.5 rounded-full font-black text-xs bg-[#1C6CD4] hover:bg-[#1855a8] text-white transition-all flex items-center gap-2 cursor-pointer shadow-lg hover:scale-105"
           >
-            View Published Books &rarr;
+            <span>Let&apos;s Connect</span>
+            <ArrowRight className="w-4 h-4 text-white" />
           </button>
         </div>
-      </motion.section>
+      </section>
+
     </div>
   );
 };

@@ -203,7 +203,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   >
                     <option value="executive_consultation">Mega-Infrastructure HSE Advisory</option>
                     <option value="iso_diagnostic">ISO 45001 / 14001 Audit Diagnostic</option>
-                    <option value="wbgt_heat">Thermal Stress &amp; WBGT Protocols</option>
+                    <option value="occupational_health">Occupational Health &amp; Climate Ergonomics</option>
                     <option value="sme_framework">Construction SME Safety Framework</option>
                     <option value="keynote">Keynote / Conference Speaking</option>
                     <option value="cmiosh_mentorship">CMIOSH Peer Review Mentorship</option>

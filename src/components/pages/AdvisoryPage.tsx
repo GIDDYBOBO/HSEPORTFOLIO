@@ -38,7 +38,7 @@ export const AdvisoryPage: React.FC = () => {
     {
       id: 'keynote_speaking',
       title: 'Keynote Address & Executive Panels',
-      desc: 'Conference keynotes on Just Safety Culture, Thermal Hazards (WBGT), and Construction SME resilience.'
+      desc: 'Conference keynotes on Just Safety Culture, Bioclimatic Thermal Hazards, and Construction SME resilience.'
     },
     {
       id: 'sme_capacity',
@@ -90,7 +90,7 @@ export const AdvisoryPage: React.FC = () => {
       >
         <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-neutral-100 dark:bg-white/10 border border-neutral-200 dark:border-[#333538] text-neutral-800 dark:text-neutral-200 text-xs font-mono">
           <Mail className="w-3.5 h-3.5 text-black dark:text-white" />
-          <span>Strategic Engagement & Direct Liaison</span>
+          <span>Executive Consultation &amp; Direct Liaison</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-display font-bold text-black dark:text-white tracking-tight leading-snug sm:leading-tight">
           Advisory Services & Professional Inquiries

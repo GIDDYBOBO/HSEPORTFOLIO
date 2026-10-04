@@ -66,7 +66,7 @@ const INITIAL_MESSAGES: InquiryMessage[] = [
     phone: '+234 802 344 9901',
     segment: 'book_enquiry',
     timeframe: 'q1_q2',
-    message: 'Seeking institutional bulk access and training licenses for the WBGT Bioclimatic Thermal Hazards Monograph for 45 site engineers.',
+    message: 'Seeking institutional bulk access and training licenses for the Bioclimatic Thermal Hazards & Ergonomics Monograph for 45 site engineers.',
     status: 'new'
   },
   {
@@ -237,7 +237,7 @@ export const ClientAdminModal: React.FC<ClientAdminModalProps> = ({
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
                       isActive 
                         ? 'bg-black text-white font-bold' 
-                        : (tab.badgeColor ? `${tab.badgeColor} text-white font-bold animate-pulse` : 'bg-white/10 text-neutral-300')
+                        : (tab.badgeColor ? `${tab.badgeColor} text-white font-bold` : 'bg-white/10 text-neutral-300')
                     }`}>
                       {tab.count}
                     </span>

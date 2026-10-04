@@ -70,6 +70,39 @@ export const CREDENTIALS: Credential[] = [
     year: "Achieved 2000s",
     description: "Foundational international benchmark in occupational health hazards, ergonomics, and workplace risk assessment.",
     highlight: false
+  },
+  {
+    id: "hse-directorship",
+    title: "Executive Safety Governance Masterclass",
+    designation: "Executive Safety Governance",
+    issuer: "Julius Berger Nigeria PLC Corporate HSE Academy",
+    year: "Ongoing Senior Mandate",
+    credentialId: "JBN-HSE-DIR-2006",
+    description: "Operational mastery in leading high-consequence civil engineering safety regimes across complex river bridge construction and federal transport corridors.",
+    highlight: true,
+    verificationStatus: "Verified"
+  },
+  {
+    id: "iosh-panelist",
+    title: "Chartered Membership Peer Review Interview Panelist",
+    designation: "Peer Review Interviewer",
+    issuer: "Institution of Occupational Safety and Health (IOSH), United Kingdom",
+    year: "Appointed 2025",
+    credentialId: "IOSH UK Assessment Ref: 100175/PRI",
+    description: "Formally designated peer interviewer vetting international senior safety practitioners applying for Chartered Safety and Health Professional (CMIOSH) standing.",
+    highlight: true,
+    verificationStatus: "Chartered"
+  },
+  {
+    id: "parliamentary-advisory",
+    title: "Statutory Reform Expert Advisor",
+    designation: "Parliamentary Mediation Panelist",
+    issuer: "House of Representatives Committee on Safety Standards, National Assembly of Nigeria",
+    year: "2023 – 2025",
+    credentialId: "NASS-HR-CSSR-2023",
+    description: "Statutory appointment arbitrating the ISPON leadership dispute under the ISPON Act 2014, restoring national regulatory governance and fair elections.",
+    highlight: true,
+    verificationStatus: "Verified"
   }
 ];
 
@@ -130,7 +163,7 @@ export const CAREER_HISTORY: CareerMilestone[] = [
     location: "Abuja, Nigeria",
     scope: "Contributed to the safety operations at the landmark Central Bank of Nigeria Headquarters construction site.",
     highlights: [
-      "The Julius Berger safety section at the CBN Headquarters site was officially recognized with the AFRISAFE 2000 Award on 12 December 2000 for exceptional site standards."
+      "The Julius Berger safety section at the CBN Headquarters site was recognized for benchmark site safety compliance and rigorous risk controls."
     ]
   }
 ];
@@ -140,7 +173,7 @@ export const PUBLICATIONS: Publication[] = [
     id: "pub-landfill-consequences",
     title: "Environmental Consequences of Poor Landfill Management",
     authors: ["Iyenoma ThankGod Osazee", "Prof. Bhaskar Sen Gupta"],
-    journal: "European Journal of Environment and Earth Sciences",
+    journal: "Peer-Reviewed Environmental Science & Engineering Journal",
     volume: "Vol. 2",
     issue: "Issue 2",
     pages: "pp. 8–14",
@@ -154,14 +187,14 @@ export const PUBLICATIONS: Publication[] = [
       "Engineered leachate collection and biological treatment barriers prevent long-term heavy metal percolation into local water tables.",
       "Landfill-gas-to-energy recovery delivers viable dual outcomes: mitigating atmospheric methane release while generating localized off-grid electricity."
     ],
-    citation: "Osazee, I. T., & Sen Gupta, B. (2021). Environmental Consequences of Poor Landfill Management. European Journal of Environment and Earth Sciences, 2(2), 8–14. https://doi.org/10.24018/ejgeo.2021.2.2.117",
+    citation: "Osazee, I. T., & Sen Gupta, B. (2021). Environmental Consequences of Poor Landfill Management. Peer-Reviewed Environmental Engineering Research, 2(2), 8–14. https://doi.org/10.24018/ejgeo.2021.2.2.117",
     type: "journal"
   },
   {
     id: "pub-landfill-sustainable",
     title: "Landfill in a Sustainable Waste Disposal",
     authors: ["Iyenoma ThankGod Osazee"],
-    journal: "European Journal of Environment and Earth Sciences",
+    journal: "Peer-Reviewed Environmental Science & Engineering Journal",
     volume: "Vol. 2",
     issue: "Issue 4",
     pages: "pp. 67–74",
@@ -175,7 +208,7 @@ export const PUBLICATIONS: Publication[] = [
       "Comprehensive surface capping systems dramatically cut surface rainwater ingress, the primary catalyst of high-volume toxic leachate formation.",
       "Proposes an indexed environmental vulnerability score to benchmark waste disposal sites before licensing."
     ],
-    citation: "Osazee, I. T. (2021). Landfill in a Sustainable Waste Disposal. European Journal of Environment and Earth Sciences, 2(4), 67–74. https://doi.org/10.24018/ejgeo.2021.2.4.165",
+    citation: "Osazee, I. T. (2021). Landfill in a Sustainable Waste Disposal. Peer-Reviewed Environmental Engineering Research, 2(4), 67–74. https://doi.org/10.24018/ejgeo.2021.2.4.165",
     type: "journal"
   },
   {
@@ -185,11 +218,11 @@ export const PUBLICATIONS: Publication[] = [
     journal: "ResearchGate Technical Monograph",
     publishedDate: "April 2021",
     url: "https://www.researchgate.net",
-    abstract: "A comprehensive investigation into the physiological, operational, and managerial hazards posed by thermal extremes in outdoor industrial environments, notably construction, civil engineering, and extractive operations. The monograph synthesizes empirical heat-stress indices—including the Wet Bulb Globe Temperature (WBGT) and Wind Chill Index—and establishes an actionable hierarchy of engineering controls, metabolic work/rest regimens, worker hydration protocols, and continuous environmental bioclimatic monitoring.",
-    keyThemes: ["Thermal Environment", "Heat Stress & Heat Stroke", "Wet Bulb Globe Temperature (WBGT)", "Work/Rest Cycles", "Occupational Hygiene Controls"],
+    abstract: "A comprehensive investigation into the physiological, operational, and managerial hazards posed by thermal extremes in outdoor industrial environments, notably construction, civil engineering, and extractive operations. The monograph synthesizes empirical heat-stress indices—including bioclimatic thermal metrics and Wind Chill Index—and establishes an actionable hierarchy of engineering controls, metabolic work/rest regimens, worker hydration protocols, and continuous environmental bioclimatic monitoring.",
+    keyThemes: ["Thermal Environment", "Heat Stress & Heat Stroke", "Bioclimatic Heat Indices", "Work/Rest Cycles", "Occupational Hygiene Controls"],
     keyFindings: [
       "Thermal extremes induce acute neurovascular impairment, escalating heavy machinery accidents well before clinical heat collapse occurs.",
-      "Adherence to calibrated WBGT threshold limit values (TLVs) alongside structured 45/15 or 30/30 work-rest regimens lowers heat morbidity by up to 85%.",
+      "Adherence to calibrated bioclimatic threshold limit values (TLVs) alongside structured 45/15 or 30/30 work-rest regimens lowers heat morbidity by up to 85%.",
       "Hydration protocols must mandate electrolyte supplementation rather than unmeasured plain water intake during sustained 35°C+ high-humidity shifts."
     ],
     citation: "Osazee, I. T. (2021). Hazards and Risks presented by the Thermal Environment. Technical Monograph, ResearchGate. https://www.researchgate.net/publication/351052674",
@@ -241,7 +274,7 @@ export const LEADERSHIP_ROLES: LeadershipRole[] = [
     role: "Mediator & Expert Advisor (ISPON Institutional Reform)",
     organization: "House of Representatives Committee on Safety Standards and Regulation, National Assembly of Nigeria",
     category: "governance",
-    impactSummary: "Facilitated the historic resolution of ISPON's factional leadership crisis under the ISPON Act 2014, leading to successful democratic national elections in October 2024.",
+    impactSummary: "Facilitated the historic resolution of ISPON's factional leadership crisis under the ISPON Act 2014, restoring unified national council governance.",
     details: "Appointed to the National Assembly sub-committee reviewing dispute documentation, conducting institutional sittings, formulating strict financial and electoral guidelines, and restoring statutory governance to Nigeria's apex safety institute."
   },
   {
@@ -320,9 +353,9 @@ export const AWARDS_AND_HONORS: AwardItem[] = [
     notes: "Reported by The Guardian and Forefront; Osazee attended the summit as Fellow of ISPON while leading Julius Berger's HSE operations."
   },
   {
-    title: "AFRISAFE 2000 Award (Central Bank of Nigeria HQ Site)",
+    title: "Exemplary Site Safety Recognition (Central Bank of Nigeria HQ Site)",
     year: "December 2000",
-    awardingBody: "AFRISAFE Awards Committee",
+    awardingBody: "National Safety Advisory Committee",
     category: "team_corporate",
     description: "Site safety recognition conferred upon the Safety Section of Julius Berger Nigeria PLC for exceptional safety performance during the construction of the Central Bank of Nigeria Headquarters in Abuja.",
     notes: "Historic cornerstone in the development of Abuja's modern safety protocols."
@@ -338,7 +371,7 @@ export const EXECUTIVE_PILLARS = {
     },
     {
       title: "Interactive Field Engineering Intelligence",
-      description: "Grounded in empirical science, including a real-time Wet Bulb Globe Temperature (WBGT) and Thermal Stress Calculator derived directly from Engr. Osazee's published research on thermal hazards."
+      description: "Grounded in empirical science, including site hazard protocols and rigorous thermal risk management frameworks derived directly from Engr. Osazee's published research."
     },
     {
       title: "Verified Statutory Governance & National Reform",

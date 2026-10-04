@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * MorphBackground
- * DialedWeb-style liquid morphing engine & ambient glass canvas.
- * Renders organic, animated gradient orbs and a reactive cursor glow
- * that continuously shine, deform, and refract through frosted glass cards.
+ * Luminous safety engineering canvas with organic morphing ambient gradients
+ * and a reactive cursor glow.
+ * Supports crisp white (#FFFFFF / #f8fafc) safety-grade aesthetic with
+ * deep trust blues (#142C5C, #1C6CD4) and calming greens (#154E20, #96E2A5).
  */
 export const MorphBackground: React.FC = () => {
+  const { theme } = useTheme();
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
   const [isTouch, setIsTouch] = useState(false);
 
@@ -48,70 +51,78 @@ export const MorphBackground: React.FC = () => {
     };
   }, []);
 
+  const isLight = theme === 'light';
+
   return (
     <div 
       aria-hidden="true" 
-      className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-[#0e0f12]"
+      className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-[#0a0a0c]"
     >
-      {/* Subtle Micro-Grid Dot Matrix for enhanced glass refraction */}
-      <div className="absolute inset-0 dialed-grid-pattern opacity-50" />
-
-      {/* =========================================================================
-          Layer A: Ambient Deep Glow Meshes (Rich saturated morphs)
-         ========================================================================= */}
-
-      {/* Morphing Liquid Orb 1: Hero Top Center (Electric Royal Blue + Purple + Cyan) */}
+      {/* Precision Blueprint / Technical Micro-Grid Pattern */}
       <div 
-        className="absolute -top-[12%] left-1/2 -translate-x-1/2 w-[650px] sm:w-[900px] h-[650px] sm:h-[900px] bg-gradient-to-tr from-[#1d4ed8]/70 via-[#7c3aed]/65 to-[#06b6d4]/60 blur-[55px] sm:blur-[70px] animate-morph-orb-1 opacity-85" 
+        className={`absolute inset-0 dialed-grid-pattern transition-opacity duration-500 ${
+          isLight ? 'opacity-70' : 'opacity-40'
+        }`} 
       />
 
-      {/* Morphing Liquid Orb 2: Middle Right (Cyber Violet + Indigo + Sky Blue) */}
+      {/* Layer A: Trust & Security Navy (#142C5C) + Ocean Blue (#1C6CD4) Ambient Mesh */}
       <div 
-        className="absolute top-[32%] -right-[12%] sm:-right-[8%] w-[550px] sm:w-[800px] h-[550px] sm:h-[800px] bg-gradient-to-bl from-[#9333ea]/70 via-[#4f46e5]/65 to-[#38bdf8]/50 blur-[55px] sm:blur-[75px] animate-morph-orb-2 opacity-80" 
+        className={`absolute -top-[20%] -left-[10%] w-[58vw] h-[58vw] max-w-[900px] max-h-[900px] rounded-full blur-[110px] animate-morph-slow pointer-events-none transition-all duration-700 ${
+          isLight
+            ? 'bg-gradient-to-br from-[#1C6CD4]/15 via-[#142C5C]/08 to-transparent'
+            : 'bg-gradient-to-br from-[#142C5C]/28 via-[#1C6CD4]/18 to-transparent'
+        }`} 
       />
 
-      {/* Morphing Liquid Orb 3: Middle Left (Azure Blue + Cyan + Electric Teal) */}
+      {/* Layer B: Safety & Environmental Well-being Emerald (#154E20) + Mint (#96E2A5) Mesh */}
       <div 
-        className="absolute top-[58%] -left-[12%] sm:-left-[8%] w-[520px] sm:w-[750px] h-[520px] sm:h-[750px] bg-gradient-to-br from-[#0284c7]/65 via-[#2563eb]/70 to-[#a855f7]/55 blur-[50px] sm:blur-[70px] animate-morph-orb-3 opacity-80" 
+        className={`absolute top-[18%] -right-[12%] w-[62vw] h-[62vw] max-w-[920px] max-h-[920px] rounded-full blur-[130px] animate-morph-reverse pointer-events-none transition-all duration-700 ${
+          isLight
+            ? 'bg-gradient-to-bl from-[#96E2A5]/35 via-[#154E20]/12 to-transparent'
+            : 'bg-gradient-to-bl from-[#154E20]/22 via-[#96E2A5]/10 to-transparent'
+        }`} 
       />
 
-      {/* Morphing Liquid Orb 4: Bottom / CTA (Vibrant Purple + Amber Spark + Blue) */}
+      {/* Layer C: Deep Trust Navy Anchor Mesh / Subtle Warm Horizon */}
       <div 
-        className="absolute -bottom-[10%] left-1/2 -translate-x-1/2 w-[600px] sm:w-[850px] h-[600px] sm:h-[850px] bg-gradient-to-t from-[#7c3aed]/75 via-[#f59e0b]/30 to-[#2563eb]/50 blur-[55px] sm:blur-[75px] animate-morph-orb-1 opacity-80" 
+        className={`absolute -bottom-[20%] left-[15%] w-[52vw] h-[52vw] max-w-[820px] max-h-[820px] rounded-full blur-[120px] animate-morph-slow pointer-events-none transition-all duration-700 ${
+          isLight
+            ? 'bg-gradient-to-tr from-[#142C5C]/08 via-[#1C6CD4]/10 to-transparent'
+            : 'bg-gradient-to-tr from-[#142C5C]/25 via-[#1C6CD4]/14 to-transparent'
+        }`} 
       />
 
-      {/* =========================================================================
-          Layer B: Crisp Organic Fluid Morph Pods (Distinct liquid silhouettes)
-         ========================================================================= */}
-
-      {/* Crisp Morph Pod 1: Floating in Upper Hero */}
+      {/* Layer D: Subtle Golden Glow / Solar Irradiance for visual interest */}
       <div 
-        className="absolute top-[8%] left-[15%] sm:left-[22%] w-[260px] sm:w-[360px] h-[260px] sm:h-[360px] bg-gradient-to-r from-[#2563eb]/40 via-[#8b5cf6]/35 to-[#00f2fe]/40 blur-[24px] sm:blur-[32px] animate-morph-orb-2 opacity-65"
+        className={`absolute top-[45%] left-[35%] w-[38vw] h-[38vw] max-w-[600px] max-h-[600px] rounded-full blur-[140px] pointer-events-none transition-all duration-700 ${
+          isLight
+            ? 'bg-amber-100/40'
+            : 'bg-amber-900/10'
+        }`} 
       />
 
-      {/* Crisp Morph Pod 2: Floating in Right Mid */}
-      <div 
-        className="absolute top-[45%] right-[10%] sm:right-[18%] w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] bg-gradient-to-l from-[#a855f7]/45 via-[#3b82f6]/40 to-[#06b6d4]/35 blur-[28px] sm:blur-[36px] animate-morph-orb-3 opacity-60"
-      />
-
-      {/* Crisp Morph Pod 3: Floating in Lower Section */}
-      <div 
-        className="absolute top-[75%] left-[12%] sm:left-[20%] w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-gradient-to-tr from-[#6366f1]/40 via-[#ec4899]/30 to-[#0284c7]/40 blur-[26px] sm:blur-[34px] animate-morph-orb-1 opacity-60"
-      />
-
-      {/* =========================================================================
-          Layer C: Interactive Cursor Liquid Follower Glow (Desktop only)
-         ========================================================================= */}
-      {!isTouch && mousePos && (
-        <div 
-          className="absolute w-[500px] h-[500px] rounded-full blur-[70px] transition-opacity duration-300 pointer-events-none opacity-55"
+      {/* Reactive Mouse Spotlight Mesh: Calibrated Ocean Blue + Mint glow */}
+      {mousePos && !isTouch && (
+        <div
+          className="absolute -translate-x-1/2 -translate-y-1/2 w-[540px] h-[540px] rounded-full pointer-events-none transition-opacity duration-500 ease-out"
           style={{
-            transform: `translate3d(${mousePos.x - 250}px, ${mousePos.y - 250}px, 0)`,
-            background: 'radial-gradient(circle, rgba(147, 197, 253, 0.45) 0%, rgba(59, 130, 246, 0.28) 30%, rgba(139, 92, 246, 0.18) 60%, transparent 80%)',
-            willChange: 'transform',
+            left: `${mousePos.x}px`,
+            top: `${mousePos.y}px`,
+            background: isLight
+              ? 'radial-gradient(circle, rgba(28, 108, 212, 0.12) 0%, rgba(150, 226, 165, 0.12) 40%, rgba(248, 250, 252, 0) 70%)'
+              : 'radial-gradient(circle, rgba(28, 108, 212, 0.16) 0%, rgba(21, 78, 32, 0.08) 45%, rgba(12, 16, 23, 0) 70%)',
           }}
         />
       )}
+
+      {/* Glass Frost Shading & Ambient Vignette Layer */}
+      <div 
+        className={`absolute inset-0 pointer-events-none transition-all duration-500 ${
+          isLight
+            ? 'bg-gradient-to-b from-[#f8fafc]/20 via-transparent to-[#f8fafc]/70'
+            : 'bg-gradient-to-b from-[#0c1017]/40 via-transparent to-[#0c1017]/85'
+        }`} 
+      />
     </div>
   );
 };

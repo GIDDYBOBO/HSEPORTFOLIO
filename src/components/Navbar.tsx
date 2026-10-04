@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState } from 'react';
 import { PageId } from '../types';
-import { useTheme } from '../context/ThemeContext';
 import { 
   ArrowUpRight, 
   Menu, 
   X, 
   ShieldCheck, 
-  Award, 
-  Briefcase, 
-  FileText, 
-  PhoneCall,
+  BookOpen, 
+  User, 
+  Briefcase,
   Layers,
-  Calendar,
-  ChevronRight,
-  BookOpen,
-  User,
-  GraduationCap
+  Award,
+  PhoneCall
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -30,402 +24,190 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectPage,
   onOpenBookingModal
 }) => {
-  const { theme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Prevent background scrolling and handle Escape key when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          setMobileMenuOpen(false);
-        }
-      };
-      window.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.body.style.overflow = '';
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    } else {
-      document.body.style.overflow = '';
-    }
-  }, [mobileMenuOpen]);
-
-  const mobileNavItems = [
-    {
-      id: 'overview' as PageId,
-      number: '01',
-      label: 'Overview',
-      tag: 'Executive Portfolio',
-      desc: 'HSE Architecture & Corporate Governance',
-      icon: <ShieldCheck className="w-5 h-5" />
-    },
-    {
-      id: 'about' as PageId,
-      number: '02',
-      label: 'About & Pedigree',
-      tag: 'Dual Master’s • FISPON',
-      desc: '22+ Years Leadership Dossier & Engineering Background',
-      icon: <GraduationCap className="w-5 h-5" />
-    },
-    {
-      id: 'works' as PageId,
-      number: '03',
-      label: 'Works',
-      tag: 'Megaprojects',
-      desc: 'Chronological Timeline & River Marine Schemes',
-      icon: <Briefcase className="w-5 h-5" />
-    },
-    {
-      id: 'books' as PageId,
-      number: '04',
-      label: 'Books & Research',
-      tag: 'Scientific Authorship',
-      desc: 'Thermal Ergonomics Monographs & Landfill Kinetics',
-      icon: <BookOpen className="w-5 h-5" />
-    },
-    {
-      id: 'services' as PageId,
-      number: '05',
-      label: 'Services',
-      tag: 'Advisory Practice',
-      desc: 'Statutory Audits, Risk Mitigation & High-Consequence HSE',
-      icon: <Layers className="w-5 h-5" />
-    },
-    {
-      id: 'publications' as PageId,
-      number: '06',
-      label: 'WBGT Calculator',
-      tag: 'Science & Modeling',
-      desc: 'Empirical Wet Bulb Heat Stress Modeling & Case Papers',
-      icon: <FileText className="w-5 h-5" />
-    },
-    {
-      id: 'leadership' as PageId,
-      number: '07',
-      label: 'Leadership',
-      tag: 'Honors & Fellowships',
-      desc: 'CMIOSH UK Chartered Status & Global Keynotes',
-      icon: <Award className="w-5 h-5" />
-    }
+  // Original HSE-Port Navigation suite
+  const navItems: { id: PageId; label: string; number: string; icon: React.ReactNode }[] = [
+    { id: 'home', label: 'Home', number: '01', icon: <ShieldCheck className="w-4 h-4" /> },
+    { id: 'about', label: 'About', number: '02', icon: <User className="w-4 h-4" /> },
+    { id: 'works', label: 'Works', number: '03', icon: <Briefcase className="w-4 h-4" /> },
+    { id: 'books', label: 'Books', number: '04', icon: <BookOpen className="w-4 h-4" /> },
+    { id: 'services', label: 'Services', number: '05', icon: <Layers className="w-4 h-4" /> },
+    { id: 'leadership', label: 'Leadership', number: '06', icon: <Award className="w-4 h-4" /> },
+    { id: 'contact', label: 'Contact', number: '07', icon: <PhoneCall className="w-4 h-4" /> }
   ];
 
-  const handleNavClick = (id: PageId, anchorId?: string) => {
+  const isNavActive = (id: PageId) => {
+    if (currentPage === id) return true;
+    if (currentPage === 'overview' && id === 'home') return true;
+    if (currentPage === 'publications' && id === 'books') return true;
+    if (currentPage === 'advisory' && id === 'services') return true;
+    return false;
+  };
+
+  const handleNavClick = (id: PageId) => {
     onSelectPage(id);
     setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    if (anchorId) {
-      setTimeout(() => {
-        const el = document.getElementById(anchorId);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }, 50);
+  const handleConnectClick = () => {
+    if (onOpenBookingModal) {
+      onOpenBookingModal();
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      handleNavClick('services');
     }
   };
 
   return (
-    <>
-      {/* Floating Pill Capsule Navbar */}
-      <header className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-5xl">
-        <div className="flex items-center justify-between px-3 sm:px-5 py-2.5 rounded-full backdrop-blur-2xl border border-white/20 bg-white/[0.07] shadow-[0_20px_50px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.35)] text-[#e3e3e3] transition-all">
-          
-          {/* Logo / Monogram */}
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+        <nav 
+          aria-label="Main Navigation"
+          className="dialed-glass-nav rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between border border-[#1C6CD4]/30 shadow-xl backdrop-blur-xl bg-[#0a0a0c]/80"
+        >
+          {/* Brand Mark & Title */}
           <button
-            id="nav-brand-logo"
-            onClick={() => handleNavClick('overview')}
-            className="flex items-center space-x-2.5 group text-left focus:outline-none cursor-pointer"
+            onClick={() => handleNavClick('home')}
+            className="flex items-center space-x-3 group cursor-pointer focus:outline-none"
           >
-            <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs tracking-tighter bg-white text-[#131314] group-hover:bg-[#f0f4f9] transition-colors shadow-sm">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm tracking-wider select-none shrink-0 transition-transform group-hover:scale-105 bg-gradient-to-br from-[#1C6CD4] to-[#142C5C] text-white shadow-md shadow-[#142C5C]/30 border border-[#1C6CD4]/40">
               TG
             </div>
-            <div className="flex flex-col">
-              <span className="font-display font-bold text-sm sm:text-base tracking-tight text-white group-hover:text-neutral-200 transition-colors flex items-center gap-1.5">
-                OSAZEE
-                <span className="w-1.5 h-1.5 rounded-full bg-white" />
+            <div className="text-left flex flex-col justify-center">
+              <span className="text-xs sm:text-sm font-display font-black tracking-tight text-white group-hover:text-[#93c5fd] transition-colors">
+                Engr. Iyenoma ThankGod Osazee
               </span>
-              <span className="text-[10px] font-mono tracking-wider uppercase -mt-0.5 text-[#a8abb0]">
-                CMIOSH • Julius Berger
-              </span>
+              <div className="flex items-center space-x-1.5 text-[10px] sm:text-[11px] font-mono leading-none text-[#94a3b8] font-semibold">
+                <span className="text-[#96E2A5] font-bold">CMIOSH</span>
+                <span className="opacity-40">•</span>
+                <span>Civil Engineer</span>
+                <span className="opacity-40">•</span>
+                <span>HSE Leader</span>
+              </div>
             </div>
           </button>
 
-          {/* Desktop Center Pill Links */}
-          <nav className="hidden md:flex items-center space-x-1 p-1 rounded-full border border-white/10 bg-[#131314]/75 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]">
-            <button
-              id="nav-link-overview"
-              onClick={() => handleNavClick('overview')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                currentPage === 'overview'
-                  ? 'bg-[#282a2c] text-white font-semibold shadow-xs border border-[#3c4043]'
-                  : 'text-[#c4c7c5] hover:text-white hover:bg-[#282a2c]/60'
-              }`}
-            >
-              Overview
-            </button>
+          {/* Desktop Navigation Links (HSE-Port Signature Suite) */}
+          <div className="hidden lg:flex items-center space-x-1 font-mono text-xs">
+            {navItems.map((item) => {
+              const active = isNavActive(item.id);
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer font-bold ${
+                    active
+                      ? 'text-white bg-[#1C6CD4] border border-[#1C6CD4]/60 shadow-[0_0_15px_rgba(28,108,212,0.4)]'
+                      : 'text-[#94a3b8] hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
 
+          {/* Desktop Actions: "Book Call" */}
+          <div className="hidden sm:flex items-center space-x-2">
             <button
-              id="nav-link-about"
-              onClick={() => handleNavClick('about')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                currentPage === 'about'
-                  ? 'bg-[#282a2c] text-white font-semibold shadow-xs border border-[#3c4043]'
-                  : 'text-[#c4c7c5] hover:text-white hover:bg-[#282a2c]/60'
-              }`}
+              onClick={handleConnectClick}
+              className="py-2 px-4.5 rounded-full font-mono font-bold text-xs tracking-tight transition-all flex items-center space-x-2 shadow-lg cursor-pointer bg-[#1C6CD4] hover:bg-[#155ab3] text-white shadow-[0_6px_20px_rgba(28,108,212,0.35)] hover:scale-[1.03] active:scale-[0.98] border border-white/20 group"
             >
-              About
-            </button>
-
-            <button
-              id="nav-link-works"
-              onClick={() => handleNavClick('works')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                currentPage === 'works'
-                  ? 'bg-[#282a2c] text-white font-semibold shadow-xs border border-[#3c4043]'
-                  : 'text-[#c4c7c5] hover:text-white hover:bg-[#282a2c]/60'
-              }`}
-            >
-              Works
-            </button>
-
-            <button
-              id="nav-link-books"
-              onClick={() => handleNavClick('books')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                currentPage === 'books'
-                  ? 'bg-[#282a2c] text-white font-semibold shadow-xs border border-[#3c4043]'
-                  : 'text-[#c4c7c5] hover:text-white hover:bg-[#282a2c]/60'
-              }`}
-            >
-              Books
-            </button>
-
-            <button
-              id="nav-link-services"
-              onClick={() => handleNavClick('services')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                currentPage === 'services' || currentPage === 'advisory'
-                  ? 'bg-[#282a2c] text-white font-semibold shadow-xs border border-[#3c4043]'
-                  : 'text-[#c4c7c5] hover:text-white hover:bg-[#282a2c]/60'
-              }`}
-            >
-              Services
-            </button>
-
-            <button
-              id="nav-link-publications"
-              onClick={() => handleNavClick('publications')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                currentPage === 'publications'
-                  ? 'bg-[#282a2c] text-white font-semibold shadow-xs border border-[#3c4043]'
-                  : 'text-[#c4c7c5] hover:text-white hover:bg-[#282a2c]/60'
-              }`}
-            >
-              Research &amp; WBGT
-            </button>
-
-            <button
-              id="nav-link-leadership"
-              onClick={() => handleNavClick('leadership')}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                currentPage === 'leadership'
-                  ? 'bg-[#282a2c] text-white font-semibold shadow-xs border border-[#3c4043]'
-                  : 'text-[#c4c7c5] hover:text-white hover:bg-[#282a2c]/60'
-              }`}
-            >
-              Leadership
-            </button>
-          </nav>
-
-          {/* Right Action: "Book a call" Pill */}
-          <div className="flex items-center space-x-2">
-            <button
-              id="btn-header-book-call"
-              onClick={() => {
-                if (onOpenBookingModal) {
-                  onOpenBookingModal();
-                } else {
-                  handleNavClick('advisory');
-                }
-              }}
-              className="flex items-center space-x-1.5 px-3.5 sm:px-5 py-2 rounded-full font-semibold text-xs transition-all whitespace-nowrap min-h-[38px] cursor-pointer shadow-sm bg-white hover:bg-[#f0f4f9] text-[#131314]"
-            >
-              <span>Book a call</span>
-              <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
-            </button>
-
-            {/* Mobile Hamburger Toggle */}
-            <button
-              id="btn-mobile-menu-toggle"
-              onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-2 rounded-full transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center border border-[#3c4043] bg-[#282a2c] hover:bg-[#333538] text-white cursor-pointer"
-              aria-label="Open navigation menu"
-            >
-              <Menu className="w-4 h-4" />
+              <PhoneCall className="w-3.5 h-3.5 text-white" />
+              <span>Book Call</span>
+              <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>
-        </div>
-      </header>
 
-      {/* Full-Screen Blurred Mobile Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            id="mobile-nav-fullscreen-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] md:hidden backdrop-blur-3xl flex flex-col justify-between overflow-y-auto bg-[#131314]/98 text-[#e3e3e3]"
-          >
-            {/* Overlay Top Bar */}
-            <div className="relative z-10 flex items-center justify-between px-5 sm:px-6 pt-5 sm:pt-6 pb-4 border-b border-[#333538] bg-[#1e1f20]/90 backdrop-blur-xl shrink-0">
-              <button
-                type="button"
-                onClick={() => handleNavClick('overview')}
-                className="flex items-center space-x-3 text-left focus:outline-none cursor-pointer"
-              >
-                <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs tracking-tight shadow-sm bg-white text-[#131314]">
-                  TG
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-display font-bold text-base tracking-tight flex items-center gap-1.5 text-white">
-                    OSAZEE
-                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                  </span>
-                  <span className="text-[10px] font-mono tracking-wider uppercase text-[#a8abb0]">
-                    CMIOSH UK • Julius Berger
-                  </span>
-                </div>
-              </button>
+          {/* Mobile Actions: "Book Call" compact button & Hamburger */}
+          <div className="flex lg:hidden items-center space-x-2">
+            <button
+              onClick={handleConnectClick}
+              className="py-1.5 px-3 rounded-full font-mono font-bold text-[11px] tracking-tight transition-all flex items-center space-x-1.5 shadow-md cursor-pointer bg-[#1C6CD4] hover:bg-[#155ab3] text-white"
+            >
+              <span>Book Call</span>
+            </button>
 
-              <div className="flex items-center space-x-2">
-                <button
-                  type="button"
-                  id="btn-mobile-menu-close"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all border border-[#3c4043] bg-[#282a2c] hover:bg-[#333538] text-white cursor-pointer"
-                  aria-label="Close navigation menu"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open Mobile Navigation"
+              className="p-2 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors cursor-pointer"
+            >
+              <Menu className="w-5 h-5 text-white" />
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-[#0a0a0c]/98 backdrop-blur-2xl flex flex-col justify-between p-6 text-white animate-fadeIn">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1C6CD4] to-[#142C5C] text-white font-bold text-xs flex items-center justify-center border border-[#1C6CD4]/40">
+                TG
               </div>
-            </div>
-
-            {/* Navigation Link Index List */}
-            <div className="relative z-10 px-4 sm:px-6 py-4 sm:py-6 space-y-2 sm:space-y-2.5 my-auto">
-              <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-widest mb-2 px-1 text-[#a8abb0]">
-                <span>Executive Navigation</span>
-                <span className="text-[#8e918f]">
-                  {mobileNavItems.length} Modules
+              <div className="text-left">
+                <span className="font-display font-black text-sm text-white block">
+                  Engr. Iyenoma Osazee
+                </span>
+                <span className="text-[10px] font-mono text-[#96E2A5] font-bold">
+                  CMIOSH • Executive HSE Leader
                 </span>
               </div>
-
-              {mobileNavItems.map((item, idx) => {
-                const isActive = currentPage === item.id;
-                return (
-                  <motion.button
-                    key={item.id}
-                    type="button"
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.04 * idx, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    onClick={() => handleNavClick(item.id)}
-                    className={`w-full text-left p-3.5 sm:p-4 rounded-2xl transition-all flex items-center justify-between border cursor-pointer ${
-                      isActive
-                        ? 'bg-[#282a2c] border-[#3c4043] text-white shadow-md'
-                        : 'bg-[#1e1f20] hover:bg-[#282a2c] border-[#333538] text-[#c4c7c5]'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-3.5 pr-2">
-                      <span className={`font-mono text-xs font-semibold w-5 ${
-                        isActive ? 'text-white' : 'text-[#8e918f]'
-                      }`}>
-                        {item.number}
-                      </span>
-                      <div className={`p-2.5 rounded-xl border transition-colors ${
-                        isActive 
-                          ? 'bg-white text-[#131314] border-white'
-                          : 'bg-[#282a2c] border-[#3c4043] text-white'
-                      }`}>
-                        {item.icon}
-                      </div>
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <span className="font-display font-bold text-lg sm:text-xl tracking-tight leading-snug text-white">
-                            {item.label}
-                          </span>
-                          {isActive && (
-                            <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-[#a8c7fa]" />
-                          )}
-                        </div>
-                        <p className={`text-[11px] font-mono line-clamp-1 ${
-                          isActive ? 'text-[#c4c7c5]' : 'text-[#8e918f]'
-                        }`}>
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="pl-2 shrink-0">
-                      <ChevronRight className={`w-4 h-4 transition-transform ${
-                        isActive ? 'text-white translate-x-0.5' : 'text-[#8e918f]'
-                      }`} />
-                    </div>
-                  </motion.button>
-                );
-              })}
             </div>
-
-            {/* Bottom Action & Credential Footer */}
-            <div className="relative z-10 p-5 sm:p-6 border-t border-[#333538] bg-[#1e1f20]/90 backdrop-blur-xl space-y-3.5 shrink-0">
-              <button
-                type="button"
-                id="btn-mobile-book-call"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (onOpenBookingModal) {
-                    onOpenBookingModal();
-                  } else {
-                    handleNavClick('advisory');
-                  }
-                }}
-                className="w-full py-3.5 px-5 rounded-2xl font-display font-bold text-sm transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm bg-white hover:bg-[#f0f4f9] text-[#131314]"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>Book Strategic Consultation</span>
-                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
-              </button>
-
-              <div className="flex items-center justify-center text-[11px] font-mono px-1 pt-1 text-[#8e918f]">
-                <span>Directorship Advisory Calendar Open</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Distinction Ribbon */}
-      <div 
-        id="distinction-ribbon"
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-center group cursor-pointer"
-        onClick={() => handleNavClick('leadership')}
-      >
-        <div className="border-l border-t border-b border-[#333538] bg-[#1e1f20] hover:bg-[#282a2c] text-white px-2 py-4 rounded-l-xl shadow-lg flex flex-col items-center space-y-3 transition-all duration-300 group-hover:translate-x-0 translate-x-1">
-          <div className="w-5 h-5 rounded-full border border-white/20 bg-white/10 text-white flex items-center justify-center text-[10px] font-bold">
-            ★
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close Mobile Navigation"
+              className="p-2 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
-          <span className="text-[10px] font-mono tracking-widest uppercase [writing-mode:vertical-rl] rotate-180 font-medium text-[#a8abb0] group-hover:text-white">
-            CMIOSH UK • TOP 50 AFRICA
-          </span>
+
+          {/* Mobile Links */}
+          <div className="flex flex-col space-y-2 py-4 font-mono text-sm overflow-y-auto">
+            {navItems.map((item) => {
+              const active = isNavActive(item.id);
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`flex items-center justify-between p-3.5 rounded-2xl transition-all cursor-pointer ${
+                    active
+                      ? 'bg-[#1C6CD4] text-white font-bold border border-[#1C6CD4]/60 shadow-[0_0_15px_rgba(28,108,212,0.35)]'
+                      : 'text-neutral-300 hover:bg-white/5 hover:text-white font-medium'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <span className={active ? 'text-[#96E2A5]' : 'text-[#93c5fd]'}>{item.icon}</span>
+                    <span className="font-bold">{item.label}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mobile Actions */}
+          <div className="space-y-3 pt-4 border-t border-white/10">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                handleConnectClick();
+              }}
+              className="w-full py-3.5 rounded-full font-mono font-bold text-xs bg-[#1C6CD4] text-white flex items-center justify-center space-x-2 shadow-lg shadow-[#1C6CD4]/30 hover:bg-[#155ab3] cursor-pointer transition-all"
+            >
+              <PhoneCall className="w-4 h-4 text-white" />
+              <span>Book Consultation Call</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
+            <p className="text-[11px] font-mono font-bold text-center text-[#94a3b8]">
+              Executive HSE Leader • Civil Engineer &amp; Author
+            </p>
+          </div>
         </div>
-      </div>
-    </>
+      )}
+    </header>
   );
 };

@@ -1,7 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { initializeFirestore, getFirestore, setLogLevel, Firestore } from 'firebase/firestore';
-import baseConfig from '../../firebase-applet-config.json';
 
 // Configure Firestore internal logger to prevent unhandled connection retry notices
 try {
@@ -10,17 +9,17 @@ try {
   // Ignored if already configured
 }
 
-// Securely load API Key and configuration from environment variables or local blueprint config
+// Securely load API Key and configuration from environment variables or reliable defaults
 const env = import.meta.env;
 
 const firebaseConfig = {
-  apiKey: env.VITE_FIREBASE_API_KEY || baseConfig.apiKey || 'AIzaSyDrj2oqz5889o-YcVMDW-tlHZ0J5BLJRAc',
-  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN || baseConfig.authDomain || 'responsible-equinox-5f38q.firebaseapp.com',
-  projectId: env.VITE_FIREBASE_PROJECT_ID || baseConfig.projectId || 'responsible-equinox-5f38q',
-  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET || baseConfig.storageBucket || 'responsible-equinox-5f38q.firebasestorage.app',
-  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID || baseConfig.messagingSenderId || '205351155749',
-  appId: env.VITE_FIREBASE_APP_ID || baseConfig.appId || '1:205351155749:web:70cb88ec05cf557824a7cc',
-  firestoreDatabaseId: env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || baseConfig.firestoreDatabaseId || 'ai-studio-osazeesafetylead-af35cec2-d953-4dee-be4a-5529b6713be2'
+  apiKey: env.VITE_FIREBASE_API_KEY || 'AIzaSyDrj2oqz5889o-YcVMDW-tlHZ0J5BLJRAc',
+  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN || 'responsible-equinox-5f38q.firebaseapp.com',
+  projectId: env.VITE_FIREBASE_PROJECT_ID || 'responsible-equinox-5f38q',
+  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET || 'responsible-equinox-5f38q.firebasestorage.app',
+  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID || '205351155749',
+  appId: env.VITE_FIREBASE_APP_ID || '1:205351155749:web:70cb88ec05cf557824a7cc',
+  firestoreDatabaseId: env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || 'ai-studio-osazeesafetylead-af35cec2-d953-4dee-be4a-5529b6713be2'
 };
 
 // Initialize Firebase App singleton

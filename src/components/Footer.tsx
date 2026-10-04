@@ -1,51 +1,46 @@
 import React from 'react';
 import { PageId } from '../types';
-import { useTheme } from '../context/ThemeContext';
 import { 
-  ArrowUp, 
   ArrowUpRight, 
   MapPin, 
-  Linkedin, 
-  Bookmark,
-  BookOpen, 
-  GraduationCap, 
-  Mail 
+  ArrowUp,
+  Linkedin,
+  BookOpen,
+  Lock
 } from 'lucide-react';
 
 interface FooterProps {
-  onSelectPage: (page: PageId) => void;
+  onSelectPage: (id: PageId) => void;
   onOpenBookingModal?: () => void;
+  onOpenClientAdminModal?: () => void;
+  onOpenAdmin?: () => void;
 }
 
 const CREDENTIAL_TILES = [
-  {
-    title: 'CMIOSH #100175',
-    subtitle: 'Chartered UK Safety'
-  },
-  {
-    title: 'Julius Berger PLC',
-    subtitle: 'HSE Manager (Abuja)'
-  },
-  {
-    title: 'ISO 45001 Lead',
-    subtitle: 'IRCA Cert #423290'
-  },
-  {
-    title: 'Fellow ISPON',
-    subtitle: 'Safety Professionals Nig.'
-  },
-  {
-    title: 'MNSE & Safety Eng',
-    subtitle: 'Civil Engineering Div'
-  },
-  {
-    title: 'Top 50 Africa',
-    subtitle: 'NatureNews Sustainability'
-  }
+  { title: "CMIOSH", subtitle: "Chartered Safety Fellow" },
+  { title: "MNSE", subtitle: "Registered Civil Engineer" },
+  { title: "COREN Reg.", subtitle: "Practicing Engineering Seal" },
+  { title: "ISO 45001", subtitle: "Certified Lead Auditor" },
+  { title: "MSc CECM", subtitle: "Heriot-Watt University" },
+  { title: "MSc OEHSM", subtitle: "University of Portsmouth" },
 ];
 
-export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal }) => {
-  const { theme } = useTheme();
+export const Footer: React.FC<FooterProps> = ({ 
+  onSelectPage,
+  onOpenBookingModal,
+  onOpenClientAdminModal,
+  onOpenAdmin
+}) => {
+  const handlePortalClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onOpenAdmin) {
+      onOpenAdmin();
+    } else if (onOpenClientAdminModal) {
+      onOpenClientAdminModal();
+    } else {
+      window.location.hash = 'mine';
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -60,43 +55,46 @@ export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal
     if (onOpenBookingModal) {
       onOpenBookingModal();
     } else {
-      handleNav('services');
+      handleNav('contact');
     }
   };
 
-  const handleInquiryClick = () => {
-    handleNav('services');
-    setTimeout(() => {
-      const formEl = document.getElementById('inquiry-form-section');
-      if (formEl) {
-        formEl.scrollIntoView({ behavior: 'smooth' });
+  const handleFormalWrittenQueryClick = () => {
+    sessionStorage.setItem('hse_scroll_target', 'formal-query');
+    window.location.hash = 'formal-query';
+    onSelectPage('services');
+    const scrollToSection = () => {
+      const el = document.getElementById('formal-written-query-section') || document.getElementById('inquiry-form-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 100);
+    };
+    scrollToSection();
+    setTimeout(scrollToSection, 150);
+    setTimeout(scrollToSection, 400);
+    setTimeout(scrollToSection, 750);
   };
 
   return (
-    <footer className="border-t border-white/10 bg-[#131314]/75 backdrop-blur-2xl text-[#c4c7c5] text-xs transition-colors duration-300 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 space-y-10">
+    <footer className="mt-20 border-t border-slate-200 dark:border-white/10 bg-slate-50/90 dark:bg-[#0c1017]/90 backdrop-blur-xl text-[#475569] dark:text-[#c4c7c5] transition-colors duration-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
         
-        {/* Top Row: 6 Credential Badges */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-3.5">
+        {/* Credentials Ticker / Strip */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pb-8 border-b border-slate-200 dark:border-white/10">
           {CREDENTIAL_TILES.map((tile, idx) => (
-            <div
+            <div 
               key={idx}
-              className="p-4 rounded-2xl dialed-glass-card hover:border-[#a8c7fa]/40 flex flex-col items-center justify-center text-center space-y-1 transition-all"
+              className="p-3 rounded-2xl dialed-glass-card border border-slate-200/90 dark:border-white/5 flex flex-col justify-center text-center space-y-0.5"
             >
-              <span className="font-mono font-bold text-xs tracking-tight text-white">
+              <span className="text-xs font-display font-bold text-[#0f172a] dark:text-white tracking-tight">
                 {tile.title}
               </span>
-              <span className="font-mono text-[10px] sm:text-[11px] text-[#a8c7fa]">
+              <span className="text-[10px] font-mono text-[#64748b] dark:text-[#8e918f]">
                 {tile.subtitle}
               </span>
             </div>
           ))}
         </div>
-
-        {/* Subtle Horizontal Divider */}
-        <div className="border-t border-white/10 w-full" />
 
         {/* 3-Column Core Layout */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 items-start">
@@ -104,20 +102,20 @@ export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal
           {/* Column 1: Brand & Profile */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 select-none bg-white text-[#131314]">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 select-none bg-gradient-to-br from-[#1C6CD4] to-[#142C5C] text-white">
                 TG
               </div>
-              <span className="text-lg font-display font-bold tracking-tight text-white">
+              <span className="text-lg font-display font-black tracking-tight text-black dark:text-white">
                 Engr. Iyenoma ThankGod Osazee
               </span>
             </div>
 
-            <p className="text-xs sm:text-[12.5px] leading-relaxed max-w-md text-[#c4c7c5]">
-              Official executive portfolio and technical repository. Blending two decades of frontline civil construction safety directorship at Julius Berger Nigeria PLC with peer-reviewed research in occupational hygiene, landfill sustainability, thermal WBGT ergonomics, and statutory safety reform.
+            <p className="text-xs sm:text-[12.5px] leading-relaxed max-w-md text-black dark:text-[#c4c7c5] font-medium">
+              Digital headquarters and technical repository. Blending two decades of frontline civil construction safety directorship at Julius Berger Nigeria PLC with peer-reviewed research in occupational hygiene, landfill sustainability, construction safety frameworks, and statutory safety reform.
             </p>
 
-            <div className="flex items-center space-x-2 pt-0.5 font-mono text-xs text-[#8e918f]">
-              <MapPin className="w-3.5 h-3.5 shrink-0 text-[#8e918f]" />
+            <div className="flex items-center space-x-2 pt-0.5 font-mono text-xs text-black dark:text-[#8e918f] font-bold">
+              <MapPin className="w-3.5 h-3.5 shrink-0 text-[#1C6CD4] dark:text-[#8e918f]" />
               <span>Abuja, Federal Capital Territory, Nigeria</span>
             </div>
 
@@ -130,126 +128,83 @@ export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal
                 rel="noopener noreferrer"
                 aria-label="LinkedIn Professional Network"
                 title="LinkedIn Profile: Engr. Iyenoma Osazee"
-                className="w-9 h-9 rounded-xl dialed-glass-pill hover:border-[#a8c7fa]/40 text-[#c4c7c5] hover:text-white flex items-center justify-center transition-all"
+                className="w-9 h-9 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 hover:border-[#1C6CD4] text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white flex items-center justify-center transition-all shadow-xs"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
 
               <a
                 id="footer-icon-researchgate"
-                href="https://www.researchgate.net/search/publication?q=Iyenoma+ThankGod+Osazee"
+                href="https://www.researchgate.net/publication/351052674"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="ResearchGate Publications"
-                title="ResearchGate Scientific Papers"
-                className="w-9 h-9 rounded-xl dialed-glass-pill hover:border-[#a8c7fa]/40 text-[#c4c7c5] hover:text-white flex items-center justify-center transition-all"
-              >
-                <Bookmark className="w-4 h-4" />
-              </a>
-
-              <a
-                id="footer-icon-scholar"
-                href="https://scholar.google.com/scholar?q=Iyenoma+ThankGod+Osazee"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Google Scholar Citation Index"
-                title="Google Scholar Citations"
-                className="w-9 h-9 rounded-xl dialed-glass-pill hover:border-[#a8c7fa]/40 text-[#c4c7c5] hover:text-white flex items-center justify-center transition-all"
+                aria-label="ResearchGate Scientific Monograph"
+                title="ResearchGate Scientific Repository"
+                className="w-9 h-9 rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 hover:border-[#1C6CD4] text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white flex items-center justify-center transition-all shadow-xs"
               >
                 <BookOpen className="w-4 h-4" />
-              </a>
-
-              <a
-                id="footer-icon-iosh"
-                href="https://iosh.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Institution of Occupational Safety and Health UK"
-                title="Chartered Fellow (CMIOSH #100175)"
-                className="w-9 h-9 rounded-xl dialed-glass-pill hover:border-[#a8c7fa]/40 text-[#c4c7c5] hover:text-white flex items-center justify-center transition-all"
-              >
-                <GraduationCap className="w-4 h-4" />
-              </a>
-
-              <a
-                id="footer-icon-email"
-                href="mailto:contact@iyenomaosazee.com"
-                aria-label="Direct Liaison Email"
-                title="Executive Email Liaison"
-                className="w-9 h-9 rounded-xl dialed-glass-pill hover:border-[#a8c7fa]/40 text-[#c4c7c5] hover:text-white flex items-center justify-center transition-all"
-              >
-                <Mail className="w-4 h-4" />
               </a>
             </div>
           </div>
 
-          {/* Column 2: Navigation */}
-          <div className="md:col-span-3 space-y-3.5">
-            <h4 className="text-xs font-mono uppercase tracking-widest font-semibold text-white">
+          {/* Column 2: Architectural Site Navigation (HSE-Port Signature Suite) */}
+          <div className="md:col-span-3 space-y-4">
+            <h4 className="text-xs font-mono uppercase tracking-widest font-black text-black dark:text-white">
               NAVIGATION
             </h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs font-mono">
               <li>
                 <button
-                  id="footer-nav-overview"
-                  onClick={() => handleNav('overview')}
-                  className="transition-colors text-left cursor-pointer text-[#c4c7c5] hover:text-white"
+                  id="footer-nav-home"
+                  onClick={() => handleNav('home')}
+                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
                 >
-                  Executive Overview
+                  Home • Overview
                 </button>
               </li>
               <li>
                 <button
                   id="footer-nav-about"
                   onClick={() => handleNav('about')}
-                  className="transition-colors text-left cursor-pointer text-[#c4c7c5] hover:text-white"
+                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
                 >
-                  About & Background
-                </button>
-              </li>
-              <li>
-                <button
-                  id="footer-nav-books"
-                  onClick={() => handleNav('books')}
-                  className="transition-colors text-left cursor-pointer text-[#c4c7c5] hover:text-white"
-                >
-                  Published Books & Papers
+                  About • Profile &amp; Values
                 </button>
               </li>
               <li>
                 <button
                   id="footer-nav-works"
                   onClick={() => handleNav('works')}
-                  className="transition-colors text-left cursor-pointer text-[#c4c7c5] hover:text-white"
+                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
                 >
-                  Signature Megaprojects
+                  Works • Megaprojects
+                </button>
+              </li>
+              <li>
+                <button
+                  id="footer-nav-books"
+                  onClick={() => handleNav('books')}
+                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
+                >
+                  Books &amp; Publications
                 </button>
               </li>
               <li>
                 <button
                   id="footer-nav-services"
                   onClick={() => handleNav('services')}
-                  className="transition-colors text-left cursor-pointer text-[#c4c7c5] hover:text-white"
+                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
                 >
-                  Safety & Advisory Services
-                </button>
-              </li>
-              <li>
-                <button
-                  id="footer-nav-publications"
-                  onClick={() => handleNav('publications')}
-                  className="transition-colors text-left cursor-pointer text-[#c4c7c5] hover:text-white"
-                >
-                  Thermal Research & WBGT Tool
+                  Services • Advisory
                 </button>
               </li>
               <li>
                 <button
                   id="footer-nav-leadership"
                   onClick={() => handleNav('leadership')}
-                  className="transition-colors text-left cursor-pointer text-[#c4c7c5] hover:text-white"
+                  className="transition-colors text-left cursor-pointer text-black dark:text-[#c4c7c5] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
                 >
-                  Leadership & Honors
+                  Leadership &amp; Governance
                 </button>
               </li>
             </ul>
@@ -257,10 +212,10 @@ export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal
 
           {/* Column 3: Executive Engagement */}
           <div className="md:col-span-4 space-y-4">
-            <h4 className="text-xs font-mono uppercase tracking-widest font-semibold text-white">
+            <h4 className="text-xs font-mono uppercase tracking-widest font-black text-black dark:text-white">
               EXECUTIVE ENGAGEMENT
             </h4>
-            <p className="text-xs leading-relaxed text-[#c4c7c5]">
+            <p className="text-xs leading-relaxed text-black dark:text-[#c4c7c5] font-medium">
               Available for high-consequence project safety governance, ISO 45001 auditing diagnostics, and international keynote addresses.
             </p>
 
@@ -268,7 +223,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal
               <button
                 id="footer-btn-book-consultation"
                 onClick={handleConsultationClick}
-                className="w-full py-3 px-5 rounded-full font-semibold text-xs transition-all flex items-center justify-center space-x-1.5 shadow-md cursor-pointer min-h-[44px] bg-white text-[#131314] hover:bg-[#f0f4f9]"
+                className="w-full py-3 px-5 rounded-full font-bold text-xs transition-all flex items-center justify-center space-x-1.5 shadow-md cursor-pointer min-h-[44px] bg-[#1C6CD4] text-white hover:bg-[#155ab3] shadow-[0_6px_20px_rgba(28,108,212,0.3)] hover:scale-[1.02]"
               >
                 <span>Book a Consultation Call</span>
                 <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
@@ -276,24 +231,36 @@ export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal
 
               <button
                 id="footer-btn-written-inquiry"
-                onClick={handleInquiryClick}
-                className="w-full py-3 px-5 rounded-full font-medium text-xs dialed-glass-pill hover:bg-white/10 text-white transition-colors text-center cursor-pointer min-h-[44px] flex items-center justify-center shadow-xs"
+                onClick={handleFormalWrittenQueryClick}
+                className="w-full py-3 px-5 rounded-full font-bold text-xs bg-[#142C5C] hover:bg-[#1b3874] border border-[#1C6CD4]/30 text-white transition-all text-center cursor-pointer min-h-[44px] flex items-center justify-center shadow-xs hover:scale-[1.02]"
               >
-                <span>Submit Formal Written Inquiry</span>
+                <span>Submit a Formal Written Query</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* Minimal Bottom Bar */}
-        <div className="pt-8 border-t border-[#333538] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-[#8e918f]">
-          <p>© {new Date().getFullYear()} Engr. Iyenoma ThankGod Osazee. All rights reserved.</p>
-          <p className="text-[#a8abb0]">
-            Website designed &amp; developed by <span className="text-white font-medium">Gideon Ogunyemi</span>
+        <div className="pt-8 border-t border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-black dark:text-[#8e918f] font-bold">
+          <div className="flex items-center space-x-2">
+            <p>© {new Date().getFullYear()} Engr. Iyenoma ThankGod Osazee. All rights reserved.</p>
+            <button
+              id="footer-admin-link"
+              type="button"
+              onClick={handlePortalClick}
+              title="Executive Admin Portal"
+              aria-label="Executive Admin Portal"
+              className="p-1 rounded text-black dark:text-[#8e918f]/40 hover:text-[#1C6CD4] dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5 transition-all cursor-pointer font-bold"
+            >
+              <Lock className="w-3 h-3" />
+            </button>
+          </div>
+          <p className="text-black dark:text-[#a8abb0]">
+            Website designed &amp; developed by <span className="text-black dark:text-white font-black">Gideon Ogunyemi</span>
           </p>
           <button
             onClick={scrollToTop}
-            className="flex items-center space-x-1.5 transition-colors cursor-pointer text-[#8e918f] hover:text-white"
+            className="flex items-center space-x-1.5 transition-colors cursor-pointer text-black dark:text-[#8e918f] hover:text-[#1C6CD4] dark:hover:text-white font-bold"
           >
             <span>Back to top</span>
             <ArrowUp className="w-3.5 h-3.5" />
@@ -304,4 +271,3 @@ export const Footer: React.FC<FooterProps> = ({ onSelectPage, onOpenBookingModal
     </footer>
   );
 };
-

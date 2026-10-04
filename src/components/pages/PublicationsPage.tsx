@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { PUBLICATIONS } from '../../data/profileData';
-import { ThermalCalculator } from '../tools/ThermalCalculator';
 import { usePerceivedLoading, PublicationsListSkeleton } from '../common/Skeletons';
 import { 
   BookOpen, 
@@ -26,7 +25,7 @@ export const PublicationsPage: React.FC = () => {
 
   const themes = [
     { id: 'all', label: 'All Publications' },
-    { id: 'thermal', label: 'Thermal Hazards & WBGT' },
+    { id: 'thermal', label: 'Thermal Hazards & Ergonomics' },
     { id: 'landfill', label: 'Landfill & Sustainability' },
     { id: 'sme', label: 'Construction SMEs' },
     { id: 'guidance', label: 'National Standards' }
@@ -69,7 +68,7 @@ export const PublicationsPage: React.FC = () => {
             Research Papers &amp; Technical Publications
           </h1>
           <p className="text-neutral-700 dark:text-neutral-300 text-base sm:text-lg leading-relaxed">
-            Engr. Iyenoma ThankGod Osazee approaches health, safety, and environmental protection not merely as corporate compliance, but as an empirical discipline. His research spans landfill gas kinetics, leachate mitigation, bioclimatic thermal hazards (WBGT), and safety frameworks for developing-world construction SMEs.
+            Engr. Iyenoma ThankGod Osazee approaches health, safety, and environmental protection not merely as corporate compliance, but as an empirical discipline. His research spans landfill gas kinetics, leachate mitigation, bioclimatic thermal hazards, and safety frameworks for developing-world construction SMEs.
           </p>
 
           <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-mono text-neutral-700 dark:text-neutral-300">
@@ -115,20 +114,6 @@ export const PublicationsPage: React.FC = () => {
         </div>
       </motion.section>
 
-      {/* Embedded Live Tool: Thermal Stress & WBGT Field Calculator */}
-      <motion.section 
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        id="wbgt-calculator-section" 
-        className="space-y-4"
-      >
-        <div className="flex items-center space-x-2 text-xs font-mono uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
-          <span>Applied Research Implementation</span>
-        </div>
-        <ThermalCalculator />
-      </motion.section>
 
       {/* Publications Repository */}
       <motion.section 
@@ -144,7 +129,7 @@ export const PublicationsPage: React.FC = () => {
               Published Works & International Monograms
             </h2>
             <p className="text-xs text-neutral-600 dark:text-neutral-400 font-mono">
-              Articles in European Journal of Environment and Earth Sciences, ResearchGate, and World Congress
+              Articles in international peer-reviewed journals, ResearchGate, and World Congress
             </p>
           </div>
 
@@ -325,7 +310,7 @@ export const PublicationsPage: React.FC = () => {
               Occupational Hygiene & Thermal Extremes
             </h3>
             <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              Traced back to his 2007 BOHS bursary award, Engr. Osazee studies the physiological impact of working under severe heat and cold stress, championing calibrated WBGT monitoring and metabolic work-rest cycles across outdoor industrial worksites.
+              Traced back to his 2007 BOHS bursary award, Engr. Osazee studies the physiological impact of working under severe heat and cold stress, championing calibrated thermal risk monitoring and metabolic work-rest cycles across outdoor industrial worksites.
             </p>
           </div>
 
@@ -335,7 +320,7 @@ export const PublicationsPage: React.FC = () => {
               Environmental Sustainability & Landfill Bioreactors
             </h3>
             <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              Published in the European Journal of Environment and Earth Sciences, his papers on landfill management analyze methane and CO2 greenhouse emissions, toxic leachate contamination, and the transition toward waste-to-energy containment.
+              Published in peer-reviewed environmental engineering journals, his papers on landfill management analyze methane and CO2 greenhouse emissions, toxic leachate contamination, and the transition toward waste-to-energy containment.
             </p>
           </div>
 

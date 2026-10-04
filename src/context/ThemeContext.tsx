@@ -11,15 +11,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<ThemeMode>(() => {
-    try {
-      const saved = localStorage.getItem('portfolio-theme');
-      if (saved === 'light') return 'dark'; // Migrate any cached light back to obsidian black
-      return 'dark';
-    } catch {
-      return 'dark';
-    }
-  });
+  const [theme, setThemeState] = useState<ThemeMode>('dark');
 
   useEffect(() => {
     try {
@@ -27,18 +19,18 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       root.classList.add('dark', 'dark-theme');
       root.classList.remove('light', 'light-theme');
       root.setAttribute('data-theme', 'dark');
-      root.style.backgroundColor = '#131314';
+      root.style.backgroundColor = '#0a0a0c';
       if (document.body) {
-        document.body.style.backgroundColor = '#131314';
+        document.body.style.backgroundColor = '#0a0a0c';
       }
       localStorage.setItem('portfolio-theme', 'dark');
     } catch {
       // Ignore error
     }
-  }, [theme]);
+  }, []);
 
   const toggleTheme = () => {
-    setThemeState(prev => (prev === 'light' ? 'dark' : 'light'));
+    setThemeState('dark');
   };
 
   const setTheme = (mode: ThemeMode) => {

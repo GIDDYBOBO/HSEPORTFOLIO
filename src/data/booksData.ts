@@ -4,7 +4,7 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
   {
     id: "thermal-hazards-monograph",
     title: "Hazards and Risks Presented by the Thermal Environment",
-    subtitle: "Bioclimatic Ergonomics, Wet Bulb Globe Temperature (WBGT) Modeling & Industrial Heat Mitigation in Tropical Construction",
+    subtitle: "Bioclimatic Ergonomics, Thermal Index Modeling & Industrial Heat Mitigation in Tropical Construction",
     authors: ["Engr. Iyenoma ThankGod Osazee (MSc OEHSM, MSc CECM, MNSE, CMIOSH)"],
     coverGradient: "from-amber-600 via-orange-700 to-stone-900",
     accentColor: "amber",
@@ -13,9 +13,9 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
     publisherOrJournal: "ResearchGate Technical Monograph Series",
     doiOrRef: "ResearchGate: 351052674",
     pagesOrLength: "48 Pages • Monograph & Tool Guide",
-    abstract: "A seminal investigation into the physiological, operational, and managerial hazards posed by thermal extremes in outdoor industrial environments, notably heavy civil engineering, asphalt laying, and extractive infrastructure. The monograph synthesizes empirical heat-stress indices—centering on the Wet Bulb Globe Temperature (WBGT) and Wind Chill Index—and establishes an actionable hierarchy of engineering controls, metabolic work/rest regimens, biometric hydration schedules, and real-time site monitoring.",
+    abstract: "A seminal investigation into the physiological, operational, and managerial hazards posed by thermal extremes in outdoor industrial environments, notably heavy civil engineering, asphalt laying, and extractive infrastructure. The monograph synthesizes empirical heat-stress indices—centering on calibrated thermal indices and Wind Chill Index—and establishes an actionable hierarchy of engineering controls, metabolic work/rest regimens, biometric hydration schedules, and real-time site monitoring.",
     whatYoullLearn: [
-      "Mathematical derivation and calibrated application of outdoor WBGT formulas using air temperature, relative humidity, solar irradiance, and wind speed.",
+      "Mathematical derivation and calibrated application of outdoor thermal ergonomics formulas using air temperature, relative humidity, solar irradiance, and wind speed.",
       "How acute heat stress induces subtle neurovascular degradation that precipitates heavy machinery and rigging accidents hours before clinical heat stroke occurs.",
       "The exact physiological threshold limit values (TLVs) for light, moderate, and heavy metabolic work rates under sub-Saharan tropical heat.",
       "Design of non-punitive hydration and electrolyte replacement protocols reducing heat-related incidents on civil sites by up to 85%."
@@ -28,7 +28,7 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
     ],
     keyTopics: [
       "Chapter 1: The Physics of Human Heat Exchange & Metabolic Thermoregulation",
-      "Chapter 2: Wet Bulb Globe Temperature (WBGT) Instrumentation vs Simplified Empirical Equations",
+      "Chapter 2: Bioclimatic Thermal Instrumentation vs Simplified Empirical Equations",
       "Chapter 3: Cognitive & Neuromuscular Impairment Under High Heat Index",
       "Chapter 4: Work/Rest Regimen Architecture (45/15, 30/30, and Emergency 15/45 Protocols)",
       "Chapter 5: Electrolyte Osmolality: Why Plain Water Hydration Fails in Tropical Shifts",
@@ -39,7 +39,7 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
     citation: "Osazee, I. T. (2021). Hazards and Risks presented by the Thermal Environment. Technical Monograph, ResearchGate. https://doi.org/10.13140/RG.2.2.21319.42408",
     format: "Technical Monograph",
     imageUrl: "https://images.pexels.com/photos/3861440/pexels-photo-3861440.jpeg?auto=compress&cs=tinysrgb&w=1000",
-    imageAlt: "Scientific thermal ergonomics instrumentation and calibrated Wet Bulb Globe Temperature (WBGT) environmental monitoring apparatus used in tropical civil construction"
+    imageAlt: "Scientific thermal ergonomics instrumentation and calibrated environmental monitoring apparatus used in tropical civil construction"
   },
   {
     id: "landfills-sustainable-waste-disposal",
@@ -50,7 +50,7 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
     accentColor: "emerald",
     badge: "Peer-Reviewed Journal Publication",
     publishedYear: "August 2021",
-    publisherOrJournal: "European Journal of Environment and Earth Sciences",
+    publisherOrJournal: "Peer-Reviewed Environmental Science & Engineering Journal",
     doiOrRef: "10.24018/ejgeo.2021.2.4.165",
     pagesOrLength: "Vol. 2, Issue 4, pp. 67–74",
     abstract: "Extending the inquiry into circular waste economics, this paper evaluates the systemic viability of landfill sites within contemporary integrated waste management frameworks. It presents quantitative parameters governing leachate composition, methane production kinetics, and recycling integration. The paper establishes an operational methodology for retrofitting existing open dumpsites into controlled sanitary containment facilities, minimizing ecological footprints in developing urban ecosystems.",
@@ -76,7 +76,7 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
     ],
     authorsNote: "In developing urban centers across West Africa, open dumping has historically created ecological crises. This research demonstrated that with precise geotechnical barriers and gas extraction technology, waste disposal facilities can protect groundwater and generate localized clean electrical power.",
     accessUrl: "https://doi.org/10.24018/ejgeo.2021.2.4.165",
-    citation: "Osazee, I. T. (2021). Landfill in a Sustainable Waste Disposal. European Journal of Environment and Earth Sciences, 2(4), 67–74. https://doi.org/10.24018/ejgeo.2021.2.4.165",
+    citation: "Osazee, I. T. (2021). Landfill in a Sustainable Waste Disposal. Peer-Reviewed Environmental Engineering Research, 2(4), 67–74. https://doi.org/10.24018/ejgeo.2021.2.4.165",
     format: "Peer-Reviewed Paper",
     imageUrl: "https://images.pexels.com/photos/1108572/pexels-photo-1108572.jpeg?auto=compress&cs=tinysrgb&w=1000",
     imageAlt: "Engineered sanitary containment cell and environmental geosynthetic barrier system for municipal waste kinetics and leachate prevention"
@@ -90,7 +90,7 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
     accentColor: "sky",
     badge: "International Collaborative Research",
     publishedYear: "March 2021",
-    publisherOrJournal: "European Journal of Environment and Earth Sciences",
+    publisherOrJournal: "Peer-Reviewed Environmental Science & Engineering Journal",
     doiOrRef: "10.24018/ejgeo.2021.2.2.117",
     pagesOrLength: "Vol. 2, Issue 2, pp. 8–14",
     abstract: "Co-authored with renowned environmental scholar Prof. Bhaskar Sen Gupta, this research critically assesses the environmental and public health ramifications associated with unscientific waste disposal. Investigates fugitive greenhouse gas emissions—predominantly methane (CH4) with 28x global warming potential over 100 years—and subterranean heavy metal migration. Proposes engineered solutions for environmental compliance.",
@@ -115,7 +115,7 @@ export const BOOKS_AND_PUBLICATIONS: BookItem[] = [
     ],
     authorsNote: "Collaborating with Prof. Bhaskar Sen Gupta allowed us to subject West African environmental field observations to the highest standard of international peer-reviewed academic rigor. The findings remain a benchmark for municipal planning across the continent.",
     accessUrl: "https://doi.org/10.24018/ejgeo.2021.2.2.117",
-    citation: "Osazee, I. T., & Sen Gupta, B. (2021). Environmental Consequences of Poor Landfill Management. European Journal of Environment and Earth Sciences, 2(2), 8–14. https://doi.org/10.24018/ejgeo.2021.2.2.117",
+    citation: "Osazee, I. T., & Sen Gupta, B. (2021). Environmental Consequences of Poor Landfill Management. Peer-Reviewed Environmental Engineering Research, 2(2), 8–14. https://doi.org/10.24018/ejgeo.2021.2.2.117",
     format: "Peer-Reviewed Paper",
     imageUrl: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1000&q=80",
     imageAlt: "Environmental monitoring laboratory analysis and groundwater sampling equipment evaluating aquifer protection"

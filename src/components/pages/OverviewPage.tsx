@@ -10,7 +10,6 @@ import {
 } from '../../data/profileData';
 import { SIGNATURE_WORKS, Megaproject } from '../../data/projectsData';
 import { BOOKS_AND_PUBLICATIONS } from '../../data/booksData';
-import { ThermalCalculator } from '../tools/ThermalCalculator';
 import { CaseStudyModal } from '../modals/CaseStudyModal';
 import { CountUp } from '../CountUp';
 import { usePerceivedLoading, ProjectsListSkeleton } from '../common/Skeletons';
@@ -114,16 +113,15 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
     },
     {
       number: '03',
-      title: 'Bioclimatic Thermal Stress & WBGT Field Mitigation',
+      title: 'Bioclimatic Thermal Stress & Severe Weather Field Mitigation',
       desc: 'Applied environmental ergonomics for extreme outdoor heat, asphalt laydown, and heavy manual labour in tropical sub-Saharan climates.',
       deliverables: [
-        'Calibrated Wet Bulb Globe Temperature (WBGT) index mapping',
+        'Calibrated thermal index mapping and microclimatic heat monitoring',
         'Metabolic work-rest cycle schedules preventing heat syncope',
         'On-site electrolyte hydration protocols & biometric monitoring',
-        'Field-validated risk software deployed across frontline gangs'
+        'Field-validated risk protocols deployed across frontline gangs'
       ],
-      tag: 'BOHS Bursary Pedigree',
-      hasCalculatorTrigger: true
+      tag: 'BOHS Bursary Pedigree'
     },
     {
       number: '04',
@@ -196,15 +194,15 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Bold Headline & Executive Actions */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-7 text-left">
-            {/* Live Executive Status Badge */}
-            <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 text-white text-xs font-mono shadow-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="text-neutral-200">Executive HSE Directorship</span>
-              <span className="text-neutral-400">•</span>
-              <span className="text-[#a8c7fa] font-semibold">Julius Berger PLC</span>
+            {/* Professional Identity Eyebrow with "|" separators */}
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#1C6CD4] dark:text-[#60a5fa] font-bold">
+              <span>HSE Professional</span>
+              <span aria-hidden="true" className="text-neutral-500 font-normal">|</span>
+              <span>Civil Engineering</span>
+              <span aria-hidden="true" className="text-neutral-500 font-normal">|</span>
+              <span>Author</span>
+              <span aria-hidden="true" className="text-neutral-500 font-normal">|</span>
+              <span>Safety Leader</span>
             </div>
             
             {/* Giant Bold Headline */}
@@ -237,11 +235,11 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => onSelectPage('publications')}
+                onClick={() => onSelectPage('works')}
                 className="flex items-center justify-center space-x-2 px-5 py-3.5 rounded-full dialed-glass-pill hover:bg-white/15 text-[#c4c7c5] hover:text-white border border-white/20 font-medium text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
               >
-                <Activity className="w-4 h-4 text-[#a8c7fa]" />
-                <span>WBGT Heat Tool</span>
+                <Layers className="w-4 h-4 text-[#a8c7fa]" />
+                <span>Featured Works</span>
               </button>
             </div>
 
@@ -287,7 +285,6 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
               <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between pointer-events-none">
                 <div className="flex items-center justify-between gap-2">
                   <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/20 text-white text-[11px] font-mono">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span>HSE Systems &amp; Operational Safety</span>
                   </div>
 
@@ -550,10 +547,10 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
             </div>
             <h3 className="text-lg font-display font-bold text-white leading-snug">Books &amp; Scientific Research</h3>
             <p className="text-xs text-[#c4c7c5] leading-relaxed">
-              Author of published monographs on thermal ergonomics (WBGT modeling), municipal landfill kinetics, and 23rd World Congress Sydney speaker.
+              Author of published monographs on thermal ergonomics, municipal landfill kinetics, and 23rd World Congress Sydney speaker.
             </p>
             <div className="text-[11px] font-mono text-[#8e918f] pt-2 border-t border-white/5">
-              ResearchGate Monograph Series &amp; European Journal papers.
+              ResearchGate Series &amp; Peer-Reviewed Scientific Treatises.
             </div>
           </div>
 
@@ -1119,22 +1116,9 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
 
             {/* Service Action Strip */}
             <div className="pt-6 border-t border-neutral-200 dark:border-[#333538] flex flex-wrap items-center justify-between gap-4">
-              {services[activeServiceTab].hasCalculatorTrigger ? (
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('interactive-wbgt-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-5 py-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black font-bold text-xs hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
-                >
-                  <Activity className="w-4 h-4" />
-                  <span>Launch Live WBGT Calculator Below</span>
-                </button>
-              ) : (
-                <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400">
-                  Custom proposals formulated upon formal inquiry
-                </div>
-              )}
+              <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400">
+                Custom proposals formulated upon formal inquiry
+              </div>
 
               <button
                 onClick={onOpenBookingModal}
@@ -1148,38 +1132,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
         </div>
       </FadeUpSection>
 
-      {/* 5. INTERACTIVE APPLIED SCIENCE: WBGT & THERMAL HAZARDS FIELD CALCULATOR */}
-      <FadeUpSection 
-        as="section"
-        id="interactive-wbgt-section" 
-        className="space-y-6 scroll-mt-28"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-neutral-200 dark:border-[#333538] pb-4">
-          <div className="space-y-1.5 max-w-3xl">
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-[#333538] text-neutral-800 dark:text-neutral-200 text-xs font-mono mb-1 shadow-sm">
-              <Activity className="w-3.5 h-3.5 text-neutral-800 dark:text-neutral-300" />
-              <span className="whitespace-nowrap">Applied Research Implementation</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-display font-bold text-black dark:text-white tracking-tight leading-snug">
-              Thermal Environment & WBGT Field Calculator
-            </h2>
-            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-mono">
-              Field ergonomics tool based on Engr. Osazee&apos;s BOHS bursary research and Julius Berger tropical site protocols.
-            </p>
-          </div>
 
-          <button
-            onClick={() => onSelectPage('publications')}
-            className="text-xs font-mono text-neutral-800 hover:text-black dark:text-neutral-300 dark:hover:text-white flex items-center gap-1 shrink-0 min-h-[40px] cursor-pointer"
-          >
-            <span>View All Research Papers</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* Live Calculator Component */}
-        <ThermalCalculator />
-      </FadeUpSection>
 
       {/* 6. TESTIMONIALS & INSTITUTIONAL WORDS */}
       <FadeUpSection 

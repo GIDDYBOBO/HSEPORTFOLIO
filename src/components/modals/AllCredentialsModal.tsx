@@ -70,13 +70,13 @@ const EXTENDED_CREDENTIALS: Credential[] = [
     verificationStatus: "Verified"
   },
   {
-    id: "afrisafe-cbn",
-    title: "AFRISAFE 2000 Site Safety Award",
+    id: "cbn-safety-excellence",
+    title: "CBN Headquarters Project Safety Recognition",
     designation: "Site Safety Excellence",
-    issuer: "AFRISAFE Awards Committee",
+    issuer: "National Safety Advisory Committee",
     year: "Dec 2000",
-    credentialId: "AFRI-2000-CBN",
-    description: "Conferred on the Julius Berger Safety Section at the Central Bank of Nigeria HQ project for exemplary zero-fatality engineering standards.",
+    credentialId: "CBN-HQ-SAFETY-2000",
+    description: "Conferred on the Julius Berger Safety Section at the Central Bank of Nigeria HQ project for exemplary engineering safety standards.",
     highlight: false,
     verificationStatus: "Verified"
   },
@@ -107,7 +107,10 @@ export const AllCredentialsModal: React.FC<AllCredentialsModalProps> = ({
   useEffect(() => {
     const unsub = subscribeToCredentials((liveCreds) => {
       if (liveCreds && liveCreds.length > 0) {
-        setCredentialsList(liveCreds);
+        const map = new Map<string, Credential>();
+        EXTENDED_CREDENTIALS.forEach(c => map.set(c.id, c));
+        liveCreds.forEach(c => map.set(c.id, c));
+        setCredentialsList(Array.from(map.values()));
       }
     });
     return () => unsub();
@@ -166,15 +169,15 @@ export const AllCredentialsModal: React.FC<AllCredentialsModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-4xl max-h-[86vh] sm:max-h-[88vh] rounded-3xl dialed-glass-card-elevated border border-white/20 text-white shadow-2xl flex flex-col my-auto overflow-hidden"
+          className="relative w-full max-w-4xl max-h-[86vh] sm:max-h-[88vh] rounded-3xl bg-white dark:bg-[#131822] border-2 border-slate-300 dark:border-white/20 text-black dark:text-white shadow-2xl flex flex-col my-auto overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="p-5 sm:p-7 border-b border-white/10 bg-white/[0.04] backdrop-blur-xl relative shrink-0">
+          <div className="p-5 sm:p-7 border-b-2 border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-white/[0.04] backdrop-blur-xl relative shrink-0">
             <button
               id="btn-close-credentials-modal"
               onClick={onClose}
-              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all border border-white/20 active:scale-95 cursor-pointer"
+              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-black dark:text-white flex items-center justify-center transition-all border border-slate-300 dark:border-white/20 active:scale-95 cursor-pointer font-bold"
               aria-label="Close credentials modal"
             >
               <X className="w-5 h-5" />
@@ -232,7 +235,7 @@ export const AllCredentialsModal: React.FC<AllCredentialsModalProps> = ({
 
           {/* Credentials Grid (Scrolls internally within screen range) */}
           <div className="overflow-y-auto flex-1 p-5 sm:p-7 space-y-4">
-            <div className="text-xs font-mono text-neutral-400 flex items-center justify-between pb-1">
+            <div className="text-xs font-mono text-neutral-600 dark:text-neutral-400 flex items-center justify-between pb-1 font-bold">
               <span>Showing {filteredCredentials.length} verifiable credentials</span>
               <span>Evidence Standard: ISO / IOSH UK / NSE / ISPON</span>
             </div>
@@ -244,40 +247,40 @@ export const AllCredentialsModal: React.FC<AllCredentialsModalProps> = ({
                 {filteredCredentials.map((cred) => (
                   <div
                     key={cred.id}
-                    className="p-5 rounded-2xl dialed-glass-card hover:border-[#a8c7fa]/40 transition-all flex flex-col justify-between space-y-3 group"
+                    className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border-2 border-slate-200 dark:border-white/10 hover:border-[#1C6CD4] transition-all flex flex-col justify-between space-y-3 group text-black dark:text-white"
                   >
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20 text-[11px] font-mono font-bold">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#142C5C] text-white border border-[#142C5C] text-[11px] font-mono font-bold">
                         {cred.designation}
                       </span>
                       {cred.credentialId && (
-                        <span className="text-[10px] font-mono text-neutral-300 bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                        <span className="text-[10px] font-mono text-black dark:text-neutral-300 bg-white dark:bg-white/5 px-2 py-0.5 rounded border border-slate-200 dark:border-white/10 font-bold">
                           {cred.credentialId}
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-base font-display font-bold text-white transition-colors leading-snug">
+                    <h3 className="text-base font-display font-black text-black dark:text-white transition-colors leading-snug">
                       {cred.title}
                     </h3>
 
-                    <p className="text-xs text-[#a8c7fa] font-medium">
+                    <p className="text-xs text-[#142C5C] dark:text-[#a8c7fa] font-black">
                       {cred.issuer}
                     </p>
 
-                    <p className="text-xs text-neutral-300 leading-relaxed pt-1">
+                    <p className="text-xs text-black dark:text-neutral-300 leading-relaxed pt-1 font-medium">
                       {cred.description}
                     </p>
                   </div>
 
-                  <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-neutral-400">
-                    <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <div className="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-[11px] font-mono text-neutral-600 dark:text-neutral-400">
+                    <span className="flex items-center gap-1.5 text-[#154E20] dark:text-emerald-400 font-bold">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#154E20] dark:text-emerald-400" />
                       Status: Active / Certified
                     </span>
                     {cred.year && (
-                      <span>{cred.year}</span>
+                      <span className="font-bold text-black dark:text-neutral-300">{cred.year}</span>
                     )}
                   </div>
                 </div>

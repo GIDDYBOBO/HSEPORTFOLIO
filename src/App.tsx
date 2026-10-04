@@ -3,47 +3,69 @@ import { PageId, BookItem } from './types';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { BOOKS_AND_PUBLICATIONS } from './data/booksData';
+import { seedInitialDataIfEmpty } from './lib/portfolioService';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { OverviewPage } from './components/pages/OverviewPage';
+import { HomePage } from './components/pages/HomePage';
 import { AboutPage } from './components/pages/AboutPage';
-import { BooksPage } from './components/pages/BooksPage';
 import { WorksPage } from './components/pages/WorksPage';
+import { BooksPage } from './components/pages/BooksPage';
 import { ServicesPage } from './components/pages/ServicesPage';
-import { PublicationsPage } from './components/pages/PublicationsPage';
 import { LeadershipPage } from './components/pages/LeadershipPage';
+import { ContactPage } from './components/pages/ContactPage';
 import { BookingModal } from './components/modals/BookingModal';
 import { AllCredentialsModal } from './components/modals/AllCredentialsModal';
 import { BookDetailModal } from './components/modals/BookDetailModal';
 import { ProtectedRoute } from './components/admin/ProtectedRoute';
 import { AdminDashboard } from './components/admin/AdminDashboard';
-import { useScrollRevealContainer } from './hooks';
 import { MorphBackground } from './components/common/MorphBackground';
+import { AnimatePresence, motion } from 'motion/react';
+import { recordRealVisit, recordRealPageView, recordModalInteraction } from './lib/analyticsService';
 
 function PortfolioApp() {
   const { theme } = useTheme();
-  const [currentPage, setCurrentPage] = useState<PageId>('overview');
+  // HSE-Port Signature Design: Home, About, Works, Books, Services, Leadership, Contact
+  const [currentPage, setCurrentPage] = useState<PageId>('home');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [credentialsModalOpen, setCredentialsModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
 
-  // Stealth Admin Route: Activated ONLY via /#mine or Secret Shortcut (Ctrl+Shift+A / Cmd+Shift+A)
-  const [isAdminView, setIsAdminView] = useState(() => {
-    return typeof window !== 'undefined' && window.location.hash.toLowerCase() === '#mine';
-  });
-
-  // Listen for hash navigation (e.g. user types /#mine in the browser address bar)
+  // Seed baseline data safely into Firestore and record initial real visit
   useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash.toLowerCase() === '#mine') {
+    seedInitialDataIfEmpty().catch(err => {
+      console.warn('Initial data seed notice:', err);
+    });
+    recordRealVisit();
+    recordRealPageView('home');
+  }, []);
+
+  // Check if current URL is pointing to admin route (hash #mine, #admin, or path /admin, /mine)
+  const checkIsAdminRoute = () => {
+    if (typeof window === 'undefined') return false;
+    const hash = window.location.hash.toLowerCase();
+    const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
+    return hash === '#mine' || hash === '#admin' || path === '/admin' || path === '/mine';
+  };
+
+  // Admin Route: Activated via /#mine, /#admin, /admin, footer padlock, or Secret Shortcut (Ctrl+Shift+A / Cmd+Shift+A)
+  const [isAdminView, setIsAdminView] = useState(() => checkIsAdminRoute());
+
+  // Listen for hash navigation or popstate
+  useEffect(() => {
+    const handleUrlChange = () => {
+      if (checkIsAdminRoute()) {
         setIsAdminView(true);
-      } else if (isAdminView && window.location.hash !== '#mine') {
+      } else if (isAdminView) {
         setIsAdminView(false);
       }
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleUrlChange);
+    window.addEventListener('popstate', handleUrlChange);
+    return () => {
+      window.removeEventListener('hashchange', handleUrlChange);
+      window.removeEventListener('popstate', handleUrlChange);
+    };
   }, [isAdminView]);
 
   // Secret Executive Keystroke: Ctrl + Shift + A (or Cmd + Shift + A on macOS)
@@ -56,7 +78,7 @@ function PortfolioApp() {
           if (next) {
             window.location.hash = 'mine';
           } else {
-            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            window.history.replaceState(null, '', window.location.pathname.replace(/\/admin|\/mine/, '') || '/');
           }
           return next;
         });
@@ -69,35 +91,46 @@ function PortfolioApp() {
 
   const handleExitAdmin = () => {
     setIsAdminView(false);
-    if (window.location.hash.toLowerCase() === '#mine') {
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
+    window.history.replaceState(null, '', '/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  // Manage IntersectionObserver logic for all major page sections as they scroll into view
-  const { containerRef } = useScrollRevealContainer<HTMLElement>({
-    selector: '.fade-up-section, [data-scroll-reveal]',
-    deps: [currentPage, isAdminView],
-    threshold: 0.06,
-    rootMargin: '0px 0px -40px 0px',
-  });
 
   const handleSelectPage = (page: PageId) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleOpenBookById = (bookId: string) => {
-    const found = BOOKS_AND_PUBLICATIONS.find(b => b.id === bookId);
-    if (found) {
-      setSelectedBook(found);
+    recordRealPageView(page);
+    if (page === 'overview') {
+      setCurrentPage('home');
+    } else if (page === 'publications') {
+      setCurrentPage('books');
+    } else if (page === 'advisory') {
+      setCurrentPage('services');
     } else {
-      handleSelectPage('books');
+      setCurrentPage(page);
+    }
+    const isTargetingQuery = 
+      (page === 'services' || page === 'advisory') && 
+      (window.location.hash === '#formal-query' || sessionStorage.getItem('hse_scroll_target') === 'formal-query');
+
+    if (!isTargetingQuery) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // If in stealth admin view, render ProtectedRoute and AdminDashboard (zero trace on public site)
+  const handleOpenBook = (book: BookItem) => {
+    recordModalInteraction('book_detail');
+    setSelectedBook(book);
+  };
+
+  const handleOpenBooking = () => {
+    recordModalInteraction('booking');
+    setBookingModalOpen(true);
+  };
+
+  const handleOpenCredentials = () => {
+    recordModalInteraction('credentials');
+    setCredentialsModalOpen(true);
+  };
+
+  // If in admin view, render ProtectedRoute and CMS Dashboard
   if (isAdminView) {
     return (
       <ProtectedRoute onBackToPortfolio={handleExitAdmin}>
@@ -107,76 +140,85 @@ function PortfolioApp() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-transparent text-[#e3e3e3] selection:bg-[#1a73e8]/30 selection:text-white transition-colors duration-200">
-      {/* DialedWeb Signature Morphing Liquid Mesh & Glass Canvas */}
+    <div className="relative min-h-screen flex flex-col bg-transparent text-neutral-100 dark:text-[#f1f5f9] selection:bg-[#1C6CD4]/30 selection:text-white transition-colors duration-200">
+      {/* DialedWeb Signature Morphing Liquid Mesh & Ambient Glass Canvas */}
       <MorphBackground />
 
-      {/* Top Main Navigation (Floating Capsule) */}
+      {/* Top Main Navigation (Floating Capsule: Home, About, Works, Books, Services, Leadership + Book Call) */}
       <Navbar
         currentPage={currentPage}
         onSelectPage={handleSelectPage}
-        onOpenBookingModal={() => setBookingModalOpen(true)}
+        onOpenBookingModal={handleOpenBooking}
       />
 
-      {/* Main Page Area */}
-      <main
-        ref={containerRef}
-        className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        {currentPage === 'overview' && (
-          <OverviewPage
-            onSelectPage={handleSelectPage}
-            onOpenBookingModal={() => setBookingModalOpen(true)}
-            onOpenCredentialsModal={() => setCredentialsModalOpen(true)}
-            onSelectBook={handleOpenBookById}
-          />
-        )}
+      {/* Main Page Area: Original HSE-Port Suite with upgraded Home Page */}
+      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPage}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {(currentPage === 'home' || currentPage === 'overview') && (
+              <HomePage
+                onSelectPage={handleSelectPage}
+                onSelectBook={handleOpenBook}
+                onOpenBookingModal={handleOpenBooking}
+              />
+            )}
 
-        {currentPage === 'about' && (
-          <AboutPage
-            onSelectPage={handleSelectPage}
-            onOpenBookingModal={() => setBookingModalOpen(true)}
-            onOpenCredentialsModal={() => setCredentialsModalOpen(true)}
-          />
-        )}
+            {currentPage === 'about' && (
+              <AboutPage
+                onSelectPage={handleSelectPage}
+                onOpenBookingModal={handleOpenBooking}
+                onOpenCredentialsModal={handleOpenCredentials}
+              />
+            )}
 
-        {currentPage === 'books' && (
-          <BooksPage
-            onSelectBook={(book) => setSelectedBook(book)}
-            onOpenInquiryForBook={(_title) => {
-              handleSelectPage('services');
-            }}
-            onSelectPage={handleSelectPage}
-          />
-        )}
+            {currentPage === 'works' && (
+              <WorksPage
+                onSelectPage={handleSelectPage}
+                onOpenBookingModal={handleOpenBooking}
+              />
+            )}
 
-        {currentPage === 'works' && (
-          <WorksPage
-            onSelectPage={handleSelectPage}
-            onOpenBookingModal={() => setBookingModalOpen(true)}
-          />
-        )}
+            {(currentPage === 'books' || currentPage === 'publications') && (
+              <BooksPage
+                onSelectBook={handleOpenBook}
+                onSelectPage={handleSelectPage}
+              />
+            )}
 
-        {(currentPage === 'services' || currentPage === 'advisory') && (
-          <ServicesPage
-            onSelectPage={handleSelectPage}
-            onOpenBookingModal={() => setBookingModalOpen(true)}
-          />
-        )}
+            {(currentPage === 'services' || currentPage === 'advisory') && (
+              <ServicesPage
+                onSelectPage={handleSelectPage}
+                onOpenBookingModal={handleOpenBooking}
+              />
+            )}
 
-        {currentPage === 'publications' && (
-          <PublicationsPage />
-        )}
+            {currentPage === 'leadership' && (
+              <LeadershipPage />
+            )}
 
-        {currentPage === 'leadership' && (
-          <LeadershipPage />
-        )}
+            {currentPage === 'contact' && (
+              <ContactPage
+                onSelectPage={handleSelectPage}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Institutional Mega Footer */}
       <Footer
         onSelectPage={handleSelectPage}
-        onOpenBookingModal={() => setBookingModalOpen(true)}
+        onOpenBookingModal={handleOpenBooking}
+        onOpenAdmin={() => {
+          setIsAdminView(true);
+          window.location.hash = 'mine';
+        }}
       />
 
       {/* Global Booking Consultation Modal */}
@@ -185,26 +227,28 @@ function PortfolioApp() {
         onClose={() => setBookingModalOpen(false)}
       />
 
-      {/* Global Verifiable Credentials Registry Modal */}
+      {/* Verifiable Credentials Modal */}
       <AllCredentialsModal
         isOpen={credentialsModalOpen}
         onClose={() => setCredentialsModalOpen(false)}
       />
 
-      {/* Global Book Details & Knowledge Modal */}
-      <BookDetailModal
-        book={selectedBook}
-        onClose={() => setSelectedBook(null)}
-        onOpenInquiryForBook={(_title) => {
-          setSelectedBook(null);
-          handleSelectPage('services');
-        }}
-      />
+      {/* Book Detailed Reading Modal */}
+      {selectedBook && (
+        <BookDetailModal
+          book={selectedBook}
+          onClose={() => setSelectedBook(null)}
+          onOpenInquiryForBook={() => {
+            setSelectedBook(null);
+            handleSelectPage('contact');
+          }}
+        />
+      )}
     </div>
   );
 }
 
-export default function App() {
+export function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
@@ -213,3 +257,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+export default App;
