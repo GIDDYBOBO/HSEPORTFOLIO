@@ -5,15 +5,12 @@ import {
   MapPin, 
   ArrowUp,
   Linkedin,
-  BookOpen,
-  Lock
+  BookOpen
 } from 'lucide-react';
 
 interface FooterProps {
   onSelectPage: (id: PageId) => void;
   onOpenBookingModal?: () => void;
-  onOpenClientAdminModal?: () => void;
-  onOpenAdmin?: () => void;
 }
 
 const CREDENTIAL_TILES = [
@@ -27,21 +24,8 @@ const CREDENTIAL_TILES = [
 
 export const Footer: React.FC<FooterProps> = ({ 
   onSelectPage,
-  onOpenBookingModal,
-  onOpenClientAdminModal,
-  onOpenAdmin
+  onOpenBookingModal
 }) => {
-  const handlePortalClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (onOpenAdmin) {
-      onOpenAdmin();
-    } else if (onOpenClientAdminModal) {
-      onOpenClientAdminModal();
-    } else {
-      window.location.hash = 'mine';
-    }
-  };
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -242,19 +226,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Minimal Bottom Bar */}
         <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-slate-600 font-semibold">
-          <div className="flex items-center space-x-2">
-            <p>© {new Date().getFullYear()} Engr. Iyenoma ThankGod Osazee. All rights reserved.</p>
-            <button
-              id="footer-admin-link"
-              type="button"
-              onClick={handlePortalClick}
-              title="Executive Admin Portal"
-              aria-label="Executive Admin Portal"
-              className="p-1 rounded text-slate-500 hover:text-[#1C6CD4] hover:bg-slate-100 transition-all cursor-pointer font-bold"
-            >
-              <Lock className="w-3 h-3" />
-            </button>
-          </div>
+          <p>© {new Date().getFullYear()} Engr. Iyenoma ThankGod Osazee. All rights reserved.</p>
           <p className="text-slate-500">
             Website designed &amp; developed by <span className="text-slate-900 font-bold">Gideon Ogunyemi</span>
           </p>

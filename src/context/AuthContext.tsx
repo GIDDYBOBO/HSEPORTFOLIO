@@ -26,6 +26,7 @@ interface AuthContextType {
   registerWithEmail: (email: string, pass: string, name?: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  resetAdminCredentials: () => Promise<void>;
 }
 
 const LOCAL_ADMIN_KEY = 'hse_executive_session';
@@ -40,14 +41,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // One-time cleanup of previous hardcoded or stale credentials to ensure clean setup
-    if (localStorage.getItem('hse_credentials_cleaned_v5') !== 'true') {
+    // One-time cleanup to reset admin dashboard credentials anew
+    if (localStorage.getItem('hse_credentials_cleaned_v7') !== 'true') {
       try {
         localStorage.removeItem(LOCAL_ADMIN_KEY);
         localStorage.removeItem(CUSTOM_PASSWORD_KEY);
         localStorage.removeItem(CUSTOM_EMAIL_KEY);
         localStorage.removeItem(ADMIN_CONFIGURED_KEY);
-        localStorage.setItem('hse_credentials_cleaned_v5', 'true');
+        localStorage.setItem('hse_credentials_cleaned_v7', 'true');
       } catch {}
     }
 
@@ -162,6 +163,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCurrentUser(null);
   };
 
+  const resetAdminCredentials = async () => {
+    try {
+      localStorage.removeItem(LOCAL_ADMIN_KEY);
+      localStorage.removeItem(CUSTOM_PASSWORD_KEY);
+      localStorage.removeItem(CUSTOM_EMAIL_KEY);
+      localStorage.removeItem(ADMIN_CONFIGURED_KEY);
+      await signOut(auth);
+    } catch (err) {
+      console.warn('Error during resetAdminCredentials:', err);
+    }
+    setCurrentUser(null);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -171,7 +185,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         loginWithEmail,
         registerWithEmail,
         loginWithGoogle,
-        logout
+        logout,
+        resetAdminCredentials
       }}
     >
       {children}

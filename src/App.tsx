@@ -21,6 +21,7 @@ import { AdminDashboard } from './components/admin/AdminDashboard';
 import { MorphBackground } from './components/common/MorphBackground';
 import { AnimatePresence, motion } from 'motion/react';
 import { recordRealVisit, recordRealPageView, recordModalInteraction } from './lib/analyticsService';
+import { useDynamicSEO } from './hooks/useDynamicSEO';
 
 function PortfolioApp() {
   const { theme } = useTheme();
@@ -29,15 +30,6 @@ function PortfolioApp() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [credentialsModalOpen, setCredentialsModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
-
-  // Seed baseline data safely into Firestore and record initial real visit
-  useEffect(() => {
-    seedInitialDataIfEmpty().catch(err => {
-      console.warn('Initial data seed notice:', err);
-    });
-    recordRealVisit();
-    recordRealPageView('home');
-  }, []);
 
   // Check if current URL is pointing to admin route (hash #mine, #admin, or path /admin, /mine)
   const checkIsAdminRoute = () => {
@@ -49,6 +41,18 @@ function PortfolioApp() {
 
   // Admin Route: Activated via /#mine, /#admin, /admin, footer padlock, or Secret Shortcut (Ctrl+Shift+A / Cmd+Shift+A)
   const [isAdminView, setIsAdminView] = useState(() => checkIsAdminRoute());
+
+  // Dynamic context-aware SEO management (titles, meta description, canonical URLs, social cards, JSON-LD)
+  useDynamicSEO(currentPage, isAdminView, selectedBook);
+
+  // Seed baseline data safely into Firestore and record initial real visit
+  useEffect(() => {
+    seedInitialDataIfEmpty().catch(err => {
+      console.warn('Initial data seed notice:', err);
+    });
+    recordRealVisit();
+    recordRealPageView('home');
+  }, []);
 
   // Listen for hash navigation or popstate
   useEffect(() => {
@@ -215,10 +219,6 @@ function PortfolioApp() {
       <Footer
         onSelectPage={handleSelectPage}
         onOpenBookingModal={handleOpenBooking}
-        onOpenAdmin={() => {
-          setIsAdminView(true);
-          window.location.hash = 'mine';
-        }}
       />
 
       {/* Global Booking Consultation Modal */}
