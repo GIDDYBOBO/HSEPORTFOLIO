@@ -12,7 +12,6 @@ import {
   AlertTriangle,
   Layers,
   ArrowUpRight,
-  Sparkles,
   ChevronRight,
   Calendar,
   Compass,
@@ -381,7 +380,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
               {project.executiveTakeaway && (
                 <div className="p-5 rounded-2xl bg-blue-50 border border-blue-200 space-y-2">
                   <span className="text-xs font-mono uppercase text-[#1C6CD4] font-bold flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     Executive Safety Directorship Principle:
                   </span>
                   <blockquote className="text-xs sm:text-sm text-slate-700 font-sans italic leading-relaxed">

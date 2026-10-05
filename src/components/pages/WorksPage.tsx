@@ -11,7 +11,6 @@ import {
   Clock, 
   MapPin, 
   ShieldCheck, 
-  Sparkles, 
   Layers,
   ChevronRight,
   Filter,
@@ -110,7 +109,7 @@ export const WorksPage: React.FC<WorksPageProps> = ({
               {/* Hover Magnification Callout */}
               <div className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                 <span className="px-4 py-2 rounded-full bg-white/95 backdrop-blur-md text-slate-900 text-xs font-mono font-bold border border-slate-200 flex items-center gap-2 scale-90 group-hover:scale-100 transition-transform shadow-xl">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Inspect Safety Case Study &amp; Results</span>
                 </span>
               </div>
@@ -228,7 +227,7 @@ export const WorksPage: React.FC<WorksPageProps> = ({
                     {/* Hover Magnification Preview Callout Badge */}
                     <div className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                       <span className="px-4 py-2 rounded-full bg-white/95 backdrop-blur-md text-slate-900 text-xs font-mono font-bold border border-slate-200 flex items-center gap-2 scale-90 group-hover:scale-100 transition-transform duration-300 shadow-xl">
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                        <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" />
                         <span>Inspect Safety Challenges &amp; Results</span>
                       </span>
                     </div>

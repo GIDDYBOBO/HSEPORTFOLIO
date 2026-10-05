@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   CheckCircle2,
   Award,
-  Sparkles,
   Layers,
   GraduationCap
 } from 'lucide-react';

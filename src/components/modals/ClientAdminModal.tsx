@@ -18,7 +18,6 @@ import {
   Filter, 
   Save, 
   RotateCcw,
-  Sparkles,
   CheckCircle2,
   Clock,
   Eye

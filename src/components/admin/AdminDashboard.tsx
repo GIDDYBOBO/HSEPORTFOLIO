@@ -36,7 +36,6 @@ import {
   Save, 
   ShieldCheck, 
   Menu,
-  Sparkles,
   Building2,
   Calendar,
   Layers,
@@ -298,35 +297,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
     };
   };
 
+  const handleToggleInquiryStatus = async (inq: InquiryMessage) => {
+    const nextStatus = inq.status === 'reviewed' ? 'new' : 'reviewed';
+    try {
+      await updateInquiryStatus(inq.id, nextStatus);
+      setInquiries(prev => prev.map(item => item.id === inq.id ? { ...item, status: nextStatus } : item));
+      if (selectedInquiry?.id === inq.id) {
+        setSelectedInquiry(prev => prev ? { ...prev, status: nextStatus } : null);
+      }
+      showNotification(`Saved: Inquiry from ${inq.name} marked as ${nextStatus === 'reviewed' ? 'Reviewed' : 'New'}`);
+    } catch (err) {
+      showNotification('Failed to update status', 'error');
+    }
+  };
+
   const promptInquiryStatusChange = (inq: InquiryMessage, newStatus: 'new' | 'reviewed' | 'archived') => {
     if (inq.status === newStatus) return;
     const label = newStatus === 'reviewed' ? 'Reviewed' : newStatus === 'archived' ? 'Archived' : 'New';
-    setConfirmModal({
-      isOpen: true,
-      title: 'Confirm Status Change',
-      message: `Are you sure you want to mark the inquiry regarding subject "${inq.segment || 'Inquiry'}" from "${inq.name}" (${inq.organization || 'Direct Contact'}) as ${label}? There will be no reverse for this action. Once confirmed, this change will be permanently saved to your dashboard.`,
-      confirmLabel: `Yes, Mark as ${label} & Save`,
-      isDestructive: false,
-      onConfirm: async () => {
-        try {
-          await updateInquiryStatus(inq.id, newStatus);
-          setInquiries(prev => prev.map(item => item.id === inq.id ? { ...item, status: newStatus } : item));
-          showNotification(`Saved: Marked inquiry from ${inq.name} as ${label}`);
-        } catch (err) {
-          showNotification('Failed to save status change', 'error');
-        } finally {
-          setConfirmModal(null);
-        }
-      }
-    });
+    handleToggleInquiryStatus(inq);
   };
 
   const promptDeleteInquiry = (inq: InquiryMessage) => {
     setConfirmModal({
       isOpen: true,
       title: 'Confirm Permanent Deletion',
-      message: `Are you sure you want to permanently delete the inquiry record from "${inq.name}" (${inq.organization || 'Direct Contact'}) regarding "${inq.segment || 'Subject'}"? There will be no reverse for this action. Once confirmed, this record will be permanently purged.`,
-      confirmLabel: 'Yes, Delete Permanently & Save',
+      message: `Are you sure you want to permanently delete the inquiry record from "${inq.name}" (${inq.organization || 'Direct Contact'}) regarding "${inq.segment || 'Subject'}"? This query will be permanently purged from the database and will not appear again.`,
+      confirmLabel: 'Yes, Delete Permanently from Database',
       isDestructive: true,
       onConfirm: async () => {
         try {
@@ -1476,8 +1472,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
                   <tbody className="divide-y divide-slate-100 font-sans">
                     {filteredInquiries.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-10 text-center text-slate-400 font-mono text-xs">
-                          No client contact inquiries match your active search filter.
+                        <td colSpan={6} className="py-12 text-center text-slate-500 font-mono text-xs">
+                          <div className="max-w-md mx-auto space-y-2">
+                            <Mail className="w-6 h-6 text-slate-400 mx-auto" />
+                            <p className="font-bold text-slate-700">No Inquiries Recorded</p>
+                            <p className="text-[11px] text-slate-500">
+                              Only real client inquiries submitted through the Contact or Consultation booking forms are displayed here. Sample queries have been removed.
+                            </p>
+                          </div>
                         </td>
                       </tr>
                     ) : (
@@ -1516,20 +1518,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
                               <div className="text-[10px] text-slate-400">{inq.timeframe}</div>
                             </td>
 
-                            {/* Status */}
+                            {/* Status Toggle */}
                             <td className="py-3 px-4">
-                              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold border ${
-                                inq.status === 'new'
-                                  ? 'bg-amber-50 text-amber-800 border-amber-300'
-                                  : inq.status === 'reviewed'
-                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                                  : 'bg-slate-100 text-slate-700 border-slate-200'
-                              }`}>
-                                {inq.status === 'new' ? '● New Inquiry' : inq.status === 'reviewed' ? '✓ Reviewed' : 'Archived'}
-                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleInquiryStatus(inq)}
+                                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-mono text-[10px] font-bold border transition-all cursor-pointer ${
+                                  inq.status === 'reviewed'
+                                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                                    : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                                }`}
+                                title={inq.status === 'reviewed' ? 'Click to toggle back to New' : 'Click to mark as Reviewed'}
+                              >
+                                {inq.status === 'reviewed' ? (
+                                  <>
+                                    <Check className="w-3 h-3 text-emerald-600" />
+                                    <span>✓ Reviewed</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                    <span>● New</span>
+                                  </>
+                                )}
+                              </button>
                             </td>
 
-                            {/* Actions with Confirmation */}
+                            {/* Actions with Direct Review & Delete */}
                             <td className="py-3 px-4 text-right">
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
@@ -1541,23 +1556,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
                                   <Eye className="w-3.5 h-3.5" />
                                 </button>
 
-                                {inq.status === 'new' && (
-                                  <button
-                                    type="button"
-                                    onClick={() => promptInquiryStatusChange(inq, 'reviewed')}
-                                    className="px-2 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-mono text-[10px] font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                                    title="Mark this inquiry as Reviewed (requires confirmation)"
-                                  >
-                                    <Check className="w-3 h-3 text-emerald-600" />
-                                    <span>Mark Reviewed</span>
-                                  </button>
-                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleInquiryStatus(inq)}
+                                  className={`px-2.5 py-1 rounded-lg border font-mono text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs ${
+                                    inq.status === 'reviewed'
+                                      ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border-emerald-300'
+                                      : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200'
+                                  }`}
+                                  title={inq.status === 'reviewed' ? 'Click to mark as New' : 'Click to mark as Reviewed (persists across refresh)'}
+                                >
+                                  <Check className="w-3 h-3 text-emerald-600" />
+                                  <span>{inq.status === 'reviewed' ? 'Reviewed' : 'Review'}</span>
+                                </button>
 
                                 <button
                                   type="button"
                                   onClick={() => promptDeleteInquiry(inq)}
                                   className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 transition-colors cursor-pointer border border-rose-200"
-                                  title="Permanently Delete Inquiry (requires confirmation)"
+                                  title="Permanently Delete Inquiry from Database"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>
@@ -1610,8 +1627,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
                   <tbody className="divide-y divide-slate-100 font-sans">
                     {filteredInquiries.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-10 text-center text-slate-400 font-mono text-xs">
-                          No institutional organization inquiries match your active search filter.
+                        <td colSpan={6} className="py-12 text-center text-slate-500 font-mono text-xs">
+                          <div className="max-w-md mx-auto space-y-2">
+                            <Building2 className="w-6 h-6 text-slate-400 mx-auto" />
+                            <p className="font-bold text-slate-700">No Institutional Queries</p>
+                            <p className="text-[11px] text-slate-500">
+                              No corporate or government queries recorded yet. Submitted queries will display here automatically.
+                            </p>
+                          </div>
                         </td>
                       </tr>
                     ) : (
@@ -1652,20 +1675,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
                               <div className="text-[10px] text-slate-400">{inq.timeframe}</div>
                             </td>
 
-                            {/* Status */}
+                            {/* Status Toggle */}
                             <td className="py-3 px-4">
-                              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold border ${
-                                inq.status === 'new'
-                                  ? 'bg-amber-50 text-amber-800 border-amber-300'
-                                  : inq.status === 'reviewed'
-                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                                  : 'bg-slate-100 text-slate-700 border-slate-200'
-                              }`}>
-                                {inq.status === 'new' ? '● New Inquiry' : inq.status === 'reviewed' ? '✓ Reviewed' : 'Archived'}
-                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleInquiryStatus(inq)}
+                                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-mono text-[10px] font-bold border transition-all cursor-pointer ${
+                                  inq.status === 'reviewed'
+                                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                                    : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                                }`}
+                                title={inq.status === 'reviewed' ? 'Click to toggle back to New' : 'Click to mark as Reviewed'}
+                              >
+                                {inq.status === 'reviewed' ? (
+                                  <>
+                                    <Check className="w-3 h-3 text-emerald-600" />
+                                    <span>✓ Reviewed</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                    <span>● New</span>
+                                  </>
+                                )}
+                              </button>
                             </td>
 
-                            {/* Actions with Confirmation */}
+                            {/* Actions with Direct Review & Delete */}
                             <td className="py-3 px-4 text-right">
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
@@ -1677,23 +1713,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
                                   <Eye className="w-3.5 h-3.5" />
                                 </button>
 
-                                {inq.status === 'new' && (
-                                  <button
-                                    type="button"
-                                    onClick={() => promptInquiryStatusChange(inq, 'reviewed')}
-                                    className="px-2 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-mono text-[10px] font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
-                                    title="Mark this inquiry as Reviewed (requires confirmation)"
-                                  >
-                                    <Check className="w-3 h-3 text-emerald-600" />
-                                    <span>Mark Reviewed</span>
-                                  </button>
-                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleInquiryStatus(inq)}
+                                  className={`px-2.5 py-1 rounded-lg border font-mono text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs ${
+                                    inq.status === 'reviewed'
+                                      ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border-emerald-300'
+                                      : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200'
+                                  }`}
+                                  title={inq.status === 'reviewed' ? 'Click to mark as New' : 'Click to mark as Reviewed (persists across refresh)'}
+                                >
+                                  <Check className="w-3 h-3 text-emerald-600" />
+                                  <span>{inq.status === 'reviewed' ? 'Reviewed' : 'Review'}</span>
+                                </button>
 
                                 <button
                                   type="button"
                                   onClick={() => promptDeleteInquiry(inq)}
                                   className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 transition-colors cursor-pointer border border-rose-200"
-                                  title="Permanently Delete Inquiry (requires confirmation)"
+                                  title="Permanently Delete Inquiry from Database"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>
@@ -2243,25 +2281,51 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPortfoli
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono text-slate-500">Status:</span>
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold ${
-                    selectedInquiry.status === 'new'
-                      ? 'bg-amber-50 text-amber-800 border border-amber-300'
-                      : 'bg-emerald-50 text-emerald-800 border border-emerald-300'
-                  }`}>
-                    {selectedInquiry.status}
-                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleToggleInquiryStatus(selectedInquiry)}
+                    className={`px-3 py-1 rounded-full text-xs font-mono font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedInquiry.status === 'reviewed'
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                        : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100'
+                    }`}
+                    title="Click to toggle status"
+                  >
+                    {selectedInquiry.status === 'reviewed' ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>✓ Reviewed</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                        <span>Mark as Reviewed</span>
+                      </>
+                    )}
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedInquiry(null)}
-                  className="px-5 py-2 rounded-xl bg-[#1C6CD4] hover:bg-[#155ab3] text-xs font-mono font-bold text-white transition-colors cursor-pointer"
-                >
-                  Close Details
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => promptDeleteInquiry(selectedInquiry)}
+                    className="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-xs font-mono font-bold text-rose-700 border border-rose-200 transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                    <span>Delete Query</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedInquiry(null)}
+                    className="px-5 py-2 rounded-xl bg-[#1C6CD4] hover:bg-[#155ab3] text-xs font-mono font-bold text-white transition-colors cursor-pointer"
+                  >
+                    Close Details
+                  </button>
+                </div>
               </div>
             </div>
           </div>

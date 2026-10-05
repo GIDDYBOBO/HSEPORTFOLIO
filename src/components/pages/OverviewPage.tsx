@@ -27,7 +27,6 @@ import {
   TrendingUp, 
   FileText, 
   ExternalLink,
-  Sparkles,
   MapPin,
   Clock,
   Quote,

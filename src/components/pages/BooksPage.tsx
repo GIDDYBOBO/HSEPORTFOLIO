@@ -8,8 +8,7 @@ import {
   ArrowRight, 
   ArrowUpRight, 
   Search, 
-  X,
-  Sparkles
+  X
 } from 'lucide-react';
 
 interface BooksPageProps {

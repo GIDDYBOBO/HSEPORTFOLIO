@@ -9,8 +9,7 @@ import {
   BookOpen, 
   CheckCircle2, 
   Quote, 
-  Layers,
-  Sparkles
+  Layers
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -346,7 +345,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section className="space-y-8">
         <div className="space-y-2">
           <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold tracking-wider uppercase text-[#1C6CD4]">
-            <Sparkles className="w-3.5 h-3.5 text-[#1C6CD4]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />
             <span>Operational Pillars</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -671,7 +670,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section className="p-8 sm:p-12 md:p-16 rounded-3xl bg-gradient-to-br from-slate-50 via-white to-blue-50/60 text-slate-900 text-center space-y-6 relative overflow-hidden shadow-xl border-2 border-slate-200 hover:border-[#1C6CD4]/50 transition-all group">
         <div className="space-y-3 max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 border border-blue-200 text-xs font-mono text-[#142C5C] font-bold">
-            <Sparkles className="w-3.5 h-3.5 text-[#1C6CD4]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />
             <span>Executive Engagement</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-display font-black text-slate-900 tracking-tight">

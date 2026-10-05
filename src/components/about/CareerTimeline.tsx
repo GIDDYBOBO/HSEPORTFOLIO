@@ -13,7 +13,6 @@ import {
   Building2, 
   ExternalLink,
   Layers,
-  Sparkles,
   Filter
 } from 'lucide-react';
 
@@ -258,23 +257,20 @@ export const CareerTimeline: React.FC = () => {
       className={`space-y-12 relative fade-up-section ${revealClass}`}
       id="career-progression-timeline"
     >
-      {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-6">
-        <div className="space-y-2 max-w-2xl">
-          <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold tracking-wider uppercase text-[#1C6CD4]">
-            <Sparkles className="w-3.5 h-3.5 text-[#1C6CD4]" />
-            <span>25+ Year Trajectory • Verified Career Progression</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-tight">
-            Career Progression in HSE Command &amp; Technical Consultancy
-          </h2>
-          <p className="text-sm sm:text-base text-slate-700 font-sans leading-relaxed">
-            From frontline civil engineering foundations at Julius Berger to British postgraduate research distinctions, chartered international standing (CMIOSH), and federal statutory reform advisory.
-          </p>
+      {/* Section Header - Centered Layout */}
+      <div className="text-center max-w-3xl mx-auto space-y-4 border-b border-slate-200 pb-8 flex flex-col items-center">
+        <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-xs font-mono font-bold tracking-wider uppercase text-[#1C6CD4] shadow-xs">
+          <span>25+ Year Trajectory • Verified Career Progression</span>
         </div>
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-tight text-center">
+          Career Progression in HSE Command &amp; Technical Consultancy
+        </h2>
+        <p className="text-sm sm:text-base text-slate-700 font-sans leading-relaxed max-w-2xl mx-auto text-center">
+          From frontline civil engineering foundations at Julius Berger to British postgraduate research distinctions, chartered international standing (CMIOSH), and federal statutory reform advisory.
+        </p>
 
-        {/* Category Filters (Clean Segmented Tabs, Anti-Slop Compliant) */}
-        <div className="flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 self-start md:self-end overflow-x-auto max-w-full">
+        {/* Category Filters (Centered Segmented Tabs) */}
+        <div className="flex items-center justify-center p-1 rounded-xl bg-slate-100 border border-slate-200 overflow-x-auto max-w-full mt-2">
           {[
             { id: 'all', label: 'All Milestones (6)' },
             { id: 'hse_management', label: 'HSE Command' },
@@ -286,7 +282,7 @@ export const CareerTimeline: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setFilter(tab.id as typeof filter)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
                   isActive
                     ? 'bg-[#1C6CD4] text-white shadow-sm'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
@@ -323,13 +319,13 @@ export const CareerTimeline: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className={`relative flex flex-col md:flex-row items-start ${
+                  className={`relative flex flex-col md:flex-row items-start md:items-center ${
                     isEven ? 'md:flex-row-reverse' : ''
                   }`}
                 >
                   {/* Central Node / Pulsating Checkpoint Indicator */}
                   <div 
-                    className={`absolute left-5 md:left-1/2 -translate-x-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full border-2 border-white shadow-md ${getNodeColor(
+                    className={`absolute left-5 md:left-1/2 -translate-x-1/2 top-6 md:top-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 rounded-full border-2 border-white shadow-md ${getNodeColor(
                       milestone.tagColor
                     )} transition-transform hover:scale-125 cursor-pointer`}
                     onClick={() => toggleExpand(milestone.id)}
@@ -339,13 +335,13 @@ export const CareerTimeline: React.FC = () => {
                     <span className="absolute -inset-1 rounded-full border border-[#1C6CD4]/30 animate-ping opacity-30 pointer-events-none" />
                   </div>
 
-                  {/* Date Pillar for Desktop (Opposite Side) */}
-                  <div className={`hidden md:block w-1/2 px-8 pt-2 ${isEven ? 'text-right' : 'text-left'}`}>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 font-mono text-xs font-bold text-slate-800 shadow-sm">
+                  {/* Date Pillar for Desktop (Opposite Side) - Vertically Centered */}
+                  <div className={`hidden md:flex flex-col justify-center w-1/2 px-8 ${isEven ? 'items-end text-right' : 'items-start text-left'}`}>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 font-mono text-xs font-bold text-slate-800 shadow-sm">
                       <Calendar className="w-3.5 h-3.5 text-[#1C6CD4]" />
                       <span>{milestone.yearRange}</span>
                     </div>
-                    <div className="text-xs font-mono text-slate-500 mt-1">
+                    <div className="text-xs font-mono text-slate-500 mt-1.5 font-medium">
                       {milestone.categoryLabel}
                     </div>
                   </div>

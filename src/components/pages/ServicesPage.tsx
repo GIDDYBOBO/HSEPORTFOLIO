@@ -12,7 +12,6 @@ import {
   MapPin, 
   Clock, 
   Building2, 
-  Sparkles,
   Award,
   ChevronRight
 } from 'lucide-react';

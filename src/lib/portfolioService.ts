@@ -28,61 +28,52 @@ const LOCAL_PROJECTS_KEY = 'hse_cached_projects_v2';
 const LOCAL_BOOKS_KEY = 'hse_cached_books_v2';
 const LOCAL_INQUIRIES_KEY = 'hse_cached_inquiries_v2';
 const INQUIRY_STATUS_OVERRIDES_KEY = 'hse_inquiry_status_overrides';
+const DELETED_INQUIRIES_KEY = 'hse_deleted_inquiry_ids_v2';
 
-export const DEFAULT_INQUIRIES: InquiryMessage[] = [
-  {
-    id: 'inq-01',
-    date: '18 Sep 2026',
-    createdAt: '2026-09-18T10:30:00.000Z',
-    name: 'Engr. Babatunde Adeyemi',
-    organization: 'Federal Ministry of Works & Housing',
-    email: 'b.adeyemi@works.gov.ng',
-    phone: '+234 803 555 0192',
-    segment: 'High-Consequence Safety Audit',
-    timeframe: 'Immediate Deployment',
-    message: 'Requesting Engr. Osazee for an independent high-consequence safety audit regarding a dual-carriageway bridge launching girder operation across Niger River.',
-    status: 'new'
-  },
-  {
-    id: 'inq-02',
-    date: '15 Sep 2026',
-    createdAt: '2026-09-15T14:15:00.000Z',
-    name: 'Dr. Fiona Campbell',
-    organization: 'Institution of Occupational Safety & Health (UK)',
-    email: 'fiona.campbell@iosh.com',
-    phone: '+44 116 257 3100',
-    segment: 'Keynote & Executive Symposium',
-    timeframe: 'Q3/Q4 Cycle',
-    message: 'Formal invitation to deliver a keynote on "Human-Centered Safety Systems in Developing Infrastructure" at the Global Health & Safety Executive Forum.',
-    status: 'reviewed'
-  },
-  {
-    id: 'inq-03',
-    date: '10 Sep 2026',
-    createdAt: '2026-09-10T09:00:00.000Z',
-    name: 'Arch. Chukwudi Eze',
-    organization: 'Apex Infrastructure Consortium',
-    email: 'ceze@apexinfrang.com',
-    phone: '+234 802 344 9901',
-    segment: 'Publication Licensing & Technical Training',
-    timeframe: 'Institutional Retainer',
-    message: 'Seeking institutional bulk access and training licenses for the Bioclimatic Thermal Hazards & Ergonomics Monograph for 45 site engineers.',
-    status: 'new'
-  },
-  {
-    id: 'inq-04',
-    date: '02 Sep 2026',
-    createdAt: '2026-09-02T16:45:00.000Z',
-    name: 'Alhaji Sanusi Danbaba',
-    organization: 'Northern Regional Transport Authority',
-    email: 's.danbaba@nrta.gov.ng',
-    phone: '+234 809 777 4321',
-    segment: 'ISO 45001 Gap Diagnostic',
-    timeframe: 'Statutory Program',
-    message: 'Inquiry regarding preliminary gap analysis and advisory for transitioning regional contractor networks to ISO 45001:2018 certification.',
-    status: 'reviewed'
+// Known sample query IDs to purge permanently
+const SAMPLE_INQUIRY_IDS = new Set(['inq-01', 'inq-02', 'inq-03', 'inq-04']);
+
+// DEFAULT_INQUIRIES is strictly empty so ONLY real user-inputted queries appear on dashboard
+export const DEFAULT_INQUIRIES: InquiryMessage[] = [];
+
+export function getDeletedInquiryIds(): Set<string> {
+  try {
+    const raw = localStorage.getItem(DELETED_INQUIRIES_KEY);
+    if (!raw) return new Set<string>();
+    const parsed = JSON.parse(raw);
+    return new Set<string>(Array.isArray(parsed) ? parsed : []);
+  } catch {
+    return new Set<string>();
   }
-];
+}
+
+export function saveDeletedInquiryIds(set: Set<string>) {
+  try {
+    localStorage.setItem(DELETED_INQUIRIES_KEY, JSON.stringify(Array.from(set)));
+  } catch (err) {
+    console.warn('Error saving deleted inquiry IDs:', err);
+  }
+}
+
+export function getRawLocalInquiries(): InquiryMessage[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_INQUIRIES_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    const deletedIds = getDeletedInquiryIds();
+    return parsed.filter(item => 
+      item && 
+      typeof item === 'object' && 
+      typeof item.id === 'string' &&
+      !SAMPLE_INQUIRY_IDS.has(item.id) &&
+      !deletedIds.has(item.id) &&
+      (item.name || item.email || item.message)
+    );
+  } catch {
+    return [];
+  }
+}
 
 export function saveInquiryStatusOverride(id: string, status: 'new' | 'reviewed' | 'archived') {
   try {
@@ -336,11 +327,29 @@ export function subscribeToInquiries(
   onUpdate: (inquiries: InquiryMessage[]) => void,
   onError?: (error: Error) => void
 ) {
-  const initial = applyInquiryStatusOverrides(getLocal<InquiryMessage>(LOCAL_INQUIRIES_KEY, DEFAULT_INQUIRIES));
+  const getProcessedInquiries = (rawItems: InquiryMessage[]): InquiryMessage[] => {
+    const deletedIds = getDeletedInquiryIds();
+    const clean = rawItems
+      .filter((i: any) => i && typeof i === 'object' && typeof i.id === 'string')
+      .filter((i: any) => !SAMPLE_INQUIRY_IDS.has(i.id))
+      .filter((i: any) => !deletedIds.has(i.id))
+      .filter((i: any) => (i.name || i.email || i.message)) as InquiryMessage[];
+    
+    const withOverrides = applyInquiryStatusOverrides(clean);
+    // Sort descending by date/createdAt
+    withOverrides.sort((a, b) => {
+      const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return timeB - timeA;
+    });
+    return withOverrides;
+  };
+
+  const initial = getProcessedInquiries(getRawLocalInquiries());
   onUpdate(initial);
 
   const handleLocalChange = () => {
-    const updated = applyInquiryStatusOverrides(getLocal<InquiryMessage>(LOCAL_INQUIRIES_KEY, DEFAULT_INQUIRIES));
+    const updated = getProcessedInquiries(getRawLocalInquiries());
     onUpdate(updated);
   };
   if (typeof window !== 'undefined') {
@@ -353,15 +362,36 @@ export function subscribeToInquiries(
     unsubscribeFirestore = onSnapshot(
       q,
       (snapshot) => {
-        const items = snapshot.docs
+        const deletedIds = getDeletedInquiryIds();
+        const firestoreItems = snapshot.docs
           .map((d) => ({ ...d.data(), id: d.id }))
           .filter((i: any) => i && typeof i === 'object' && typeof i.id === 'string' && (i.name || i.email || i.message)) as InquiryMessage[];
         
-        // Merge with local inquiries by ID to preserve latest status changes
-        const currentLocal = getLocal<InquiryMessage>(LOCAL_INQUIRIES_KEY, DEFAULT_INQUIRIES);
-        const merged = mergeWithBaseline(DEFAULT_INQUIRIES, [...currentLocal, ...items]);
-        const finalInquiries = applyInquiryStatusOverrides(merged);
-        setLocal(LOCAL_INQUIRIES_KEY, finalInquiries);
+        // Merge with local inquiries by ID (no sample queries, respecting deleted IDs)
+        const currentLocal = getRawLocalInquiries();
+        const map = new Map<string, InquiryMessage>();
+        
+        // 1. Add valid incoming items from Firestore
+        firestoreItems.forEach(item => {
+          if (!SAMPLE_INQUIRY_IDS.has(item.id) && !deletedIds.has(item.id)) {
+            map.set(item.id, item);
+          }
+        });
+
+        // 2. Also keep any newly created local items that haven't synced yet
+        currentLocal.forEach(item => {
+          if (!SAMPLE_INQUIRY_IDS.has(item.id) && !deletedIds.has(item.id)) {
+            if (!map.has(item.id)) {
+              map.set(item.id, item);
+            }
+          }
+        });
+
+        const merged = Array.from(map.values());
+        const finalInquiries = getProcessedInquiries(merged);
+        try {
+          localStorage.setItem(LOCAL_INQUIRIES_KEY, JSON.stringify(finalInquiries));
+        } catch {}
         onUpdate(finalInquiries);
       },
       (err) => {
@@ -592,15 +622,18 @@ export async function deleteProjectItem(id: string): Promise<void> {
 // ---------------- CRUD Operations: Inquiries ---------------- //
 
 export async function submitInquiryToFirestore(inquiry: Omit<InquiryMessage, 'id'>): Promise<string> {
-  const id = `inq-${Date.now()}`;
+  const id = `inq-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
   const newMsg: InquiryMessage = {
     ...inquiry,
     id,
     createdAt: new Date().toISOString()
   };
 
-  const current = getLocal<InquiryMessage>(LOCAL_INQUIRIES_KEY, DEFAULT_INQUIRIES);
-  setLocal(LOCAL_INQUIRIES_KEY, [newMsg, ...current]);
+  const current = getRawLocalInquiries();
+  const updated = [newMsg, ...current.filter(i => i.id !== id)];
+  try {
+    localStorage.setItem(LOCAL_INQUIRIES_KEY, JSON.stringify(updated));
+  } catch {}
   notifyLiveUpdate();
 
   try {
@@ -614,12 +647,18 @@ export async function submitInquiryToFirestore(inquiry: Omit<InquiryMessage, 'id
 }
 
 export async function updateInquiryStatus(id: string, status: 'new' | 'reviewed' | 'archived'): Promise<void> {
+  // 1. Permanently record override in localStorage so refreshes always retain this status
   saveInquiryStatusOverride(id, status);
-  const current = getLocal<InquiryMessage>(LOCAL_INQUIRIES_KEY, DEFAULT_INQUIRIES);
+
+  // 2. Update local inquiries cache immediately
+  const current = getRawLocalInquiries();
   const updated = current.map(i => i.id === id ? { ...i, status, updatedAt: new Date().toISOString() } : i);
-  setLocal(LOCAL_INQUIRIES_KEY, updated);
+  try {
+    localStorage.setItem(LOCAL_INQUIRIES_KEY, JSON.stringify(updated));
+  } catch {}
   notifyLiveUpdate();
 
+  // 3. Persist change to Firestore database
   try {
     const docRef = doc(db, INQUIRIES_COLLECTION, id);
     await setDoc(docRef, { status, updatedAt: new Date().toISOString() }, { merge: true });
@@ -629,6 +668,12 @@ export async function updateInquiryStatus(id: string, status: 'new' | 'reviewed'
 }
 
 export async function deleteInquiryItem(id: string): Promise<void> {
+  // 1. Add to permanent deleted list so it will never resurrect
+  const deletedSet = getDeletedInquiryIds();
+  deletedSet.add(id);
+  saveDeletedInquiryIds(deletedSet);
+
+  // 2. Clean out status override
   try {
     const raw = localStorage.getItem(INQUIRY_STATUS_OVERRIDES_KEY);
     if (raw) {
@@ -637,11 +682,16 @@ export async function deleteInquiryItem(id: string): Promise<void> {
       localStorage.setItem(INQUIRY_STATUS_OVERRIDES_KEY, JSON.stringify(overrides));
     }
   } catch {}
-  const current = getLocal<InquiryMessage>(LOCAL_INQUIRIES_KEY, DEFAULT_INQUIRIES);
+
+  // 3. Filter out from local inquiries cache
+  const current = getRawLocalInquiries();
   const updated = current.filter(i => i.id !== id);
-  setLocal(LOCAL_INQUIRIES_KEY, updated);
+  try {
+    localStorage.setItem(LOCAL_INQUIRIES_KEY, JSON.stringify(updated));
+  } catch {}
   notifyLiveUpdate();
 
+  // 4. Delete document directly from Firestore database
   try {
     const docRef = doc(db, INQUIRIES_COLLECTION, id);
     await deleteDoc(docRef);

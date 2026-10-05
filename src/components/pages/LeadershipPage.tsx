@@ -7,8 +7,7 @@ import {
   Landmark, 
   Mic2, 
   CheckCircle2, 
-  Info,
-  Sparkles
+  Info
 } from 'lucide-react';
 
 export const LeadershipPage: React.FC = () => {
@@ -304,7 +303,7 @@ export const LeadershipPage: React.FC = () => {
       >
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold tracking-wider uppercase text-[#1C6CD4]">
-            <Sparkles className="w-3.5 h-3.5 text-[#1C6CD4]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />
             <span>Thought Leadership Topics</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-display font-black text-slate-900 mt-1 leading-snug sm:leading-tight">
