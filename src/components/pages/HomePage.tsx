@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { PageId, BookItem } from '../../types';
 import { CountUp } from '../CountUp';
 import { useLivePortfolioData } from '../../hooks/useLivePortfolioData';
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+import { AffiliationsTicker } from '../common/AffiliationsTicker';
+import { MagneticButton } from '../common/MagneticButton';
+import { TiltCard } from '../common/TiltCard';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { 
   ArrowUpRight, 
   ArrowRight, 
@@ -18,11 +23,51 @@ interface HomePageProps {
   onOpenBookingModal?: () => void;
 }
 
+const heroContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05
+    }
+  }
+};
+
+const heroItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }
+  }
+};
+
 export const HomePage: React.FC<HomePageProps> = ({ 
   onSelectPage, 
   onSelectBook,
   onOpenBookingModal 
 }) => {
+  // Automated IntersectionObserver for Scrollytelling Reveal of Landing Page Sections
+  // Triggers the 'fade-up-section' class automatically as users scroll down the main landing page
+  const { containerRef } = useIntersectionObserver<HTMLDivElement>({
+    selector: 'section',
+    triggerClass: 'fade-up-section',
+    activeClass: 'is-visible',
+    threshold: 0.08,
+    rootMargin: '0px 0px -50px 0px',
+    triggerOnce: true
+  });
+
+  // Scrollytelling Parallax Hook for Safety Philosophy Section
+  const philosophySectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: philosophyScroll } = useScroll({
+    target: philosophySectionRef,
+    offset: ["start end", "end start"]
+  });
+  const parallaxQuoteY = useTransform(philosophyScroll, [0, 1], [-20, 20]);
+  const parallaxGlowY = useTransform(philosophyScroll, [0, 1], [30, -30]);
+
   // Live reactive data from CMS Dashboard (credentials, books, projects)
   const { credentials: liveCredentials, books: liveBooks } = useLivePortfolioData();
 
@@ -56,19 +101,30 @@ export const HomePage: React.FC<HomePageProps> = ({
   ];
 
   return (
-    <div className="space-y-20 sm:space-y-28 pt-24 sm:pt-32 pb-24 text-slate-900 transition-colors duration-200">
+    <div 
+      ref={containerRef}
+      className="space-y-20 sm:space-y-28 pt-24 sm:pt-32 pb-24 text-slate-900 transition-colors duration-200"
+    >
 
       {/* =========================================================================
           1. HERO SECTION (Obsidian Canvas with Luminous Accents)
           ========================================================================= */}
-      <section className="relative">
+      <section className="relative fade-up-section is-visible">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* Left Column: Master Identification, Positioning & Two Clean CTAs */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <motion.div 
+            variants={heroContainerVariants}
+            initial="hidden"
+            animate="visible"
+            className="lg:col-span-7 space-y-6 text-left"
+          >
 
             {/* Professional Identity Eyebrow with "|" separators */}
-            <div className="flex flex-wrap items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
+            <motion.div 
+              variants={heroItemVariants}
+              className="flex flex-wrap items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold"
+            >
               <span>HSE Professional</span>
               <span aria-hidden="true" className="text-neutral-500 font-normal">|</span>
               <span>Civil Engineering</span>
@@ -76,74 +132,84 @@ export const HomePage: React.FC<HomePageProps> = ({
               <span>Author</span>
               <span aria-hidden="true" className="text-neutral-500 font-normal">|</span>
               <span>Safety Leader</span>
-            </div>
+            </motion.div>
 
-            {/* Master Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-display font-black text-slate-900 tracking-tight leading-[1.08] uppercase">
-              ENGINEERING ZERO-HARM AT MEGA-SCALE.
-            </h1>
+            {/* Master Executive Headline */}
+            <motion.h1 
+              variants={heroItemVariants}
+              className="text-3xl sm:text-5xl lg:text-[56px] font-display font-black tracking-tight leading-[1.08] uppercase text-slate-900"
+            >
+              ENGINEERING{' '}
+              <span className="text-[#1C6CD4]">
+                ZERO-HARM
+              </span>{' '}
+              AT MEGA-SCALE.
+            </motion.h1>
 
             {/* Positioning Statement */}
-            <p className="text-base sm:text-lg text-slate-700 leading-relaxed max-w-2xl font-medium">
+            <motion.p 
+              variants={heroItemVariants}
+              className="text-base sm:text-lg text-slate-700 leading-relaxed max-w-2xl font-medium"
+            >
               Advancing safer workplaces through leadership, engineering rigor, and practical HSE experience. Directing corporate safety architecture at Julius Berger PLC across complex river bridges, highway corridors, and national infrastructure.
-            </p>
+            </motion.p>
 
             {/* On Smaller Screens: Portrait Image comes BEFORE the two buttons */}
-            <div className="block lg:hidden my-6">
-              <div className="relative rounded-3xl overflow-hidden border-2 border-slate-200 bg-white shadow-xl group">
-                <div className="relative h-72 sm:h-96 w-full overflow-hidden">
-                  <img
-                    src="/assets/portrait.jpg"
-                    alt="Engr. Iyenoma ThankGod Osazee — Health, Safety and Environment Leader, Civil Engineer, and Author"
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />
-                </div>
+            <motion.div variants={heroItemVariants} className="block lg:hidden my-6">
+              <TiltCard maxTilt={5} glareOpacity={0.2}>
+                <div className="relative rounded-3xl overflow-hidden border-2 border-slate-200 bg-white shadow-xl group">
+                  <div className="relative h-72 sm:h-96 w-full overflow-hidden">
+                    <img
+                      src="/assets/portrait.jpg"
+                      alt="Engr. Iyenoma ThankGod Osazee — Health, Safety and Environment Leader, Civil Engineer, and Author"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />
+                  </div>
 
-                {/* Overlay Glass Caption */}
-                <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end pointer-events-none">
-                  <div className="space-y-1 text-left bg-white/95 backdrop-blur-md -mx-2 -mb-2 p-4 rounded-2xl border border-slate-200 shadow-md">
-                    <span className="text-[10px] sm:text-xs font-mono text-[#1C6CD4] uppercase tracking-wider font-bold">
-                      CMIOSH · MNSE · Fellow ISPON
-                    </span>
-                    <h3 className="text-base sm:text-lg font-display font-black text-slate-900 leading-snug">
-                      Engr. Iyenoma ThankGod Osazee
-                    </h3>
-                    <p className="text-xs text-slate-600 font-sans line-clamp-2 leading-relaxed font-medium">
-                      Uniting structural engineering science with occupational hygiene and systemic safety governance.
-                    </p>
+                  {/* Overlay Glass Caption */}
+                  <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end pointer-events-none">
+                    <div className="space-y-1 text-left bg-white/95 backdrop-blur-md -mx-2 -mb-2 p-4 rounded-2xl border border-slate-200 shadow-md">
+                      <span className="text-[10px] sm:text-xs font-mono text-[#1C6CD4] uppercase tracking-wider font-bold">
+                        CMIOSH · MNSE · Fellow ISPON
+                      </span>
+                      <h3 className="text-base sm:text-lg font-display font-black text-slate-900 leading-snug">
+                        Engr. Iyenoma ThankGod Osazee
+                      </h3>
+                      <p className="text-xs text-slate-600 font-sans leading-relaxed font-medium">
+                        Uniting structural engineering science with occupational hygiene and systemic safety governance.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </TiltCard>
+            </motion.div>
 
-            {/* Two Clean CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-              <button
-                type="button"
+            {/* Two Magnetic Action Buttons */}
+            <motion.div variants={heroItemVariants} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+              <MagneticButton
                 onClick={() => onSelectPage('about')}
-                className="flex items-center justify-center space-x-2 px-7 py-4 rounded-full bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-bold text-sm tracking-tight transition-all shadow-md hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="flex items-center justify-center space-x-2 px-7 py-4 rounded-full bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-bold text-sm tracking-tight shadow-md hover:shadow-lg hover:shadow-blue-500/20"
               >
                 <span>Explore My Work</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </MagneticButton>
 
-              <button
-                type="button"
+              <MagneticButton
                 onClick={() => onSelectPage('contact')}
-                className="flex items-center justify-center space-x-2 px-7 py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border-2 border-slate-300 font-bold text-sm transition-all shadow-xs hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="flex items-center justify-center space-x-2 px-7 py-4 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 border-2 border-slate-300 font-bold text-sm shadow-xs"
               >
                 <span>Get in Touch</span>
                 <ArrowUpRight className="w-4 h-4 text-[#1C6CD4]" />
-              </button>
-            </div>
+              </MagneticButton>
+            </motion.div>
 
             {/* Factual Credibility Badges */}
-            <div className="pt-3 border-t-2 border-slate-200 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-mono text-slate-800">
+            <motion.div variants={heroItemVariants} className="pt-3 border-t-2 border-slate-200 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-mono text-slate-800">
               <div className="flex items-center space-x-1.5 text-emerald-800">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                 <span className="font-bold">22+ Years Field Command</span>
@@ -156,53 +222,65 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                 <span className="font-bold">ISO 45001 Lead Auditor</span>
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
 
-          {/* Right Column: Desktop High-Fidelity Hero Showcase Card */}
-          <div className="hidden lg:block lg:col-span-5 w-full">
-            <div className="relative rounded-3xl overflow-hidden border-2 border-slate-200 bg-white shadow-xl group">
-              <div className="relative h-[440px] w-full overflow-hidden">
-                <img
-                  src="/assets/portrait.jpg"
-                  alt="Engr. Iyenoma ThankGod Osazee — Health, Safety and Environment Leader, Civil Engineer, and Author"
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
-                  }}
-                />
-                
-                {/* Vignette Gradients */}
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />
-              </div>
+          {/* Right Column: Desktop High-Fidelity 3D Tilt Hero Showcase Card */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="hidden lg:block lg:col-span-5 w-full"
+          >
+            <TiltCard maxTilt={7} glareOpacity={0.22}>
+              <div className="relative rounded-3xl overflow-hidden border-2 border-slate-200 bg-white shadow-xl group hover:shadow-2xl transition-all duration-500">
+                <div className="relative h-[440px] w-full overflow-hidden">
+                  <img
+                    src="/assets/portrait.jpg"
+                    alt="Engr. Iyenoma ThankGod Osazee — Health, Safety and Environment Leader, Civil Engineer, and Author"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80";
+                    }}
+                  />
+                  
+                  {/* Vignette Gradients */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />
+                </div>
 
-              {/* Overlay Glass Caption */}
-              <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end pointer-events-none">
-                <div className="space-y-1 text-left bg-white/95 backdrop-blur-md -mx-2 -mb-2 p-4 rounded-2xl border border-slate-200 shadow-md">
-                  <span className="text-[10px] sm:text-xs font-mono text-[#1C6CD4] uppercase tracking-wider font-bold">
-                    CMIOSH · MNSE · Fellow ISPON
-                  </span>
-                  <h3 className="text-base sm:text-lg font-display font-black text-slate-900 leading-snug">
-                    Engr. Iyenoma ThankGod Osazee
-                  </h3>
-                  <p className="text-xs text-slate-600 font-sans line-clamp-2 leading-relaxed font-medium">
-                    Uniting structural engineering science with occupational hygiene and systemic safety governance.
-                  </p>
+                {/* Overlay Glass Caption */}
+                <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end pointer-events-none">
+                  <div className="space-y-1 text-left bg-white/95 backdrop-blur-md -mx-2 -mb-2 p-4 rounded-2xl border border-slate-200 shadow-md">
+                    <span className="text-[10px] sm:text-xs font-mono text-[#1C6CD4] uppercase tracking-wider font-bold">
+                      CMIOSH · MNSE · Fellow ISPON
+                    </span>
+                    <h3 className="text-base sm:text-lg font-display font-black text-slate-900 leading-snug">
+                      Engr. Iyenoma ThankGod Osazee
+                    </h3>
+                    <p className="text-xs text-slate-600 font-sans leading-relaxed font-medium">
+                      Uniting structural engineering science with occupational hygiene and systemic safety governance.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </TiltCard>
+          </motion.div>
 
         </div>
       </section>
 
       {/* =========================================================================
+          INTERACTIVE INSTITUTIONAL AFFILIATIONS TICKER
+          ========================================================================= */}
+      <AffiliationsTicker />
+
+      {/* =========================================================================
           2. PROFESSIONAL SNAPSHOT (METRICS & EXPERIENCE)
              SECTION BACKGROUND: Clean Crisp Light Surface
           ========================================================================= */}
-      <section className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-50 via-white to-blue-50/50 text-slate-900 shadow-xl border-2 border-slate-200 relative overflow-hidden">
+      <section className="fade-up-section p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-50 via-white to-blue-50/50 text-slate-900 shadow-xl border-2 border-slate-200 relative overflow-hidden">
         <div className="relative z-10 space-y-8">
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
@@ -218,10 +296,16 @@ export const HomePage: React.FC<HomePageProps> = ({
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             
-            <div className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm flex flex-col justify-between">
+            <motion.div 
+              whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+              className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm hover:shadow-md hover:border-emerald-300 transition-colors flex flex-col justify-between cursor-default"
+            >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#154E20] font-black tracking-wider">Experience</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-extrabold">Verified</span>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-extrabold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Verified</span>
+                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -232,12 +316,18 @@ export const HomePage: React.FC<HomePageProps> = ({
                   Leading civil safety directorship at Julius Berger PLC.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm flex flex-col justify-between">
+            <motion.div 
+              whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+              className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm hover:shadow-md hover:border-blue-300 transition-colors flex flex-col justify-between cursor-default"
+            >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#1C6CD4] font-black tracking-wider">Credentials</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">Registry</span>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                  <span>Registry</span>
+                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -248,12 +338,18 @@ export const HomePage: React.FC<HomePageProps> = ({
                   Managed in real-time from your CMS dashboard.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm flex flex-col justify-between">
+            <motion.div 
+              whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+              className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm hover:shadow-md hover:border-blue-300 transition-colors flex flex-col justify-between cursor-default"
+            >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#1C6CD4] font-black tracking-wider">Publications</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">Scientific</span>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                  <span>Scientific</span>
+                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -264,12 +360,18 @@ export const HomePage: React.FC<HomePageProps> = ({
                   Peer-reviewed scientific monographs &amp; research treatises.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm flex flex-col justify-between">
+            <motion.div 
+              whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+              className="p-6 rounded-2xl bg-white text-slate-900 border-2 border-slate-200/90 shadow-sm hover:shadow-md hover:border-blue-300 transition-colors flex flex-col justify-between cursor-default"
+            >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#1C6CD4] font-black tracking-wider">Postgraduates</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">UK Degrees</span>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+                  <span>UK Degrees</span>
+                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -280,7 +382,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   Civil Engineering (Heriot-Watt) &amp; OEHSM (Portsmouth).
                 </p>
               </div>
-            </div>
+            </motion.div>
 
           </div>
 
@@ -290,7 +392,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* =========================================================================
           3. SHORT INTRODUCTION (Crisp White Canvas with Jet Black High-Contrast Text)
           ========================================================================= */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+      <section className="fade-up-section grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         <div className="lg:col-span-5 space-y-3">
           <div className="text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
             Background &amp; Identity
@@ -321,17 +423,32 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* =========================================================================
-          4. SAFETY PHILOSOPHY ("My Approach to Safety")
-             SECTION BACKGROUND: Soft Trust Horizon (#F0F7FF)
+          4. SAFETY PHILOSOPHY ("My Approach to Safety") - Scrollytelling Parallax
           ========================================================================= */}
-      <section className="py-16 sm:py-20 px-8 sm:px-14 rounded-3xl bg-gradient-to-r from-blue-50 via-indigo-50/40 to-slate-50 text-slate-900 shadow-xl border-2 border-blue-200/80 my-4 relative overflow-hidden">
+      <section 
+        ref={philosophySectionRef}
+        className="fade-up-section py-16 sm:py-20 px-8 sm:px-14 rounded-3xl bg-gradient-to-r from-blue-50 via-indigo-50/40 to-slate-50 text-slate-900 shadow-xl border-2 border-blue-200/80 my-4 relative overflow-hidden"
+      >
+        {/* Parallax Depth Ambient Layers */}
+        <motion.div 
+          style={{ y: parallaxGlowY }}
+          className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-200/30 blur-3xl pointer-events-none"
+        />
+        <motion.div 
+          style={{ y: parallaxQuoteY }}
+          className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-emerald-200/25 blur-3xl pointer-events-none"
+        />
+
         <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-blue-100 text-xs font-mono uppercase tracking-widest text-[#142C5C] font-bold border border-blue-200">
             My Approach to Safety
           </div>
-          <blockquote className="text-2xl sm:text-4xl lg:text-5xl font-serif-editorial italic font-normal text-slate-900 leading-relaxed">
+          <motion.blockquote 
+            style={{ y: parallaxQuoteY }}
+            className="text-2xl sm:text-4xl lg:text-5xl font-serif-editorial italic font-normal text-slate-900 leading-relaxed"
+          >
             &ldquo;Safety is not simply about rules. It is about people, responsibility, leadership, and the decisions we make when it matters.&rdquo;
-          </blockquote>
+          </motion.blockquote>
           <p className="text-xs sm:text-sm text-slate-600 font-mono font-medium">
             Safety Philosophy • Grounded in frontline construction ethics and systemic fail-safes.
           </p>
@@ -342,7 +459,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           5. EXPERIENCE IN PRACTICE (3 Operational Pillars)
              Clean Crisp Light Surface with Vibrant Safety Accents & Hover Underlines
           ========================================================================= */}
-      <section className="space-y-8">
+      <section className="fade-up-section space-y-8">
         <div className="space-y-2">
           <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold tracking-wider uppercase text-[#1C6CD4]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />
@@ -358,7 +475,10 @@ export const HomePage: React.FC<HomePageProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <div className="p-8 rounded-3xl bg-white hover:bg-slate-50 text-slate-900 shadow-lg space-y-4 border-2 border-slate-200 hover:border-[#1C6CD4] transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+          <motion.div 
+            whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+            className="p-8 rounded-3xl bg-white hover:bg-slate-50 text-slate-900 shadow-lg space-y-4 border-2 border-slate-200 hover:border-[#1C6CD4] transition-colors duration-300 group flex flex-col justify-between cursor-default"
+          >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-[#1C6CD4] flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
                 <ShieldCheck className="w-6 h-6 text-[#1C6CD4]" />
@@ -373,9 +493,12 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="pt-3 text-xs font-mono text-[#1C6CD4] border-t border-slate-100 font-bold">
               Just Culture • Executive Oversight
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-8 rounded-3xl bg-white hover:bg-slate-50 text-slate-900 shadow-lg space-y-4 border-2 border-slate-200 hover:border-[#96E2A5] transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+          <motion.div 
+            whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+            className="p-8 rounded-3xl bg-white hover:bg-slate-50 text-slate-900 shadow-lg space-y-4 border-2 border-slate-200 hover:border-emerald-300 transition-colors duration-300 group flex flex-col justify-between cursor-default"
+          >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-[#154E20] flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
                 <Layers className="w-6 h-6 text-emerald-700" />
@@ -390,9 +513,12 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="pt-3 text-xs font-mono text-emerald-800 border-t border-slate-100 font-bold">
               ISO 45001 • Statutory Audits
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-8 rounded-3xl bg-white hover:bg-slate-50 text-slate-900 shadow-lg space-y-4 border-2 border-slate-200 hover:border-[#1C6CD4] transition-all duration-300 group hover:-translate-y-1.5 flex flex-col justify-between">
+          <motion.div 
+            whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+            className="p-8 rounded-3xl bg-white hover:bg-slate-50 text-slate-900 shadow-lg space-y-4 border-2 border-slate-200 hover:border-[#1C6CD4] transition-colors duration-300 group flex flex-col justify-between cursor-default"
+          >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-[#1C6CD4] flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
                 <BookOpen className="w-6 h-6 text-[#1C6CD4]" />
@@ -407,7 +533,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="pt-3 text-xs font-mono text-[#1C6CD4] border-t border-slate-100 font-bold">
               Applied Science • World Congress Speaker
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </section>
@@ -417,7 +543,7 @@ export const HomePage: React.FC<HomePageProps> = ({
              FEATURED CARD BACKGROUND: Clean Light Editorial Canvas
           ========================================================================= */}
       {primaryFeaturedBook && (
-        <section className="space-y-10">
+        <section className="fade-up-section space-y-10">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-slate-200 pb-6">
             <div className="space-y-2">
               <span className="text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
@@ -544,7 +670,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           7. SELECTED CREDENTIALS (Accreditations, Fellowships & Chartered Standing)
              Clean Crisp Light Surface with Colorful Accents
           ========================================================================= */}
-      <section className="space-y-8">
+      <section className="fade-up-section space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
           <div className="space-y-1">
             <span className="text-xs font-mono uppercase tracking-widest text-[#1C6CD4] font-bold">
@@ -618,7 +744,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           8. TESTIMONIALS / WHAT COLLEAGUES SAY
              Clean Crisp Light Surface with Quote Accents
           ========================================================================= */}
-      <section className="space-y-8">
+      <section className="fade-up-section space-y-8">
         <div className="space-y-2 text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold tracking-wider uppercase text-[#1C6CD4]">
             <Quote className="w-3.5 h-3.5 text-[#1C6CD4]" />
@@ -667,7 +793,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           9. FINAL CONTACT CTA
              Clean Light Gradient Surface with Blue/Green Accents
           ========================================================================= */}
-      <section className="p-8 sm:p-12 md:p-16 rounded-3xl bg-gradient-to-br from-slate-50 via-white to-blue-50/60 text-slate-900 text-center space-y-6 relative overflow-hidden shadow-xl border-2 border-slate-200 hover:border-[#1C6CD4]/50 transition-all group">
+      <section className="fade-up-section p-8 sm:p-12 md:p-16 rounded-3xl bg-gradient-to-br from-slate-50 via-white to-blue-50/60 text-slate-900 text-center space-y-6 relative overflow-hidden shadow-xl border-2 border-slate-200 hover:border-[#1C6CD4]/50 transition-all group">
         <div className="space-y-3 max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 border border-blue-200 text-xs font-mono text-[#142C5C] font-bold">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1C6CD4]" />

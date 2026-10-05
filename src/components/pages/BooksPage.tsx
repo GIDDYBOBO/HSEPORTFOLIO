@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageId, BookItem } from '../../types';
 import { useLivePortfolioData } from '../../hooks/useLivePortfolioData';
+import { MagneticButton } from '../common/MagneticButton';
 import { 
   BookOpen, 
   ExternalLink, 
@@ -22,6 +23,7 @@ export const BooksPage: React.FC<BooksPageProps> = ({
 }) => {
   const { books: liveBooks } = useLivePortfolioData();
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedBookModal, setSelectedBookModal] = useState<BookItem | null>(null);
 
   const featuredBook = liveBooks[0] || null;
@@ -115,14 +117,13 @@ export const BooksPage: React.FC<BooksPageProps> = ({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <button
-                    type="button"
+                  <MagneticButton
                     onClick={() => handleBookClick(featuredBook)}
-                    className="px-6 py-2.5 rounded-full bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-mono font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-md hover:scale-105"
+                    className="px-6 py-2.5 rounded-full bg-[#1C6CD4] hover:bg-[#155ab3] text-white font-mono font-bold text-xs flex items-center gap-1.5 shadow-md shadow-blue-500/20"
                   >
                     <span>Explore the Book</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </MagneticButton>
 
                   {featuredBook.accessUrl && (
                     <a
@@ -177,25 +178,38 @@ export const BooksPage: React.FC<BooksPageProps> = ({
             </h2>
           </div>
 
-          {/* Search Box */}
-          <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+          {/* Expanding Search Bar Microinteraction */}
+          <div className={`relative transition-all duration-300 ${isSearchFocused ? 'w-full sm:w-80' : 'w-full sm:w-64'}`}>
+            <Search className={`w-4 h-4 absolute left-3 top-2.5 transition-colors ${isSearchFocused ? 'text-[#1C6CD4]' : 'text-slate-400'}`} />
             <input
               type="text"
               placeholder="Search library..."
               value={searchQuery}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setIsSearchFocused(false)}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1C6CD4] shadow-xs"
+              className="w-full pl-9 pr-8 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1C6CD4] focus:ring-2 focus:ring-[#1C6CD4]/20 shadow-xs transition-all"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-2.5 p-0.5 rounded-full text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                title="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
 
         {/* Remaining Books Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredRemaining.map((book) => (
-            <article
+            <motion.article
               key={book.id}
-              className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:border-[#1C6CD4] transition-all flex flex-col justify-between space-y-4 text-slate-900"
+              whileHover={{ y: -4, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }}
+              className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-[#1C6CD4] transition-all flex flex-col justify-between space-y-4 text-slate-900 cursor-pointer"
+              onClick={() => handleBookClick(book)}
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-[11px] font-mono">
@@ -237,7 +251,7 @@ export const BooksPage: React.FC<BooksPageProps> = ({
                   </a>
                 )}
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
       </section>

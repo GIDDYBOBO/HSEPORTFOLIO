@@ -138,14 +138,19 @@ export interface UseScrollRevealContainerOptions {
   selector?: string;
   /**
    * Observer threshold
-   * @default 0.06
+   * @default 0.08
    */
   threshold?: number;
   /**
    * Observer root margin
-   * @default '0px 0px -40px 0px'
+   * @default '0px 0px -50px 0px'
    */
   rootMargin?: string;
+  /**
+   * Whether animations trigger only once
+   * @default true
+   */
+  triggerOnce?: boolean;
   /**
    * Dependency array that triggers a re-scan of the container (e.g. route or page transitions)
    */
@@ -154,18 +159,19 @@ export interface UseScrollRevealContainerOptions {
 
 /**
  * useScrollRevealContainer
- * Container-level IntersectionObserver hook for the main application structure.
+ * Container-level IntersectionObserver hook for landing pages and multi-section layouts.
  * Automatically discovers all major sections within the container, adds the 'fade-up-section' class,
- * and attaches a shared, high-performance IntersectionObserver that adds 'is-visible' as each section
- * scrolls into view.
+ * and attaches a shared, high-performance IntersectionObserver that adds 'is-visible' automatically
+ * as each section scrolls into view to create a cinematic scrollytelling experience.
  */
 export function useScrollRevealContainer<T extends HTMLElement = HTMLElement>(
   options: UseScrollRevealContainerOptions = {}
 ) {
   const {
     selector = 'section, [data-scroll-reveal], .fade-up-section',
-    threshold = 0.06,
-    rootMargin = '0px 0px -40px 0px',
+    threshold = 0.08,
+    rootMargin = '0px 0px -50px 0px',
+    triggerOnce = true,
     deps = [],
   } = options;
 
@@ -184,14 +190,7 @@ export function useScrollRevealContainer<T extends HTMLElement = HTMLElement>(
     const sections = Array.from(container.querySelectorAll<HTMLElement>(selector));
     if (sections.length === 0) return;
 
-    if (prefersReducedMotion) {
-      sections.forEach((sec) => {
-        sec.classList.add('fade-up-section', 'is-visible');
-      });
-      return;
-    }
-
-    if (typeof IntersectionObserver === 'undefined') {
+    if (prefersReducedMotion || typeof IntersectionObserver === 'undefined') {
       sections.forEach((sec) => {
         sec.classList.add('fade-up-section', 'is-visible');
       });
@@ -203,7 +202,11 @@ export function useScrollRevealContainer<T extends HTMLElement = HTMLElement>(
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
+            if (triggerOnce) {
+              observer.unobserve(entry.target);
+            }
+          } else if (!triggerOnce) {
+            entry.target.classList.remove('is-visible');
           }
         });
       },
@@ -213,33 +216,25 @@ export function useScrollRevealContainer<T extends HTMLElement = HTMLElement>(
       }
     );
 
-    sections.forEach((sec) => {
+    sections.forEach((sec, idx) => {
       // Ensure base animation class is applied
       if (!sec.classList.contains('fade-up-section')) {
         sec.classList.add('fade-up-section');
       }
 
-      // Check if already in viewport
+      // Check if already in viewport (or the first section above the fold)
       const rect = sec.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
+      if (idx === 0 || (rect.top < window.innerHeight && rect.bottom > 0)) {
         sec.classList.add('is-visible');
       } else {
         observer.observe(sec);
       }
     });
 
-    // Safety fallback: ensure any un-triggered sections become visible after 1.2s
-    const fallbackTimer = setTimeout(() => {
-      sections.forEach((sec) => {
-        sec.classList.add('is-visible');
-      });
-    }, 1200);
-
     return () => {
-      clearTimeout(fallbackTimer);
       observer.disconnect();
     };
-  }, [selector, threshold, rootMargin]);
+  }, [selector, threshold, rootMargin, triggerOnce]);
 
   useEffect(() => {
     // Slight frame delay to ensure React component DOM reconciliation has completed
@@ -258,3 +253,5 @@ export function useScrollRevealContainer<T extends HTMLElement = HTMLElement>(
     refresh: initObserver,
   };
 }
+
+export { useIntersectionObserver, useFadeUpIntersectionObserver } from './useIntersectionObserver';

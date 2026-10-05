@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
+import { motion, AnimatePresence } from 'motion/react';
+import { MagneticButton } from './common/MagneticButton';
 import { 
   ArrowUpRight, 
   Menu, 
@@ -25,6 +27,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenBookingModal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Original HSE-Port Navigation suite
   const navItems: { id: PageId; label: string; number: string; icon: React.ReactNode }[] = [
@@ -61,17 +72,21 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${isScrolled ? 'pt-2.5 sm:pt-3' : 'pt-4 sm:pt-6'}`}>
         <nav 
           aria-label="Main Navigation"
-          className="dialed-glass-nav rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between border border-slate-200/90 shadow-md backdrop-blur-xl bg-white/90 text-slate-900"
+          className={`dialed-glass-nav rounded-full px-4 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between border transition-all duration-300 backdrop-blur-2xl text-slate-900 ${
+            isScrolled 
+              ? 'bg-white/95 border-slate-300/80 shadow-lg shadow-slate-900/5' 
+              : 'bg-white/85 border-slate-200/90 shadow-md'
+          }`}
         >
           {/* Brand Mark & Title */}
           <button
             onClick={() => handleNavClick('home')}
             className="flex items-center space-x-3 group cursor-pointer focus:outline-none"
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm tracking-wider select-none shrink-0 transition-transform group-hover:scale-105 bg-gradient-to-br from-[#1C6CD4] to-[#142C5C] text-white shadow-md shadow-[#142C5C]/20 border border-[#1C6CD4]/40">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm tracking-wider select-none shrink-0 transition-transform duration-300 group-hover:scale-105 bg-gradient-to-br from-[#1C6CD4] to-[#142C5C] text-white shadow-md shadow-[#142C5C]/20 border border-[#1C6CD4]/40">
               TG
             </div>
             <div className="text-left flex flex-col justify-center">
@@ -88,36 +103,43 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </button>
 
-          {/* Desktop Navigation Links (HSE-Port Signature Suite) */}
-          <div className="hidden lg:flex items-center space-x-1 font-mono text-xs">
+          {/* Desktop Navigation Links with Animated Layout Tab */}
+          <div className="hidden lg:flex items-center space-x-1 font-mono text-xs relative">
             {navItems.map((item) => {
               const active = isNavActive(item.id);
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer font-bold ${
+                  className={`relative px-3.5 py-1.5 rounded-full transition-colors duration-200 cursor-pointer font-bold ${
                     active
-                      ? 'text-[#1C6CD4] bg-blue-50 border border-blue-200 shadow-xs'
-                      : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100'
+                      ? 'text-[#1C6CD4]'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
                   }`}
                 >
-                  {item.label}
+                  {active && (
+                    <motion.div
+                      layoutId="activeNavTab"
+                      className="absolute inset-0 rounded-full bg-blue-50 border border-blue-200 shadow-2xs -z-10"
+                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
                 </button>
               );
             })}
           </div>
 
-          {/* Desktop Actions: "Book Call" */}
+          {/* Desktop Actions: "Book Call" with Magnetic Pull */}
           <div className="hidden sm:flex items-center space-x-2">
-            <button
+            <MagneticButton
               onClick={handleConnectClick}
-              className="py-2 px-4.5 rounded-full font-mono font-bold text-xs tracking-tight transition-all flex items-center space-x-2 shadow-md cursor-pointer bg-[#1C6CD4] hover:bg-[#155ab3] text-white shadow-[#1C6CD4]/25 hover:scale-[1.03] active:scale-[0.98] border border-[#1C6CD4]/30 group"
+              className="py-2 px-4.5 rounded-full font-mono font-bold text-xs tracking-tight transition-all flex items-center space-x-2 shadow-md bg-[#1C6CD4] hover:bg-[#155ab3] text-white shadow-[#1C6CD4]/25 border border-[#1C6CD4]/30 group"
             >
               <PhoneCall className="w-3.5 h-3.5 text-white" />
               <span>Book Call</span>
               <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </button>
+            </MagneticButton>
           </div>
 
           {/* Mobile Actions: "Book Call" compact button & Hamburger */}

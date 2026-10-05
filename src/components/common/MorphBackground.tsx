@@ -83,6 +83,11 @@ export const MorphBackground: React.FC = () => {
         className="absolute top-[45%] left-[35%] w-[38vw] h-[38vw] max-w-[600px] max-h-[600px] rounded-full blur-[140px] pointer-events-none transition-all duration-700 bg-amber-100/30" 
       />
 
+      {/* Ambient Engineering Floating Geometric Shapes */}
+      <div className="absolute top-[12%] right-[8%] w-64 h-64 border border-[#1C6CD4]/15 rounded-3xl animate-float-slow-1 pointer-events-none" />
+      <div className="absolute top-[50%] left-[5%] w-80 h-80 border border-emerald-500/15 rounded-full animate-float-slow-2 pointer-events-none" />
+      <div className="absolute bottom-[15%] right-[15%] w-48 h-48 border border-[#142C5C]/10 rounded-2xl rotate-45 animate-float-slow-1 pointer-events-none" />
+
       {/* Reactive Mouse Spotlight Mesh: Calibrated Ocean Blue + Mint glow */}
       {mousePos && !isTouch && (
         <div

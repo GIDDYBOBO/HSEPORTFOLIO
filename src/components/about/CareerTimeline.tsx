@@ -301,8 +301,13 @@ export const CareerTimeline: React.FC = () => {
         {/* Mobile: Left-aligned at 20px; Desktop: Centered */}
         <div 
           aria-hidden="true"
-          className="absolute top-0 bottom-0 left-5 md:left-1/2 -translate-x-1/2 w-[3px] bg-gradient-to-b from-[#1C6CD4] via-emerald-500 via-70% to-[#142C5C] shadow-sm rounded-full"
-        />
+          className="absolute top-0 bottom-0 left-5 md:left-1/2 -translate-x-1/2 w-[3px] bg-slate-200/90 shadow-sm rounded-full overflow-hidden"
+        >
+          {/* Base gradient track */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1C6CD4]/40 via-emerald-500/40 to-[#142C5C]/40" />
+          {/* Animated laser pulse gliding continuously down the timeline */}
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-[#1C6CD4] to-transparent animate-pulse-line shadow-sm" />
+        </div>
 
         {/* Milestone Cards Container */}
         <div className="space-y-12 sm:space-y-16">
