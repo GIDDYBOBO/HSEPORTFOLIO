@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Grotesk', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
 @layer base {
   :root {
     /* Core Safety Colors & Shades */
@@ -113,13 +120,15 @@
   border-color: rgba(150, 226, 165, 0.6);
 }
 
+.font-serif,
 .font-serif-editorial {
   font-family: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
   letter-spacing: -0.015em;
 }
 
+.font-mono,
 .font-mono-code {
-  font-family: 'Space Grotesk', ui-monospace, monospace;
+  font-family: 'Space Grotesk', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 /* Ambient glow and gradients calibrated for Gemini AI Studio */

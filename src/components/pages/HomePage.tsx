@@ -302,10 +302,6 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#154E20] font-black tracking-wider">Experience</span>
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-extrabold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Verified</span>
-                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -324,10 +320,6 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#1C6CD4] font-black tracking-wider">Credentials</span>
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                  <span>Registry</span>
-                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -346,10 +338,6 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#1C6CD4] font-black tracking-wider">Publications</span>
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                  <span>Scientific</span>
-                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">
@@ -368,10 +356,6 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <div className="flex items-center justify-between pb-3 border-b-2 border-slate-100">
                 <span className="text-xs font-mono uppercase text-[#1C6CD4] font-black tracking-wider">Postgraduates</span>
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#1C6CD4] border border-blue-200 font-extrabold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
-                  <span>UK Degrees</span>
-                </span>
               </div>
               <div className="pt-4 space-y-1">
                 <div className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">

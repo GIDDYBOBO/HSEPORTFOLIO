@@ -19,7 +19,6 @@ import { BookDetailModal } from './components/modals/BookDetailModal';
 import { ProtectedRoute } from './components/admin/ProtectedRoute';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { MorphBackground } from './components/common/MorphBackground';
-import { ScrollProgressBar } from './components/common/ScrollProgressBar';
 import { FloatingBackToTop } from './components/common/FloatingBackToTop';
 import { AnimatePresence, motion } from 'motion/react';
 import { recordRealVisit, recordRealPageView, recordModalInteraction } from './lib/analyticsService';
@@ -147,9 +146,6 @@ function PortfolioApp() {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-white text-slate-900 selection:bg-[#1C6CD4]/20 selection:text-[#142C5C] transition-colors duration-200">
-      {/* Scroll Reading Progress Bar */}
-      <ScrollProgressBar />
-
       {/* DialedWeb Signature Morphing Liquid Mesh & Ambient Glass Canvas */}
       <MorphBackground />
 
