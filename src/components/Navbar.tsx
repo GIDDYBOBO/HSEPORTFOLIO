@@ -130,8 +130,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </div>
 
-          {/* Desktop Actions: "Book Call" with Magnetic Pull */}
-          <div className="hidden sm:flex items-center space-x-2">
+          {/* Desktop Actions: "Book Call" with Magnetic Pull (strictly on wider screens: lg and up) */}
+          <div className="hidden lg:flex items-center space-x-2">
             <MagneticButton
               onClick={handleConnectClick}
               className="py-2 px-4.5 rounded-full font-mono font-bold text-xs tracking-tight transition-all flex items-center space-x-2 shadow-md bg-[#1C6CD4] hover:bg-[#155ab3] text-white shadow-[#1C6CD4]/25 border border-[#1C6CD4]/30 group"
@@ -142,12 +142,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             </MagneticButton>
           </div>
 
-          {/* Mobile Actions: "Book Call" compact button & Hamburger */}
+          {/* Mobile Actions: "Book Call" compact button & Hamburger (strictly on smaller screens: below lg) */}
           <div className="flex lg:hidden items-center space-x-2">
             <button
               onClick={handleConnectClick}
               className="py-1.5 px-3 rounded-full font-mono font-bold text-[11px] tracking-tight transition-all flex items-center space-x-1.5 shadow-md cursor-pointer bg-[#1C6CD4] hover:bg-[#155ab3] text-white"
             >
+              <PhoneCall className="w-3 h-3 text-white" />
               <span>Book Call</span>
             </button>
 
